@@ -31,7 +31,8 @@ public class Criticals extends Module {
             "Motion",
             "ColdPVP",
             "Hypixel",
-            "Hypixel2"
+            "Hypixel2",
+            "Hypixel3"
     });
     public static NumberValue motion = new NumberValue("motion", 0.2, 0, 1, NumberValue.NUMBER_TYPE.FLOAT){
         @Override
@@ -42,21 +43,15 @@ public class Criticals extends Module {
     public static NumberValue hurtTime = new NumberValue("HurtTime", 1, 1, 10, NumberValue.NUMBER_TYPE.INT){
         @Override
         public boolean isHidden() {
-            return mode.is("Hypixel") ||mode.is("Hypixel2");
+            return mode.is("Hypixel") ||mode.is("Hypixel2") || mode.is("Hypixel3");
         }
     };
-    public static NumberValue tick = new NumberValue("Tick", 50, 5, 100, NumberValue.NUMBER_TYPE.INT){
-        @Override
-        public boolean isHidden() {
-            return !(mode.is("Hypixel3"));
-        }
-    };
+
     public Criticals() {
         super("Criticals", Category.Combat, "Critical on the ground.");
      registerValue(mode);
      registerValue(motion);
      registerValue(hurtTime);
-     registerValue(tick);
     }
     public static Random random = new Random();
     public static int attacked = 0;
@@ -136,18 +131,27 @@ public class Criticals extends Module {
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         e.onGround = false;
-                        e.y += 0.00000000000000000000000000000001;
+                        e.y += 0.0000000000000000000000001;
                         mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
                     }
 
-                    final int[] strafeTicks = new int[]{5,6,7,11,14,15,18,19,20};
+                    final int[] strafeTicks = new int[]{11};
 
                     if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
                         for (final int allowedAirTick : strafeTicks) {
                             if (mc.player.offGroundTicks == allowedAirTick && mc.player.hurtTime == 0) {
-                                mc.player.getMotion().y = 0.00000000000000000001;
+                                mc.player.getMotion().y = 0;
                             }
                         }
+                    }
+                }
+                break;
+            case "hypixel3":
+                if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
+                    if (e.onGround) {
+                        e.onGround = false;
+                        e.y += 0.0000000000000000000000001;
+                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.0000041);
                     }
                 }
                 break;
@@ -155,7 +159,7 @@ public class Criticals extends Module {
     }
     static boolean attacking = false;
     public void criticalsEntity(LivingEntity LivingEntity){
-        if(SigmaNG.SigmaNG.moduleManager.getModule(Criticals.class).enabled && (LivingEntity.hurtTime > hurtTime.getValue().longValue() || (mode.is("Hypixel") || mode.is("Hypixel2")))){
+        if(SigmaNG.SigmaNG.moduleManager.getModule(Criticals.class).enabled && (LivingEntity.hurtTime > hurtTime.getValue().longValue() || (mode.is("Hypixel") || mode.is("Hypixel2") || mode.is("Hypixel3")))){
             attacking = true;
             mc.player.onCriticalHit(LivingEntity);
             switch (mode.getValue()){

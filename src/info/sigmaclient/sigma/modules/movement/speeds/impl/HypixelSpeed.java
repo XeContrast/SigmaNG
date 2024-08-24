@@ -158,8 +158,8 @@ public class HypixelSpeed extends SpeedModule {
             case "BunnyHop":
                 if(!mc.player.onGround) {
                     if(mc.player.hurtTime > 0 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
-                        mc.player.getMotion().x *= 0.8;
-                        mc.player.getMotion().z *= 0.8;
+                        mc.player.getMotion().x *= 0.75;
+                        mc.player.getMotion().z *= 0.75;
                         return;
                     }
 

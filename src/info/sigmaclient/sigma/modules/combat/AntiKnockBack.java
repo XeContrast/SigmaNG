@@ -245,8 +245,8 @@ public class AntiKnockBack extends Module {
                             if(mc.player.onGround) {
                                 mc.player.getMotion().y = 0.00000000000000000041;
                             }else {
-                                if (mc.player.ticksExisted % 5 != 0) {
-                                    mc.player.getMotion().y += 0.0001;
+                                if (mc.player.ticksExisted % 5 == 0) {
+                                    mc.player.getMotion().y += 0.000041;
                                 }else {
                                     mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
                                 }
