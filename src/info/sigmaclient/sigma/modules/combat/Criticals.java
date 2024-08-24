@@ -151,25 +151,6 @@ public class Criticals extends Module {
                     }
                 }
                 break;
-            case "hypixel3":
-                if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
-                    if (e.onGround) {
-                        e.onGround = false;
-                        e.y += 0.00000000000000000000000000000001;
-                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
-                    }
-
-                    final int[] strafeTicks = new int[]{5,6,7,11,14,15,18,19,20};
-
-                    if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
-                        for (final int allowedAirTick : strafeTicks) {
-                            if (mc.player.offGroundTicks == allowedAirTick && mc.player.hurtTime == 0) {
-                                mc.player.getMotion().y = 0.00000000000000000001;
-                            }
-                        }
-                    }
-                }
-                break;
         }
     }
     static boolean attacking = false;
