@@ -43,6 +43,7 @@ public class HypixelSpeed extends SpeedModule {
     private boolean prevOnGround;
     private double posYLast;
     private double prevYaw;
+    private double recordYaw;
     private double groundYaw;
     private double deltaYaw;
     private double lastDeltaYaw;
@@ -101,6 +102,23 @@ public class HypixelSpeed extends SpeedModule {
                 }
                 break;
             case "LessBHop":
+                if (MovementUtils.isMoving() && mc.player.onGround) {
+                    mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                    MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+                }
+
+                if (mc.player.onGround) {
+                    speed = 1F;
+                }
+
+
+                if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
+                    if (offGroundTick == 4 && mc.player.hurtTime == 0) {
+                        mc.player.getMotion().y = 0;
+                        MovementUtils.strafing(MovementUtils.getBaseMoveSpeed() * speed);
+                        speed *= 0.98F;
+                    }
+                }
 
                 break;
             case "SemiBHop":
@@ -138,53 +156,31 @@ public class HypixelSpeed extends SpeedModule {
                 }
                 break;
             case "BunnyHop":
-                if(!MovementUtils.isMoving() || mc.player.isHandActive())return;
-
-                System.out.println(event.friction);
                 if(!mc.player.onGround) {
-                    event.friction = 0.025999998673796654;
-                    if(mc.player.collidedHorizontally || mc.player.fallDistance > 1){
+                    if(mc.player.hurtTime > 0 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
+                        mc.player.getMotion().x *= 0.8;
+                        mc.player.getMotion().z *= 0.8;
                         return;
                     }
-                    if(mc.player.ticksExisted % this.parent.strafeTick.getValue().intValue() == 0){
-                        if(Math.abs(prevYaw - mc.player.rotationYaw) > 2 && deltaYaw < 360){
-                            if(mc.player.hurtTime < 1){
-                                if(Math.abs(prevYaw - mc.player.rotationYaw) < 5) {
-                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.85, 1));
-                                }
-                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 90) {
-                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.2, 0.45));
-                                }
-                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 120) {
-                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.2, 0.25));
-                                }
-                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 180) {
-                                    MovementUtils.strafing(MovementUtils.getSpeed() * 0.2);
-                                }else if(Math.abs(prevYaw - mc.player.rotationYaw) < 360) {
-                                    MovementUtils.strafing(MovementUtils.getSpeed() * 0.2);
-                                }
-                            }else if(mc.player.hurtTime == 9){
-                                MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.0003, 0.005));
-                            }
-                            deltaYaw += Math.abs(prevYaw - mc.player.rotationYaw);
-                        }
 
-                        mc.player.movementInput.sneaking = true;
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) < 2.5) {
+                        MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
+                        recordYaw = prevYaw;
                     }
+
+                    lastDeltaYaw = deltaYaw;
+                    this.deltaYaw += Math.abs(this.prevYaw - (double) mc.player.rotationYaw);
 
                 }else {
-                    event.friction = 0.1300000101327896;
-                    speed = 1F;
-                    if(deltaYaw > 360) {
-                        deltaYaw = 0;
-                    }
-                    if(MovementUtils.isMoving()) {
-                        if(onGroundTick > 1) {
-                            mc.player.jump();
-                            MovementUtils.strafing((float) MovementUtils.getBaseMoveSpeed() * 1.6);
-                        }else {
-                            MovementUtils.strafing((float) MovementUtils.getSpeed());
-                        }
+                    this.speed = 1;
+                    recordYaw = mc.player.rotationYaw;
+                    deltaYaw = 0;
+
+                    lastDeltaYaw = deltaYaw;
+                    if (MovementUtils.isMoving()) {
+                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                        MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+
                     }
                 }
                 break;
@@ -332,7 +328,7 @@ public class HypixelSpeed extends SpeedModule {
         }else if(this.parent.hypixelMode.is("Real")) {
             if (!mc.player.isInWater()) {
                 if (wasSlow && MovementUtils.isMoving()) {
-                    stair *= 0.8;
+                    stair *= 0.95;
                     stair = Math.max(MovementUtils.getBaseMoveSpeed(), stair);
                     wasSlow = false;
                     MovementUtils.strafing(event, stair);

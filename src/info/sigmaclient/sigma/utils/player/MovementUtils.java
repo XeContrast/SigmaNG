@@ -91,6 +91,25 @@ public class MovementUtils {
         if (mc.player.movementInput.moveStrafe < 0f) rotationYaw += 90f * forward;
         return Math.toRadians(rotationYaw);
     }
+    public static double direction(float rotationYaw){
+        if (mc.player.movementInput.moveForward < 0f) rotationYaw += 180f;
+        float forward = 1f;
+        if (mc.player.movementInput.moveForward < 0f)
+            forward = -0.5f;
+        else if (mc.player.movementInput.moveForward > 0f) forward = 0.5f;
+        if (mc.player.movementInput.moveStrafe > 0f) rotationYaw -= 90f * forward;
+        if (mc.player.movementInput.moveStrafe < 0f) rotationYaw += 90f * forward;
+        return Math.toRadians(rotationYaw);
+    }
+
+    public static void strafing_yaw(final double yaw,final double speed) {
+        if (!isMoving()) {
+            return;
+        }
+
+        mc.player.getMotion().x = -MathHelper.sin((float) direction((float) yaw)) * speed;
+        mc.player.getMotion().z = MathHelper.cos((float) direction((float) yaw)) * speed;
+    }
 
     public static void strafing(final double speed, Entity entity) {
         if (!isMoving()) {
