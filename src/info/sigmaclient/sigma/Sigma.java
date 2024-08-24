@@ -7,6 +7,7 @@ import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 import java.util.Date;
 
+
 public class Sigma {
     @Getter
     public static SigmaNG INSTANCE;
