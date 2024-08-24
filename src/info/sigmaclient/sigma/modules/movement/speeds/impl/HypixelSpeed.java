@@ -1,16 +1,20 @@
 package info.sigmaclient.sigma.modules.movement.speeds.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
+import info.sigmaclient.sigma.event.impl.net.PacketEvent;
+import info.sigmaclient.sigma.event.impl.player.JumpEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
 import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
 import info.sigmaclient.sigma.utils.ChatUtils;
+import info.sigmaclient.sigma.utils.RandomUtil;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -22,48 +26,173 @@ public class HypixelSpeed extends SpeedModule {
     double stair;
     float speed;
     public double fakeMotionY, fakeY;
+    private int counter;
     private int offGroundTick;
+    private int onGroundTick;
+    private boolean prevOnGround;
+    private double posYLast;
+    private double prevYaw;
+    private double groundYaw;
+    private double deltaYaw;
+    private double lastDeltaYaw;
     public HypixelSpeed(Speed speed) {
         super("Hypixel", "Speed for Hypixel", speed);
     }
 
-    @Override
+   @Override
     public void onEnable() {
         wasSlow = false;
         offGroundTick = 0;
-
+        onGroundTick = 0;
+        lastDeltaYaw = 0;
+        prevYaw = mc.player.rotationYaw;
         stair = MovementUtils.getBaseMoveSpeed();
         fakeMotionY = 0;
+        deltaYaw = 0;
         fakeY = mc.player.getPositionVector().y;
         super.onEnable();
     }
 
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
+
+    @EventTarget
+    public void onJumpEvent(JumpEvent event){
+        if(this.parent.hypixelMode.is("SemiBHop") || this.parent.hypixelMode.is("BunnyHop")) {
+            event.boost = false;
+        }
+    }
     @EventTarget
     public void onStrafeEvent(StrafeEvent event) {
+        switch (this.parent.hypixelMode.getValue()){
+            case "Autism":
+                if (MovementUtils.isMoving() && mc.player.onGround) {
+                    mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                    MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+                }
 
-        if(this.parent.hypixelMode.is("Bhop")){
-            if (MovementUtils.isMoving() && mc.player.onGround) {
-                mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
-                MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
-            }
+                if (mc.player.onGround) {
+                    speed = 1F;
+                }
 
-            if (mc.player.onGround) {
-                speed = 1F;
+                final int[] allowedAirTicks = new int[]{10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28, 29};
 
-            }
+                if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
+                    for (final int allowedAirTick : allowedAirTicks) {
+                        if (offGroundTick == allowedAirTick && allowedAirTick <= 9 + this.parent.gliding.getValue().intValue() && mc.player.hurtTime == 0) {
+                            mc.player.getMotion().y = 0;
+                            MovementUtils.strafing(MovementUtils.getBaseMoveSpeed() * speed);
+                            speed *= 0.98F;
+                        }
+                    }
+                }
+                break;
+            case "LessBHop":
 
-            final int[] allowedAirTicks = new int[]{10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28, 29};
+                break;
+            case "SemiBHop":
+                if (!MovementUtils.isMoving() || mc.player.isHandActive()) {
+                    return;
+                }
 
-            if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
-                for (final int allowedAirTick : allowedAirTicks) {
-                    if (offGroundTick == allowedAirTick && allowedAirTick <= 9 + this.parent.gliding.getValue().intValue() && mc.player.hurtTime == 0) {
-                        mc.player.getMotion().y = 0;
-                        MovementUtils.strafing(MovementUtils.getBaseMoveSpeed() * speed);
-                        speed *= 0.98F;
+                if (!mc.player.onGround) {
+                    if(mc.player.hurtTime > 0 || deltaYaw >= 180 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
+                        event.friction *= 0.75;
+                        return;
+                    }
+
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) < 2.5 && Math.abs(lastDeltaYaw-deltaYaw) != Math.abs(this.prevYaw - (double)mc.player.rotationYaw)) {
+                        MovementUtils.strafing(MovementUtils.getSpeed() * speed);
+                    }
+
+                    lastDeltaYaw = this.deltaYaw;
+
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) > 5) {
+                        this.speed *= 0.985f;
+                        this.deltaYaw += Math.abs(this.prevYaw - (double) mc.player.rotationYaw);
+                    }
+                } else {
+                    this.speed = 1;
+
+                    deltaYaw = 0;
+
+                    lastDeltaYaw = deltaYaw;
+                    if (MovementUtils.isMoving()) {
+                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                        MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+
+                    }
+                }
+                break;
+            case "BunnyHop":
+                if(!MovementUtils.isMoving() || mc.player.isHandActive())return;
+
+                System.out.println(event.friction);
+                if(!mc.player.onGround) {
+                    event.friction = 0.025999998673796654;
+                    if(mc.player.collidedHorizontally || mc.player.fallDistance > 1){
+                        return;
+                    }
+                    if(mc.player.ticksExisted % this.parent.strafeTick.getValue().intValue() == 0){
+                        if(Math.abs(prevYaw - mc.player.rotationYaw) > 2 && deltaYaw < 360){
+                            if(mc.player.hurtTime < 1){
+                                if(Math.abs(prevYaw - mc.player.rotationYaw) < 5) {
+                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.85, 1));
+                                }
+                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 90) {
+                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.2, 0.45));
+                                }
+                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 120) {
+                                    MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.2, 0.25));
+                                }
+                                else if(Math.abs(prevYaw - mc.player.rotationYaw) < 180) {
+                                    MovementUtils.strafing(MovementUtils.getSpeed() * 0.2);
+                                }else if(Math.abs(prevYaw - mc.player.rotationYaw) < 360) {
+                                    MovementUtils.strafing(MovementUtils.getSpeed() * 0.2);
+                                }
+                            }else if(mc.player.hurtTime == 9){
+                                MovementUtils.strafing(MovementUtils.getSpeed() * RandomUtil.getRandom(0.0003, 0.005));
+                            }
+                            deltaYaw += Math.abs(prevYaw - mc.player.rotationYaw);
+                        }
+
+                        mc.player.movementInput.sneaking = true;
+                    }
+
+                }else {
+                    event.friction = 0.1300000101327896;
+                    speed = 1F;
+                    if(deltaYaw > 360) {
+                        deltaYaw = 0;
+                    }
+                    if(MovementUtils.isMoving()) {
+                        if(onGroundTick > 1) {
+                            mc.player.jump();
+                            MovementUtils.strafing((float) MovementUtils.getBaseMoveSpeed() * 1.6);
+                        }else {
+                            MovementUtils.strafing((float) MovementUtils.getSpeed());
+                        }
+                    }
+                }
+                break;
+        }
+        prevYaw = mc.player.rotationYaw;
+    }
+
+    @EventTarget
+    public void onPacketEvent(PacketEvent event) {
+        if(event.isSend())return;
+        if(this.parent.hypixelMode.is("SemiBHop") || this.parent.hypixelMode.is("BunnyHop")) {
+            if (event.packet instanceof SEntityVelocityPacket) {
+                if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
+                    if (MovementUtils.isMoving()) {
+                        ((SEntityVelocityPacket) event.packet).motionX = (int) (mc.player.getMotion().x * 8000);
+                        ((SEntityVelocityPacket) event.packet).motionZ = (int) (mc.player.getMotion().z * 8000);
                     }
                 }
             }
-
         }
 
     }
@@ -73,8 +202,10 @@ public class HypixelSpeed extends SpeedModule {
         if (event.isPost()) return;
         if(mc.player.onGround){
             offGroundTick = 0;
+            onGroundTick++;
         }else {
             offGroundTick++;
+            onGroundTick = 0;
         }
         if (this.parent.low.getValue() && mc.player.hurtTime == 0) {
             ArrayList<Double> values_9tick = new ArrayList<>(Arrays.asList(
@@ -104,6 +235,7 @@ public class HypixelSpeed extends SpeedModule {
             }
 
         }
+
         switch (this.parent.hypixelMode.getValue().toLowerCase()) {
             case "semistrafe":
                 if (mc.player.collidedVertically && MovementUtils.isMoving()) {
@@ -113,14 +245,15 @@ public class HypixelSpeed extends SpeedModule {
                         MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
                     }
                 }
-                if (!mc.player.onGround) {
-                    if (MovementUtils.getSpeed() < 0.11f) {
-                        MovementUtils.strafing(0.11);
-                    }
-                }
                 if (!MovementUtils.isMoving()) {
                     mc.player.getMotion().x = mc.player.getMotion().z = 0;
                 }
+                if (!mc.player.onGround) {
+                    if (MovementUtils.getSpeed() < 0.11) {
+                        MovementUtils.strafing(0.11f);
+                    }
+                }
+                break;
             case "ground":
                 if (mc.player.collidedVertically && MovementUtils.isMoving()) {
                     BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
@@ -193,6 +326,7 @@ public class HypixelSpeed extends SpeedModule {
                 }
                 break;
         }
+       
     }
 
 
