@@ -243,73 +243,78 @@ public class HypixelSpeed extends SpeedModule {
 
         }
 
-        if (this.parent.hypixelMode.is("Ground")) {
-            if (mc.player.collidedVertically && MovementUtils.isMoving()) {
-                BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
-                if (mc.player.onGround && MovementUtils.isMoving() && !(mc.world.getBlockState(blockPos).getBlock() instanceof StairsBlock)) {
-                    mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
-                    MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+        switch (this.parent.hypixelMode.getValue()){
+            case "Ground":
+                if (mc.player.collidedVertically && MovementUtils.isMoving()) {
+                    BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
+                    if (mc.player.onGround && MovementUtils.isMoving() && !(mc.world.getBlockState(blockPos).getBlock() instanceof StairsBlock)) {
+                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                        MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+                    }
                 }
-            }
-            if (!MovementUtils.isMoving()) {
-                mc.player.getMotion().x = mc.player.getMotion().z = 0;
-            }
-        } else if (this.parent.hypixelMode.is("FakeStrafe")) {
-            if (!mc.player.isInWater()) {
-                fakeY += fakeMotionY;
-                mc.player.getPositionVec().y = fakeY;
-
-                if (fakeMotionY > 0) {
-                    fakeMotionY *= 0.8;
-                    fakeMotionY -= 0.05;
-                } else {
-                    fakeMotionY -= 0.07;
+                if (!MovementUtils.isMoving()) {
+                    mc.player.getMotion().x = mc.player.getMotion().z = 0;
                 }
-
-                if (fakeY < mc.player.getBoundingBox().minY) {
-                    fakeY = mc.player.getBoundingBox().minY;
+                break;
+            case "FakeStrafe":
+                if (!mc.player.isInWater()) {
+                    fakeY += fakeMotionY;
                     mc.player.getPositionVec().y = fakeY;
+
+                    if (fakeMotionY > 0) {
+                        fakeMotionY *= 0.8;
+                        fakeMotionY -= 0.05;
+                    } else {
+                        fakeMotionY -= 0.07;
+                    }
+
+                    if (fakeY < mc.player.getBoundingBox().minY) {
+                        fakeY = mc.player.getBoundingBox().minY;
+                        mc.player.getPositionVec().y = fakeY;
+                    }
+                    if (fakeY <= mc.player.getBoundingBox().minY) {
+                        if (MovementUtils.isMoving())
+                            fakeMotionY = 0.42;
+                        else fakeMotionY = 0;
+                    }
                 }
-                if (fakeY <= mc.player.getBoundingBox().minY) {
-                    if (MovementUtils.isMoving())
-                        fakeMotionY = 0.42;
-                    else fakeMotionY = 0;
+                break;
+            case "Real":
+                if (!mc.player.isInWater()) {
+                    if (mc.player.onGround && MovementUtils.isMoving()) {
+                        mc.player.getMotion().y = 0.41999998688697815;
+                        stair = MovementUtils.getBaseMoveSpeed() * 1.4D;
+                        wasSlow = true;
+                    }
                 }
-            }
-        } else if (this.parent.hypixelMode.is("Real")) {
-            if (!mc.player.isInWater()) {
-                if (mc.player.onGround && MovementUtils.isMoving()) {
-                    mc.player.getMotion().y = 0.41999998688697815;
-                    stair = MovementUtils.getBaseMoveSpeed() * 1.4D;
-                    wasSlow = true;
+                break;
+            case "EternityF":
+                if (MovementUtils.isMoving()) {
+                    if (mc.player.isOnGround()) {
+                        mc.player.jump();
+                        MovementUtils.strafing(0.485);
+                    }
+                    if (mc.player.getMotion().y < 0.1 && mc.player.getMotion().y > 0.01) {
+                        mc.player.setMotion(mc.player.getMotion().mul(1.005, 1, 1.005));
+                    }
+                    if (mc.player.getMotion().y < 0.005 && mc.player.getMotion().y > 0) {
+                        mc.player.setMotion(mc.player.getMotion().mul(1.005, 1, 1.005));
+                    }
+                    if (mc.player.getMotion().y < 0.01 && mc.player.getMotion().y > -0.03) {
+                        mc.player.setMotion(mc.player.getMotion().mul(1.002, 1, 1.002));
+                    }
                 }
-            }
-        } else if (this.parent.hypixelMode.is("EternityF")) {
-            if (MovementUtils.isMoving()) {
-                if (mc.player.isOnGround()) {
-                    mc.player.jump();
-                    MovementUtils.strafing(0.485);
+                if (InputMappings.isKeyDown(32) && InputMappings.isKeyDown(30)) {
+                    if (mc.player.getMotion().y < -0.05 && mc.player.getMotion().y > -0.08 && mc.player.hurtTime <= 1) {
+                        MovementUtils.strafing(0.15);
+                    } else if (mc.player.getMotion().y < -0.05 && mc.player.getMotion().y > -0.08) {
+                        MovementUtils.strafing(0.15);
+                    }
                 }
-                if (mc.player.getMotion().y < 0.1 && mc.player.getMotion().y > 0.01) {
-                    mc.player.setMotion(mc.player.getMotion().mul(1.005, 1, 1.005));
+                if (mc.player.hurtTime > 6) {
+                    mc.player.setMotion(mc.player.getMotion().mul(1.007, 1, 1.007));
                 }
-                if (mc.player.getMotion().y < 0.005 && mc.player.getMotion().y > 0) {
-                    mc.player.setMotion(mc.player.getMotion().mul(1.005, 1, 1.005));
-                }
-                if (mc.player.getMotion().y < 0.01 && mc.player.getMotion().y > -0.03) {
-                    mc.player.setMotion(mc.player.getMotion().mul(1.002, 1, 1.002));
-                }
-            }
-            if (InputMappings.isKeyDown(32) && InputMappings.isKeyDown(30)) {
-                if (mc.player.getMotion().y < -0.05 && mc.player.getMotion().y > -0.08 && mc.player.hurtTime <= 1) {
-                    MovementUtils.strafing(0.15);
-                } else if (mc.player.getMotion().y < -0.05 && mc.player.getMotion().y > -0.08) {
-                    MovementUtils.strafing(0.15);
-                }
-            }
-            if (mc.player.hurtTime > 6) {
-                mc.player.setMotion(mc.player.getMotion().mul(1.007, 1, 1.007));
-            }
+                break;
         }
        
     }
@@ -318,8 +323,7 @@ public class HypixelSpeed extends SpeedModule {
 
     @EventTarget
     public void onMoveEvent(MoveEvent event){
-        if(this.parent.hypixelMode.is("Ground")) {
-        }else if(this.parent.hypixelMode.is("FakeStrafe")) {
+        if(this.parent.hypixelMode.is("FakeStrafe")) {
             if (!mc.player.isInWater()) {
                 if (mc.player.onGround && MovementUtils.isMoving()) {
                     MovementUtils.strafing(event, MovementUtils.getBaseMoveSpeed() * 1.0f);
