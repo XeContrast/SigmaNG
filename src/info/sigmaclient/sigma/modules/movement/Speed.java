@@ -47,7 +47,7 @@ public class Speed extends Module {
             return !(mode.is("BlocksMC") || mode.is("Vulcan"));
         }
     };
-    public ModeValue hypixelMode = new ModeValue("Mode", "Ground", new String[]{"Ground", "FakeStrafe", "EternityGS", "EternityF", "Real","Autism","LessBHop","SemiBHop","BunnyHop"}){
+    public ModeValue hypixelMode = new ModeValue("Mode", "Ground", new String[]{"Ground", "FakeStrafe","SemiStrafe", "EternityGS", "EternityF", "Real","Autism","LessBHop","SemiBHop","BunnyHop"}){
         @Override
         public boolean isHidden() {
             return !mode.is("Hypixel");

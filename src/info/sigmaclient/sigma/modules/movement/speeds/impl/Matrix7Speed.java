@@ -32,7 +32,7 @@ public class Matrix7Speed extends SpeedModule {
                 mc.timer.setTimerSpeed(1f);
             }
             if (MovementUtils.getSpeed() < 0.19f) {
-                MovementUtils.strafing(0.215f);
+                MovementUtils.strafing();
             }
         }
     }
