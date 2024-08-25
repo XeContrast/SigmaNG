@@ -49,14 +49,14 @@ public class DiscordRPC {
     static int state = 0;
     private static void update(IPCClient client) {
         state ++;
-        String rr = "SigmaNG 1.16.4 b" + SigmaNG.getClientVersion();
+        String rr = "SigmaNG 1.16.5 b" + SigmaNG.getClientVersion();
         RichPresence.Builder builder = new RichPresence.Builder();
         builder.setDetails(rr)
                 .setStartTimestamp(time)
-                .setLargeImage("https://raw.githubusercontent.com/FallingAngeler/repo/main/sigma1.png", "WTF?! Isn`t this program dead?");
+                .setLargeImage("https://assets.lumodev.xyz/sigma1.png", "WTF?! Isn`t this program dead?");
         builder.setState("Dev Editing...");
         if(PremiumManager.isPremium){
-            builder.setSmallImage("https://lzyqwq.github.io/repo/download.png", "Premium");
+            builder.setSmallImage("https://assets.lumodev.xyz/download.png", "Premium");
         }
         client.sendRichPresence(builder.build());
     }

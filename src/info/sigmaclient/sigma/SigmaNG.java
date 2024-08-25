@@ -30,7 +30,7 @@ public class SigmaNG {
         return "13.7";
     }
     public static String getClientAuthor(){
-        return "IamFrozenMilk, UneCroissantine, IamFrozenNeko";
+        return "Lumo Development";
     }
     @Getter
     public static SigmaNG SigmaNG;

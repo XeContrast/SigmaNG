@@ -58,7 +58,7 @@ public class UpdateLogs {
         }
     }
     public static void loadLogs(){
-        String url = "https://raw.githubusercontent.com/lzyqwq/repo/main/updatelog";
+        String url = "https://raw.githubusercontent.com/Lumo-Dev-Team/SigmaNG_Resources/main/updatelog";
         String logs = visitSite(url);
         HashMap<String, UpdateLog> logMap = new HashMap<>();
         String[] split = logs.split("\n");
