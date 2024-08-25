@@ -150,11 +150,9 @@ public class OldHitting extends Module {
 
                 rotate(100.0f, 0.0f, 1.0f, 0.0f, matrixStack);
                 rotate(-50.0f, 0.0f, 0.0f, 1.0f, matrixStack);
-                final float 殢嶗퉧竬鼒ศ = f2;
-                final float 殢嶗퉧竬鼒ศ2 = f2;
-                rotate(殢嶗퉧竬鼒ศ * -10.0f, 0.0f, 1.0f, 0.0f, matrixStack);
-                rotate(殢嶗퉧竬鼒ศ2 * -30.0f, 0.0f, 0.0f, 1.0f, matrixStack);
-                rotate(殢嶗퉧竬鼒ศ2 * 109.0f, 1.0f, 0.0f, 0.0f, matrixStack);
+                rotate(f2 * -10.0f, 0.0f, 1.0f, 0.0f, matrixStack);
+                rotate(f2 * -30.0f, 0.0f, 0.0f, 1.0f, matrixStack);
+                rotate(f2 * 109.0f, 1.0f, 0.0f, 0.0f, matrixStack);
                 rotate(-90.0f, 1.0f, 0.0f, 0.0f, matrixStack);
                 scale(1.2f, 1.2f, 1.2f, matrixStack);
                 break;
@@ -303,7 +301,6 @@ public class OldHitting extends Module {
     @EventTarget
     public void onUpdateEvent(UpdateEvent event){
         if(event.pre){
-            float last = attackAnim.getValue();
             attackAnim.interpolate(0, mode.is("Tomy") ? -0.8 : -0.6);
             if(mode.is("Tomy")) {
                 if (mc.player.swingProgress > 0 && attackAnim.getValue() <= 0.2) {

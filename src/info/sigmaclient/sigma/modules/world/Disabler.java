@@ -162,14 +162,12 @@ public class Disabler extends Module {
     @EventTarget
     public void onMove(MoveEvent event){
         if(mc.player == null || mc.world == null)return;
-        switch (mode.getValue()) {
-            case "WatchDog":
-                if(disabled && offGroundTicks > 10) {
-                    event.setX(0);
-                    event.setY(0);
-                    event.setZ(0);
-                }
-                break;
+        if (mode.getValue().equals("WatchDog")) {
+            if (disabled && offGroundTicks > 10) {
+                event.setX(0);
+                event.setY(0);
+                event.setZ(0);
+            }
         }
     }
     @EventTarget

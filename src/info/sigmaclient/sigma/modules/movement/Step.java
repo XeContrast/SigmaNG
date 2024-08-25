@@ -9,7 +9,8 @@ import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.stats.Stats;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
+
+import java.util.Objects;
 
 
 public class Step extends Module {
@@ -48,14 +49,11 @@ public class Step extends Module {
         super.onDisable();
     }
     private boolean canStep() {
-        if (mc.player.collidedVertically && mc.player.onGround && mc.player.getMotion().y < 0.0 && !mc.player.movementInput.jump) {
-            return true;
-        }
-        return false;
+        return mc.player.collidedVertically && mc.player.onGround && mc.player.getMotion().y < 0.0 && !mc.player.movementInput.jump;
     }
     int resetNextTick = 0;
     private void addYPos(double Y, boolean g){
-        mc.getConnection().sendPacket(new CPlayerPacket.PositionPacket(mc.player.getPosX(), preY + Y, mc.player.getPosZ(), g));
+        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerPacket.PositionPacket(mc.player.getPosX(), preY + Y, mc.player.getPosZ(), g));
     }
 
   @EventTarget
@@ -82,22 +80,23 @@ public class Step extends Module {
             if (mc.player.isInWater() || !canStep())
                 return;
             mc.player.stepHeight = 1.0f;
-            if (type.is("Vanilla")) {
-                mc.player.stepHeight = stepHeight.getValue().floatValue();
-            }
-            if (type.is("Legit")) {
-                mc.player.stepHeight = 1f;
+            switch (type.getValue()) {
+                case "Vanilla":
+                    mc.player.stepHeight = stepHeight.getValue().floatValue();
+                    break;
+                case "Legit":
+                    mc.player.stepHeight = 1f;
+                    break;
             }
         }else{
-            switch (type.getValue()) {
-                case "Legit":
-                    if(mc.player.getBoundingBox().minY - preY != 0.5f) {
-                        mc.player.setPosition(mc.player.getPosX(), preY, mc.player.getPosZ());
-                        y = preY;
-                        keepTicks = 8;
-                        mc.player.jump();
-                    }
-                    return;
+            if (type.is("Legit")) {
+                if (mc.player.getBoundingBox().minY - preY != 0.5f) {
+                    mc.player.setPosition(mc.player.getPosX(), preY, mc.player.getPosZ());
+                    y = preY;
+                    keepTicks = 8;
+                    mc.player.jump();
+                }
+                return;
             }
             if(mc.player.stepHeight != 1.0f || mc.player.getBoundingBox().minY - preY != 1.0f) {
                 mc.player.stepHeight = 0.6f;
