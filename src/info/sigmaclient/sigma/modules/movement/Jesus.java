@@ -15,7 +15,7 @@ import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class Jesus extends Module {
-    public ModeValue type = new ModeValue("Type", "Vanilla", new String[]{"Vanilla", "Dolphin", "Hycraft", "Vulcan", "Funtime"});
+    public ModeValue type = new ModeValue("Type", "Vanilla", new String[]{"Vanilla", "Dolphin", "Hycraft", "Vulcan", "FunTime"});
     public BooleanValue up = new BooleanValue("Up in water", false);
     public Jesus() {
         super("Jesus", Category.Movement, "Walk on the liquid");
@@ -43,27 +43,23 @@ public class Jesus extends Module {
         if(event.isPre()){
             switch (type.getValue()) {
                 case "Dolphin":
-                    if(mc.player.isInWater())
+                    if (mc.player.isInWater())
                         mc.player.getMotion().y = 0.1;
                     break;
-            }
-            if(!mc.player.isInWater()){
-                if(lastWater){
-                    if(type.is("Funtime")){
-                        MovementUtils.strafing(0.21f);
-                        jumpTimes ++;
+                case "FunTime":
+                    if (mc.player.isInWater()) {
+                        if (jumpTimes >= 8) {
+                            mc.player.getMotion().y = 0.04;
+                            jumpTimes = 0;
+                        } else
+                            mc.player.getMotion().y = mc.world.getBlockState(new BlockPos(mc.player.getPositionVector().add(0, 0.3, 0))).getBlock() instanceof FlowingFluidBlock ? 0.2 : 0.15;
+                    } else {
+                        if (lastWater) {
+                            MovementUtils.strafing(0.21f);
+                            jumpTimes++;
+                        }
                     }
-                }
-            }
-            if(type.is("Funtime")){
-                if(mc.player.isInWater()) {
-                    if(jumpTimes >= 8) {
-                        mc.player.getMotion().y = 0.04;
-                        jumpTimes = 0;
-                    }
-                        else
-                    mc.player.getMotion().y = mc.world.getBlockState(new BlockPos(mc.player.getPositionVector().add(0, 0.3, 0))).getBlock() instanceof FlowingFluidBlock ? 0.2 : 0.15;
-                }
+                    break;
             }
             lastWater = mc.player.isInWater();
             onWater = false;
@@ -81,7 +77,7 @@ public class Jesus extends Module {
                        mc.player.getMotion().y = 0.1;
                        break;
                }
-           }else if(up.isEnable() && !type.is("Funtime")){
+           }else if(up.isEnable() && !type.is("FunTime")){
                if(mc.player.isInWater())
                    mc.player.getMotion().y = 0.15;
             }

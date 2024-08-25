@@ -14,7 +14,7 @@ import java.util.Objects;
 
 
 public class Step extends Module {
-    public ModeValue type = new ModeValue("Type", "Vulcan", new String[]{"Vulcan", "AntiCheat", "Vanilla", "BMC", "Legit"});
+    public ModeValue type = new ModeValue("Type", "Vulcan", new String[]{"Vulcan", "AntiCheat", "Vanilla", "BMC", "Legit","Matrix"});
     public NumberValue stepHeight = new NumberValue("Step Height", 0.5, 0.5, 3.0, NumberValue.NUMBER_TYPE.FLOAT){
         @Override
         public boolean isHidden() {
@@ -126,6 +126,14 @@ public class Step extends Module {
                     addYPos(0.41999998688697815, false);
                     addYPos(0.7531999805212024, false);
                     addYPos(1.01, false);
+                    break;
+                case "Matrix":
+                    mc.timer.setTimerSpeed(0.12f);
+                    mc.player.isAirBorne = true;
+                    addYPos(0.41999998688698,false);
+                    addYPos(0.7531999805212,false);
+                    addYPos(1.001335979112147,false);
+                    mc.timer.setTimerSpeed(1f);
                     break;
             }
         }
