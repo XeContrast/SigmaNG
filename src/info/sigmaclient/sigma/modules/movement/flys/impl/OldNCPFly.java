@@ -28,7 +28,7 @@ public class OldNCPFly extends FlyModule {
         super.onEnable();
     }
 
-     @Override
+    @Override
     public void onDisable() {
         mc.player.getMotion().y = 0;
         mc.player.getMotion().x = 0;

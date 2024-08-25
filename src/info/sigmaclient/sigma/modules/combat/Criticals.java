@@ -83,16 +83,16 @@ public class Criticals extends Module {
         lastGround = mc.player.onGround;
         suffix = mode.getValue();
         attacked++;
-        switch (mode.getValue().toLowerCase()) {
-            case "motion":
+        switch (mode.getValue()) {
+            case "Motion":
                 if (Killaura.attackTarget != null && mc.player.onGround) {
                     mc.player.getMotion().y = motion.getValue().floatValue();
                 }
                 break;
-            case "blocksmc":
+            case "Blocksmc":
                 if (attacked == 0) e.y += 0.012343;
                 break;
-            case "hovered":
+            case "Hovered":
                 double ypos = mc.player.getPosY();
                 if (mc.player.onGround) {
                     e.onGround = false;
@@ -114,10 +114,10 @@ public class Criticals extends Module {
                 } else
                     stage = 0;
                 break;
-            case "test":
+            case "Test":
                 if (attacked == 0) e.onGround = false;
                 break;
-            case "hypixel":
+            case "Hypixel":
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (mc.player.fallDistance < 1.8) {
                         if(e.onGround) {
@@ -127,7 +127,7 @@ public class Criticals extends Module {
                     }
                 }
                 break;
-            case "hypixel2":
+            case "Hypixel2":
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         e.onGround = false;
@@ -147,7 +147,7 @@ public class Criticals extends Module {
                     }
                 }
                 break;
-            case "hypixel3":
+            case "Hypixel3":
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         e.onGround = false;
