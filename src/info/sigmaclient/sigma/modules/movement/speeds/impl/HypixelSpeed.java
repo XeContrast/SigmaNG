@@ -116,6 +116,10 @@ public class HypixelSpeed extends SpeedModule {
 
                 if (!mc.player.onGround) {
                     if(mc.player.hurtTime > 0 || deltaYaw >= 180 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
+                        if(mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.hurtTime > 0){
+                            mc.player.getMotion().x *= 0.75;
+                            mc.player.getMotion().z *= 0.75;
+                        }
                         event.friction *= 0.75;
                         return;
                     }
