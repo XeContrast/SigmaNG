@@ -146,8 +146,7 @@ public class HypixelSpeed extends SpeedModule {
             case "BunnyHop":
                 if(!mc.player.onGround) {
                     if(mc.player.hurtTime > 0 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
-                        mc.player.getMotion().x *= 0.75;
-                        mc.player.getMotion().z *= 0.75;
+                        event.friction *= 0.75;
                         return;
                     }
 
@@ -214,13 +213,11 @@ public class HypixelSpeed extends SpeedModule {
 
             switch (this.parent.lowMode.getValue()) {
                 case "MoreTick":
-                    ChatUtils.sendMessageWithPrefix("more");
                     if (offGroundTick < values_9tick.size() - 1 && offGroundTick > 1) {
                         mc.player.getMotion().y = values_9tick.get(offGroundTick - 1);
                     }
                     break;
                 case "LessTick":
-                    ChatUtils.sendMessageWithPrefix("less");
                     if(mc.player.onGround || mc.player.fallDistance <= 1) {
                         if (MovementUtils.isMoving() || offGroundTick > 0) {
                             mc.player.getMotion().y = values_7tick.get(offGroundTick);

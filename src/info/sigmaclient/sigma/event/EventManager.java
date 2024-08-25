@@ -115,18 +115,16 @@ public class EventManager {
      */
     public Event call(Event event) {
         if(!init || SelfDestructManager.destruct) return event;
-        if(event instanceof WindowUpdateEvent){
-            SigmaNG.SigmaNG.antiAgent.doOneCheck();
-            if(!SigmaNG.SigmaNG.verify.verify){
-                if(!(Minecraft.getInstance().currentScreen instanceof AntiCrack)){
-                    Minecraft.getInstance().displayGuiScreen(new AntiCrack());
-                }
-            }
-        }
+//        if(event instanceof WindowUpdateEvent){
+//            SigmaNG.SigmaNG.antiAgent.doOneCheck();
+//            if(!SigmaNG.SigmaNG.verify.verify){
+//                if(!(Minecraft.getInstance().currentScreen instanceof AntiCrack)){
+//                    Minecraft.getInstance().displayGuiScreen(new AntiCrack());
+//                }
+//            }
+//        }
         if(Minecraft.getInstance().player == null || Minecraft.getInstance().world == null) return event;
 
-        if(event instanceof RenderEvent) {
-        }
         if(event instanceof UpdateEvent){
             if(((UpdateEvent) event).isPre()){
                 if(RotationUtils.NEXT_SLOT != -1){
@@ -136,8 +134,8 @@ public class EventManager {
             }
         }
 
-        for (Module module : SigmaNG.getSigmaNG().moduleManager.modules) {
-            if(event instanceof KeyEvent){
+        if(event instanceof KeyEvent){
+            for (Module module : SigmaNG.getSigmaNG().moduleManager.modules) {
                 if(module.key != -1 && ((KeyEvent) event).key == module.key)
                     module.toggle();
             }
