@@ -128,10 +128,11 @@ public class Criticals extends Module {
                 }
                 break;
             case "Hypixel2":
+
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         e.onGround = false;
-                        e.y += 0.0000000000000000000000001;
+                        e.y += 0.00000000000000000001;
                         mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
                     }
 
@@ -146,12 +147,13 @@ public class Criticals extends Module {
                         }
                     }
                 }
+
                 break;
             case "Hypixel3":
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         e.onGround = false;
-                        e.y += 0.0000000000000000000000001;
+                        e.y += 0.00000000000000000001;
                         mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.0000041);
                     }
                 }
