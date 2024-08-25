@@ -1,9 +1,9 @@
 # SigmaNG
 
 ## Introduction
-欢迎使用SigmaNG，这是一个专为提升游戏体验和个性化定制而设计的Minecraft 1.8.9黑客客户端。
+欢迎使用SigmaNG，这是一个专为提升游戏体验和个性化定制而设计的Minecraft 1.16.5黑客客户端。
 
-Welcome to SigmaNG, a potent Minecraft 1.8.9 hacker client crafted for advanced gameplay and personalized customization.
+Welcome to SigmaNG, a potent Minecraft 1.16.5 hacked client crafted for advanced gameplay and personalized customization.
 
 ## Features
 - **高级黑客工具**: SigmaNG内置一系列先进的黑客工具，以提升您的游戏体验。
