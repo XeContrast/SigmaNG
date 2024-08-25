@@ -564,7 +564,7 @@ public final class NativeImage implements AutoCloseable
         else
         {
             int i = this.pixelFormat.getPixelSize();
-            STBImageResize.nstbir_resize_uint8(this.imagePointer + (long)((xIn + yIn * this.getWidth()) * i), widthIn, heightIn, this.getWidth() * i, imageIn.imagePointer, imageIn.getWidth(), imageIn.getHeight(), 0, i);
+            STBImageResize.nstbir_resize_uint8_srgb(this.imagePointer + (long)((xIn + yIn * this.getWidth()) * i), widthIn, heightIn, this.getWidth() * i, imageIn.imagePointer, imageIn.getWidth(), imageIn.getHeight(), 0, i);
         }
     }
 

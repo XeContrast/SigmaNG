@@ -132,7 +132,7 @@ public class Criticals extends Module {
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
                     if (e.onGround) {
                         //e.onGround = false;
-                        e.y += 0.00000000000000000001;
+                        e.y += 0.001;
                         //mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.0000041);
                     }
                 }
