@@ -1,32 +1,20 @@
 package info.sigmaclient.sigma.modules.movement.speeds.impl;
 
-import info.sigmaclient.sigma.SigmaNG;
-import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.JumpEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
 import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
-import info.sigmaclient.sigma.modules.combat.Killaura;
 import info.sigmaclient.sigma.modules.movement.Speed;
-import info.sigmaclient.sigma.modules.movement.TargetStrafe;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
 import info.sigmaclient.sigma.utils.ChatUtils;
-import info.sigmaclient.sigma.utils.RandomUtil;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
-import info.sigmaclient.sigma.utils.player.PlayerUtil;
-import info.sigmaclient.sigma.utils.player.RotationUtils;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.network.play.client.CInputPacket;
-import net.minecraft.network.play.client.CPlayerDiggingPacket;
-import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,6 +232,23 @@ public class HypixelSpeed extends SpeedModule {
         }
 
         switch (this.parent.hypixelMode.getValue()){
+            case "SemiStrafe":
+                if (mc.player.collidedVertically && MovementUtils.isMoving()) {
+                    BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
+                    if (mc.player.onGround && MovementUtils.isMoving() && !(mc.world.getBlockState(blockPos).getBlock() instanceof StairsBlock)) {
+                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
+                        MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+                    }
+                }
+                if (!MovementUtils.isMoving()) {
+                    mc.player.getMotion().x = mc.player.getMotion().z = 0;
+                }
+                if (!mc.player.onGround) {
+                    if (MovementUtils.getSpeed() < 0.11) {
+                        MovementUtils.strafing(0.11f);
+                    }
+                }
+                break;
             case "Ground":
                 if (mc.player.collidedVertically && MovementUtils.isMoving()) {
                     BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
@@ -348,8 +353,7 @@ public class HypixelSpeed extends SpeedModule {
 
                 stair = Math.max(MovementUtils.getBaseMoveSpeed() * 1.2f, stair);
 
-                if (MovementUtils.isMoving()) {
-                } else {
+                if (!MovementUtils.isMoving()) {
                     MovementUtils.strafing(event, 0);
                     wasSlow = false;
                 }

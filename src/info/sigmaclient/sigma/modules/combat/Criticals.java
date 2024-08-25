@@ -141,6 +141,7 @@ public class Criticals extends Module {
                         for (final int allowedAirTick : strafeTicks) {
                             if (mc.player.offGroundTicks == allowedAirTick && mc.player.hurtTime == 0) {
                                 mc.player.getMotion().y = 0;
+                                break;
                             }
                         }
                     }
