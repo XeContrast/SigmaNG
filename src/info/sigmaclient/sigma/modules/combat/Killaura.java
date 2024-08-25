@@ -392,7 +392,7 @@ public class Killaura extends Module {
 
         doRotation(calcSpeed);
 
-        if(raytrace.getValue() && !RotationUtils.isMouseOver(mc.player.lastReportedYaw, mc.player.lastReportedPitch, attackTarget, range2.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target")) && mc.player.getDistanceNearest(attackTarget) > 0.25f){return;}
+        if(raytrace.getValue() && !RotationUtils.isMouseOver(mc.player.lastReportedYaw, mc.player.lastReportedPitch, attackTarget, range2.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target")) && mc.player.getDistance(attackTarget) > 0.5){return;}
 
         mc.objectMouseOver = new EntityRayTraceResult(attackTarget);
     }
@@ -416,6 +416,8 @@ public class Killaura extends Module {
 //                }
                 RotationUtils.movementFixYaw = lastRotation[0];
                 RotationUtils.movementFixPitch = lastRotation[1];
+                event.yaw = lastRotation[0];
+                event.pitch = lastRotation[1];
                 //攻击
                 if(mc.objectMouseOver.getType() == RayTraceResult.Type.ENTITY){
                     if(!BadPacketsProcess.bad(false,false,false,false,false,true,true)) {
@@ -498,12 +500,12 @@ public class Killaura extends Module {
 
                 Rotation NCP = RotationUtils.NCPRotation(attackTarget);
                 Rotation NCP2 = NCPRotation.NCPRotation(attackTarget,RotationUtils.getRotTop(attackTarget));
-                if((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) <= 3 && (mc.player.getDistanceNearest(attackTarget) >= 0.5 || mc.player.onGround))){
+                if((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) <= 3 && mc.player.getDistanceNearest(attackTarget) >= 1)){
                     rotations = new float[]{NCP2.getYaw(), NCP2.getPitch()};
                 }else if(mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) > 3){
-                    rotations = new float[]{NCP.getYaw(), NCP.getPitch()};
+                    rotations = new float[]{NCPRot.getYaw(), NCPRot.getPitch()};
                 }else {
-                    rotations = new float[]{NCP.getYaw(), NCP.getPitch()};
+                    rotations = new float[]{NCPRot.getYaw(), NCPRot.getPitch()};
                 }
 
 

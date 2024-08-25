@@ -130,13 +130,9 @@ public class Criticals extends Module {
             case "Hypixel2":
 
                 if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
-                    if (e.onGround) {
-                        e.onGround = false;
-                        e.y += 0.00000000000000000001;
-                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
-                    }
 
-                    final int[] strafeTicks = new int[]{11};
+
+                    final int[] strafeTicks = new int[]{11,12,13};
 
                     if (!(mc.world.getBlockState(mc.player.getPosition().add(0, -0.25, 0)).getBlock() instanceof AirBlock)) {
                         for (final int allowedAirTick : strafeTicks) {
