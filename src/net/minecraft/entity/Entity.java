@@ -134,6 +134,7 @@ public abstract class Entity implements INameable, ICommandSource
     private Entity ridingEntity;
     public boolean forceSpawn;
     public World world;
+    public boolean inWeb;
     public double prevPosX;
     public double prevPosY;
     public double prevPosZ;
