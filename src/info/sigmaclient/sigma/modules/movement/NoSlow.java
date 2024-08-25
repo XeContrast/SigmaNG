@@ -91,74 +91,75 @@ public class NoSlow extends Module {
     }
     @EventTarget
     public void onPacketEvent(PacketEvent event) {
+        IPacket<?> packet = event.packet;
         //hypixel modez
         if (!mc.player.isRidingHorse() && mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget != null) {
-            IPacket<?> packet = event.packet;
-            if (mode.getValue().equals("Advance")) {
-                if (packet instanceof CUseEntityPacket &&
-                        ((CUseEntityPacket) packet).getAction() ==
-                                CUseEntityPacket.Action.ATTACK &&
-                        mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
-                    noSlowing = true;
-                }
-            }
             if(packet instanceof SWindowItemsPacket) {
                 if(!noSlowing) {
                     event.cancelable = true;
                 }
             }
         }
-        if(mode.is("Grim2")){
-            IPacket<?> packet = event.getPacket();
-            if (packet instanceof SWindowItemsPacket && ((SWindowItemsPacket) packet).getWindowId() == 0) {
-                if ((mc.player != null ? mc.player.getActiveItemStack() : ItemStack.EMPTY) != ItemStack.EMPTY) {
+        switch (mode.getValue()) {
+            case "Advance":
+                if (!mc.player.isRidingHorse() && mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget != null) {
+                    if (packet instanceof CUseEntityPacket &&
+                            ((CUseEntityPacket) packet).getAction() ==
+                                    CUseEntityPacket.Action.ATTACK &&
+                            mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
+                        noSlowing = true;
+                    }
+                }
+                break;
+            case "Grim2":
+                if (packet instanceof SWindowItemsPacket && ((SWindowItemsPacket) packet).getWindowId() == 0) {
+                    if ((mc.player != null ? mc.player.getActiveItemStack() : ItemStack.EMPTY) != ItemStack.EMPTY) {
 //                    packetBuf.add(packet);
 //                    event.cancelEvent();
-                    event.cancelable = true;
-                }
-                slow = false;
-            } else if (packet instanceof SSetSlotPacket && (((SSetSlotPacket) packet).getWindowId() == 0 || ((SSetSlotPacket) packet).getWindowId() == -1 || ((SSetSlotPacket) packet).getWindowId() == -2) && (mc.player != null ? mc.player.getActiveItemStack() : ItemStack.EMPTY) != ItemStack.EMPTY) {
+                        event.cancelable = true;
+                    }
+                    slow = false;
+                } else if (packet instanceof SSetSlotPacket && (((SSetSlotPacket) packet).getWindowId() == 0 || ((SSetSlotPacket) packet).getWindowId() == -1 || ((SSetSlotPacket) packet).getWindowId() == -2) && (mc.player != null ? mc.player.getActiveItemStack() : ItemStack.EMPTY) != ItemStack.EMPTY) {
 //                packetBuf.add(packet);
 //                event.cancelEvent();
-                event.cancelable = true;
-            } else if (packet instanceof CConfirmTransactionPacket && ((CConfirmTransactionPacket) packet).getWindowId() == 0 && ((CConfirmTransactionPacket) packet).getUid() != (short) 11451 && slow) {
-                Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CConfirmTransactionPacket(0, (short) 11451, true));
-            }else if (packet instanceof CPlayerTryUseItemPacket) {
-                Item stack = mc.player != null ? mc.player.getHeldItem(((CPlayerTryUseItemPacket) packet).getHand()).getItem() : null;
-                if (stack != null && (stack instanceof SwordItem || stack.isFood() ||
-                        stack instanceof PotionItem || stack instanceof MilkBucketItem || stack instanceof BowItem || stack instanceof ShieldItem)) {
-                    slow = true;
-                    Objects.requireNonNull(mc.getConnection()).sendPacket(new CClickWindowPacket(0, 36, 0, ClickType.SWAP, new ItemStack(Blocks.CHEST), (short) 11451));
+                    event.cancelable = true;
+                } else if (packet instanceof CConfirmTransactionPacket && ((CConfirmTransactionPacket) packet).getWindowId() == 0 && ((CConfirmTransactionPacket) packet).getUid() != (short) 11451 && slow) {
+                    Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CConfirmTransactionPacket(0, (short) 11451, true));
+                }else if (packet instanceof CPlayerTryUseItemPacket) {
+                    Item stack = mc.player != null ? mc.player.getHeldItem(((CPlayerTryUseItemPacket) packet).getHand()).getItem() : null;
+                    if (stack != null && (stack instanceof SwordItem || stack.isFood() ||
+                            stack instanceof PotionItem || stack instanceof MilkBucketItem || stack instanceof BowItem || stack instanceof ShieldItem)) {
+                        slow = true;
+                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CClickWindowPacket(0, 36, 0, ClickType.SWAP, new ItemStack(Blocks.CHEST), (short) 11451));
+                    }
                 }
-            }
-        }
-        if(mode.is("Hypixel2")){
-            IPacket<?> packet = event.packet;
-            ItemStack item = mc.player.getHeldItem(mc.player.getActiveHand());
-            if(packet instanceof CPlayerTryUseItemOnBlockPacket && !mc.player.isHandActive()){
-                BlockRayTraceResult blockRayTraceResult = ((CPlayerTryUseItemOnBlockPacket) packet).func_218794_c();
-                if(blockRayTraceResult.getFace() == Direction.UP) {
-                    mc.player.getHeldItem(((CPlayerTryUseItemOnBlockPacket) packet).getHand());
+                break;
+            case "Hypixel2":
+                ItemStack item = mc.player.getHeldItem(mc.player.getActiveHand());
+                if(packet instanceof CPlayerTryUseItemOnBlockPacket && !mc.player.isHandActive()){
+                    BlockRayTraceResult blockRayTraceResult = ((CPlayerTryUseItemOnBlockPacket) packet).func_218794_c();
+                    if(blockRayTraceResult.getFace() == Direction.UP) {
+                        mc.player.getHeldItem(((CPlayerTryUseItemOnBlockPacket) packet).getHand());
+                        if ((item.getItem().isFood() || item.getItem() instanceof BowItem) && offGround < 2) {
+                            if (mc.player.onGround && !mc.gameSettings.keyBindJump.isKeyDown()) {
+                                mc.player.jump();
+                            }
+                            send = true;
+                            event.cancelable = true;
+                        }
+                    }
+                }else if(packet instanceof CPlayerTryUseItemPacket && !mc.player.isHandActive()) {
+                    mc.player.getHeldItem(mc.player.getActiveHand());
                     if ((item.getItem().isFood() || item.getItem() instanceof BowItem) && offGround < 2) {
+
                         if (mc.player.onGround && !mc.gameSettings.keyBindJump.isKeyDown()) {
                             mc.player.jump();
                         }
                         send = true;
-                        event.cancelable = true;
                     }
                 }
-            }else if(packet instanceof CPlayerTryUseItemPacket && !mc.player.isHandActive()) {
-                mc.player.getHeldItem(mc.player.getActiveHand());
-                if ((item.getItem().isFood() || item.getItem() instanceof BowItem) && offGround < 2) {
-
-                    if (mc.player.onGround && !mc.gameSettings.keyBindJump.isKeyDown()) {
-                        mc.player.jump();
-                    }
-                    send = true;
-                }
-            }
+                break;
         }
-
     }
   @EventTarget
     public void onUpdateEvent(UpdateEvent event){
