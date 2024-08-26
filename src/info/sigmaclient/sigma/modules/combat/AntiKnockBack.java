@@ -27,9 +27,6 @@ public class AntiKnockBack extends Module {
             "Vulcan",
             "Polar",
             "Hypixel",
-            "Hypixel2",
-            "Hypixel3",
-            "Hypixel4",
             "Remiaft",
             "Delayed",
             "Matrix",
@@ -61,6 +58,15 @@ public class AntiKnockBack extends Module {
             return true;
         }
     };
+    public ModeValue hypmode = new ModeValue("HypixelMode","Mode1",new String[] {
+            "Mode1",
+            "Mode2",
+            "Mode3",
+            "Mode4"
+    }) {
+        @Override
+        public boolean isHidden() { return !mode.is("Hypixel"); }
+    };
     int delayed = 0, grimPackets = 0;
     ArrayList<IPacket<?>> veloPacket = new ArrayList<>();
     public AntiKnockBack() {
@@ -70,6 +76,7 @@ public class AntiKnockBack extends Module {
      registerValue(motionY);
      registerValue(ticks);
      registerValue(hitBugs);
+     registerValue(hypmode);
     }
 
     @EventTarget
@@ -212,44 +219,48 @@ public class AntiKnockBack extends Module {
                         }
                     }
                     break;
-                case "Hypixel2":
-                    if (event.packet instanceof SEntityVelocityPacket) {
-                        if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
-                            event.cancelable = true;
-                            if(!mc.player.onGround)
-                                mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
-                        }
-                    }
-                    break;
                 case "Hypixel":
-                    if (event.packet instanceof SEntityVelocityPacket) {
-                        if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
-                            event.cancelable = true;
-                            if(mc.player.onGround)
-                                mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
-                        }
-                    }
-                    break;
-                case "Hypixel3":
-                    if (event.packet instanceof SEntityVelocityPacket) {
-                        if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
-                            ((SEntityVelocityPacket) event.packet).motionX *= 0;
-                            ((SEntityVelocityPacket) event.packet).motionZ *= 0;
-                        }
-                    }
-                    break;
-                case "Hypixel4":
-                    if (event.packet instanceof SEntityVelocityPacket) {
-                        if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
-                            event.cancelable = true;
-                            if(mc.player.onGround) {
-                                mc.player.getMotion().y = 0.00000000000000000041;
-                            }else {
-                                mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
+                    switch (hypmode.getValue()) {
+                        case "Mode1":
+                            if (event.packet instanceof SEntityVelocityPacket) {
+                                if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
+                                    event.cancelable = true;
+                                    if(mc.player.onGround)
+                                        mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
+                                }
                             }
-                            mc.player.getMotion().x += ((SEntityVelocityPacket) event.packet).getMotionX() / 8000000.0D;
-                            mc.player.getMotion().z += ((SEntityVelocityPacket) event.packet).getMotionZ() / 8000000.0D;
-                        }
+                            break;
+                        case "Mode2":
+                            if (event.packet instanceof SEntityVelocityPacket) {
+                                if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
+                                    event.cancelable = true;
+                                    if(!mc.player.onGround)
+                                        mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
+                                }
+                            }
+                            break;
+                        case "Mode3":
+                            if (event.packet instanceof SEntityVelocityPacket) {
+                                if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
+                                    ((SEntityVelocityPacket) event.packet).motionX *= 0;
+                                    ((SEntityVelocityPacket) event.packet).motionZ *= 0;
+                                }
+                            }
+                            break;
+                        case "Mode4":
+                            if (event.packet instanceof SEntityVelocityPacket) {
+                                if (((SEntityVelocityPacket) event.packet).getEntityID() == mc.player.getEntityId()) {
+                                    event.cancelable = true;
+                                    if(mc.player.onGround) {
+                                        mc.player.getMotion().y = 0.00000000000000000041;
+                                    }else {
+                                        mc.player.getMotion().y = ((SEntityVelocityPacket) event.packet).getMotionY() / 8000.0D;
+                                    }
+                                    mc.player.getMotion().x += ((SEntityVelocityPacket) event.packet).getMotionX() / 8000000.0D;
+                                    mc.player.getMotion().z += ((SEntityVelocityPacket) event.packet).getMotionZ() / 8000000.0D;
+                                }
+                            }
+                            break;
                     }
                     break;
                 case "GrimAC":
