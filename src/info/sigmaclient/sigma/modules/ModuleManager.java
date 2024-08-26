@@ -84,6 +84,7 @@ public class ModuleManager {
         registerModule(new InfiniteAura());
         registerModule(new Criticals());
         registerModule(new Teams());
+        registerModule(new SuperKnockBack());
         registerModule(new ProjectileAura());
 
         // movements

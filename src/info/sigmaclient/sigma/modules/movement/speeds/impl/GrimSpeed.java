@@ -5,13 +5,6 @@ import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
 import info.sigmaclient.sigma.premium.PremiumManager;
-import info.sigmaclient.sigma.utils.Variable;
-import info.sigmaclient.sigma.utils.player.MovementUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
-
-import java.util.function.Predicate;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class GrimSpeed extends SpeedModule {

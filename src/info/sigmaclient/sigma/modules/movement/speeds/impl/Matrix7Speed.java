@@ -24,13 +24,9 @@ public class Matrix7Speed extends SpeedModule {
         if (mc.player.onGround) {
             if (MovementUtils.isMoving()) {
                 mc.player.jump();
-                mc.timer.setTimerSpeed(1.35f);
             }
             MovementUtils.strafing();
         } else {
-            if (mc.timer.getTimerSpeed() != 1f) {
-                mc.timer.setTimerSpeed(1f);
-            }
             if (MovementUtils.getSpeed() < 0.19f) {
                 MovementUtils.strafing();
             }

@@ -13,7 +13,7 @@ import net.minecraft.network.play.client.CPlayerPacket;
 
 public class NoFall extends Module {
     public ModeValue type = new ModeValue("Type", "Delay", new String[]{"Delay", "Vulcan", "Spoof","NoGround","Extra","Blink","Sole","FastFall"});
-    private NumberValue FallDis = new NumberValue("fallDistance",3,2,6, NumberValue.NUMBER_TYPE.INT){
+    private final NumberValue FallDis = new NumberValue("fallDistance",3,2,6, NumberValue.NUMBER_TYPE.INT){
         @Override
         public boolean isHidden() {
             return !(type.is("Extra") ||type.is("Blink"));
@@ -56,9 +56,9 @@ public class NoFall extends Module {
                 }
             }
             switch (type.getValue()) {
-                case "Extra":{
+                case "Extra":
                     if(!mc.player.onGround) {
-                        fallDistance += Math.max(mc.player.fallDistance - mc.player.getMotion().y,0);
+                        fallDistance += (float) Math.max(mc.player.fallDistance - mc.player.getMotion().y,0);
                         if (fallDistance >= FallDis.getValue().intValue()) {
                             mc.timer.setTimerSpeed(0.5f);
                             mc.getConnection().sendPacket(new CPlayerPacket(true));
@@ -70,8 +70,7 @@ public class NoFall extends Module {
                         mc.timer.setTimerSpeed(1);
                     }
                     break;
-                }
-                case "Sole": {
+                case "Sole":
                     if(!mc.player.onGround && PlayerUtil.isBlockUnder() && mc.player.fallDistance > 3) {
                         fallDistance += (float) Math.max(mc.player.fallDistance - mc.player.getMotion().y,0);
                         if (fallDistance > 0 && PlayerUtil.getBlockUnderDist() > 4) {
@@ -84,8 +83,7 @@ public class NoFall extends Module {
                         mc.timer.setTimerSpeed(1);
                     }
                     break;
-                }
-                case "FastFall": {
+                case "FastFall":
                     if(!mc.player.onGround && PlayerUtil.isBlockUnder()) {
                         if (mc.player.fallDistance > 0 && mc.player.fallDistance % 3 == 0) {
                             event.y = mc.player.getPosY() - PlayerUtil.getBlockUnderDist() + 1;
@@ -93,12 +91,10 @@ public class NoFall extends Module {
                         }
                     }
                     break;
-                }
-                case "NoGround": {
+                case "NoGround":
                     event.onGround = false;
                     break;
-                }
-                case "Blink":{
+                case "Blink":
                     if(!mc.player.onGround && PlayerUtil.isBlockUnder()){
                         fallDistance += (float) Math.max(mc.player.fallDistance - mc.player.getMotion().y,0);
                     }else {
@@ -121,7 +117,6 @@ public class NoFall extends Module {
                     }
                     prevGround = event.onGround;
                     break;
-                }
             }
         }
        
