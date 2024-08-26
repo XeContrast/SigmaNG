@@ -842,8 +842,6 @@ public class SigmaGuiMainMenu extends Screen {
 
             GL11.glPopMatrix();
         }
-
-
     }
     private static class SigmaCloseGameGui extends BlurredSigmaMainMenuGui {
         private long time = -1;
