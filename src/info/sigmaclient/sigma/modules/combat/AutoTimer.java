@@ -49,17 +49,16 @@ public class AutoTimer extends PremiumModule {
         List<Entity> e = new ArrayList<>();
         float f = range.getValue().floatValue();
         for (final Entity o : mc.world.getLoadedEntityList()) {
-            if(!(o instanceof LivingEntity)) continue;
-            LivingEntity livingBase = (LivingEntity) o;
+            if(!(o instanceof LivingEntity livingBase)) continue;
             if (o instanceof PlayerEntity) {
-                if (AntiBot.isServerBots((PlayerEntity) livingBase)) continue;
+                if (AntiBot.isServerBots(livingBase)) continue;
                 if (livingBase.isAlive() && livingBase != mc.player &&
                         mc.player.getDistanceNearest(o) <= f) {
                     e.add(o);
                 }
             }
         }
-        if(e.size() == 0) return null;
+        if(e.isEmpty()) return null;
         e.sort(Comparator.comparingInt(a -> (int) (a.getDistanceSqToEntity(mc.player) * 100)));
         return e.get(0);
     }
@@ -105,8 +104,7 @@ public class AutoTimer extends PremiumModule {
 //            ChatUtils.sendMessageWithPrefix("4");
             durationTicks++;
 //            if (durationTicks <= 2) {
-                ;
-//            } else {
+            //            } else {
             mc.timer.setTimerSpeed(timer.getValue().floatValue());
             useTicks ++;
             if(!ViaFixManager.viaFixManager.isNegativeTimerFixEnable()) {

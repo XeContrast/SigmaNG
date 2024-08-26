@@ -78,7 +78,7 @@ public class NoFall extends Module {
                             mc.getConnection().sendPacketNOEvent(new CPlayerPacket.PositionPacket(mc.player.getPosX(), mc.player.getPosY() - PlayerUtil.getBlockUnderDist(), mc.player.getPosZ(), false));
                             event.y = mc.player.getPosY() - PlayerUtil.getBlockUnderDist();
                         }
-                    }else {
+                    } else {
                         fallDistance = 0;
                         mc.timer.setTimerSpeed(1);
                     }

@@ -118,14 +118,11 @@ public class ProjectileAura extends Module {
         if (!targets.isEmpty()) {
             if (switchTarget.getValue()) {
                 target = targets.get(index);
-                if (!checkEntity(target)) {
-                    target = null;
-                }
             } else {
                 target = targets.get(0);
-                if (!checkEntity(target)) {
-                    target = null;
-                }
+            }
+            if (!checkEntity(target)) {
+                target = null;
             }
         } else target = null;
         int slot = -1;
@@ -137,14 +134,14 @@ public class ProjectileAura extends Module {
 
 
         if (target != null && slot != -1) {
-            double xDistance = target.getPosX() - this.mc.player.getPosX() + (target.getPosX() - target.lastTickPosX) * (double) (1 * 10.0f);
-            double zDistance = target.getPosZ() - this.mc.player.getPosZ() + (target.getPosZ() - target.lastTickPosZ) * (double) (1 * 10.0f);
+            double xDistance = target.getPosX() - mc.player.getPosX() + (target.getPosX() - target.lastTickPosX) * (double) (1 * 10.0f);
+            double zDistance = target.getPosZ() - mc.player.getPosZ() + (target.getPosZ() - target.lastTickPosZ) * (double) (1 * 10.0f);
             float trajectoryTheta90 = (float) (Math.atan2(zDistance, xDistance) * 180.0 / 3.141592653589793) - 90.0f;
             float ve = 0.1F;
             ve = (ve * ve + ve * 2.0f) / 3.0f;
             ve = MathHelper.clamp(ve, 0.0f, 1.0f);
             double v = ve * 3.0f;
-            float bowTrajectory = (float) ((double) ((float) (-Math.toDegrees(this.getLaunchAngle(target, v, 0.05000000074505806)))) - 3.8);
+            float bowTrajectory = (float) ((double) ((float) (-Math.toDegrees(this.getLaunchAngle(target, v)))) - 3.8);
             if (trajectoryTheta90 <= 360.0f && bowTrajectory <= 360.0f) {
                 RotationUtils.movementFixYaw = trajectoryTheta90;
                 RotationUtils.movementFixPitch = bowTrajectory;
@@ -170,24 +167,24 @@ public class ProjectileAura extends Module {
     }
 
 
-    private float getLaunchAngle(LivingEntity targetEntity, double v, double g) {
-        double yDif = targetEntity.getPosY() + (double) (targetEntity.getEyeHeight() / 2.0f) - (this.mc.player.getPosY() + (double) this.mc.player.getEyeHeight());
-        double xDif = targetEntity.getPosX() - this.mc.player.getPosX();
-        double zDif = targetEntity.getPosZ() - this.mc.player.getPosZ();
+    private float getLaunchAngle(LivingEntity targetEntity, double v) {
+        double yDif = targetEntity.getPosY() + (double) (targetEntity.getEyeHeight() / 2.0f) - (mc.player.getPosY() + (double) mc.player.getEyeHeight());
+        double xDif = targetEntity.getPosX() - mc.player.getPosX();
+        double zDif = targetEntity.getPosZ() - mc.player.getPosZ();
         double xCoord = Math.sqrt(xDif * xDif + zDif * zDif);
-        return this.theta(v + 2.0, g, xCoord, yDif);
+        return this.theta(v + 2.0, xCoord, yDif);
     }
 
-    private float theta(double v, double g, double x, double y) {
+    private float theta(double v, double x, double y) {
         double yv = 2.0 * y * (v * v);
-        double gx = g * (x * x);
-        double g2 = g * (gx + yv);
+        double gx = 0.05000000074505806 * (x * x);
+        double g2 = 0.05000000074505806 * (gx + yv);
         double insqrt = v * v * v * v - g2;
         double sqrt = Math.sqrt(insqrt);
         double numerator = v * v + sqrt;
         double numerator2 = v * v - sqrt;
-        double atan1 = Math.atan2(numerator, g * x);
-        double atan2 = Math.atan2(numerator2, g * x);
+        double atan1 = Math.atan2(numerator, 0.05000000074505806 * x);
+        double atan2 = Math.atan2(numerator2, 0.05000000074505806 * x);
         return (float) Math.min(atan1, atan2);
     }
 
@@ -242,7 +239,7 @@ public class ProjectileAura extends Module {
             return true;
         }
 
-        if (entity instanceof PlayerEntity && players.getValue() && !teams.isTeam((PlayerEntity) entity)) {
+        if (entity instanceof PlayerEntity && players.getValue() && !Teams.isTeam((PlayerEntity) entity)) {
             return true;
         }
 

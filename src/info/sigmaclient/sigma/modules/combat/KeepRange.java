@@ -31,17 +31,16 @@ public class KeepRange extends Module {
         List<Entity> e = new ArrayList<>();
         float f = range.getValue().floatValue();
         for (final Entity o : mc.world.getLoadedEntityList()) {
-            if(!(o instanceof LivingEntity)) continue;
-            LivingEntity livingBase = (LivingEntity) o;
+            if(!(o instanceof LivingEntity livingBase)) continue;
             if (o instanceof PlayerEntity) {
-                if (AntiBot.isServerBots((PlayerEntity) livingBase)) continue;
+                if (AntiBot.isServerBots(livingBase)) continue;
                 if (livingBase.isEntityUndead() && livingBase != mc.player &&
                         mc.player.getDistanceSq(o) <= f * f) {
                     e.add(o);
                 }
             }
         }
-        if(e.size() == 0) return null;
+        if(e.isEmpty()) return null;
         e.sort(Comparator.comparingInt(a -> (int) (a.getDistanceSqToEntity(mc.player) * 100)));
         return e.get(0);
     }
@@ -71,10 +70,6 @@ public class KeepRange extends Module {
                 return;
             }
             Rotation nearestRot = RotationUtils.nearestRotationFinder(target.getBoundingBox(), false, false, true, 3.0f);
-            if(nearestRot == null) {
-                mc.gameSettings.keyBindForward.pressed = InputMappings.isKeyDown(mc.gameSettings.keyBindForward);
-                return;
-            }
             if (RotationUtils.isMouseOver(nearestRot.getYaw(), nearestRot.getPitch(), target, 3.0f, 1f, true)) {
                 mc.gameSettings.keyBindForward.pressed = false;
             }else{

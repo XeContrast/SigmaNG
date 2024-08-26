@@ -131,7 +131,7 @@ public class Disabler extends Module {
                     event.cancelable = true;
                 }
                 break;
-            case "Karhu":
+            case "Karhu" :
             case "Verus":
                 if (event.isSend()) {
                     if (event.packet instanceof CEntityActionPacket) {
