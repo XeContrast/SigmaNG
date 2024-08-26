@@ -635,7 +635,6 @@ public class Killaura extends Module {
                     }
             );
         }else {
-
             clickHelper.runClick(
                     ()-> {
                         if (!noswing.isEnable()) {

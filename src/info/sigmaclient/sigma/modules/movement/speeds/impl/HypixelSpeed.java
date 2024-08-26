@@ -158,14 +158,12 @@ public class HypixelSpeed extends SpeedModule {
                         return;
                     }
 
-                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) < 2.5) {
-                        MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) > 2.5 && mc.player.ticksExisted % 3 == 0) {
                         recordYaw = prevYaw;
-                    }else {
-                        if(mc.player.ticksExisted % this.parent.strafeTick.getValue().intValue() == 0) {
-                            MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
-                        }
                     }
+
+                    MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
+
                     if(Math.abs(this.prevYaw - (double) mc.player.rotationYaw) > 10){
                         if(this.parent.sneak.isEnable()){
                             mc.player.movementInput.sneaking = true;
