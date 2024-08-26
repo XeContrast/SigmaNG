@@ -10,6 +10,7 @@ import info.sigmaclient.sigma.event.impl.player.*;
 import info.sigmaclient.sigma.premium.PremiumManager;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
+import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.click.ClickHelper;
 import info.sigmaclient.sigma.utils.render.blurs.Gradient;
@@ -390,18 +391,13 @@ public class Killaura extends Module {
             OldHitting.blocking = true;
         }
 
-        doRotation(calcSpeed);
-
-        if(raytrace.getValue() && !RotationUtils.isMouseOver(mc.player.lastReportedYaw, mc.player.lastReportedPitch, attackTarget, range2.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target")) && mc.player.getDistance(attackTarget) > 0.5){return;}
-
-        mc.objectMouseOver = new EntityRayTraceResult(attackTarget);
     }
 
 
     @EventTarget
     public void onMotionEvent(UpdateEvent event){
         if(!targets.isEmpty()){
-
+            //取消格挡
             boolean canBlock = mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem &&
                     mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
             if(isABEnable() && canBlock) {
@@ -411,13 +407,15 @@ public class Killaura extends Module {
             unBlock();
 
             if(event.isPre()) {
-//                if(!(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem) && canBlock && blockTime > 0 && mc.player.hurtTime != 8){
-//                    ChatUtils.sendMessageWithPrefix("No Shield tick : " + mc.player.ticksExisted);
-//                }
-                RotationUtils.movementFixYaw = lastRotation[0];
-                RotationUtils.movementFixPitch = lastRotation[1];
-                event.yaw = lastRotation[0];
-                event.pitch = lastRotation[1];
+                //转头
+                float calcSpeed = (float) (minTurnSpeed.getValue().floatValue() + RotationUtils.random.nextDouble() * (maxTurnSpeed.getValue().floatValue() - minTurnSpeed.getValue().floatValue() + 1));
+                doRotation(calcSpeed);
+
+                //Ray
+                if(!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))){
+                    mc.objectMouseOver = new EntityRayTraceResult(attackTarget);
+                }
+
                 //攻击
                 if(mc.objectMouseOver.getType() == RayTraceResult.Type.ENTITY){
                     if(!BadPacketsProcess.bad(false,false,false,false,false,true,true)) {
@@ -500,12 +498,10 @@ public class Killaura extends Module {
 
                 Rotation NCP = RotationUtils.NCPRotation(attackTarget);
                 Rotation NCP2 = NCPRotation.NCPRotation(attackTarget,RotationUtils.getRotTop(attackTarget));
-                if((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) <= 3 && mc.player.getDistanceNearest(attackTarget) >= 1)){
+                if((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) <= 2.5)){
                     rotations = new float[]{NCP2.getYaw(), NCP2.getPitch()};
-                }else if(mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) > 3){
-                    rotations = new float[]{NCPRot.getYaw(), NCPRot.getPitch()};
-                }else {
-                    rotations = new float[]{NCPRot.getYaw(), NCPRot.getPitch()};
+                }else{
+                    rotations = new float[]{NCP.getYaw(), NCP.getPitch()};
                 }
 
 
@@ -635,19 +631,21 @@ public class Killaura extends Module {
                                 mc.player.swingArm(Hand.MAIN_HAND);
                             }
                         }
-
+                        switchTime++;
                     }
             );
         }else {
+
             clickHelper.runClick(
                     ()-> {
                         if (!noswing.isEnable()) {
                             mc.player.swingArm(Hand.MAIN_HAND);
                         }
+                        switchTime++;
                     }
             );
         }
-        switchTime++;
+
 
     }
 

@@ -9,6 +9,8 @@ import info.sigmaclient.sigma.event.impl.player.AttackEvent;
 import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
+import info.sigmaclient.sigma.process.impl.player.BlinkProcess;
+import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import net.minecraft.block.AirBlock;
 import net.minecraft.entity.LivingEntity;
@@ -31,8 +33,6 @@ public class Criticals extends Module {
             "Motion",
             "ColdPVP",
             "Hypixel",
-            "Hypixel2",
-            "Hypixel3"
     });
     public static NumberValue motion = new NumberValue("motion", 0.2, 0, 1, NumberValue.NUMBER_TYPE.FLOAT){
         @Override
@@ -124,32 +124,6 @@ public class Criticals extends Module {
                             e.y += 0.00000000000000000000000000000001;
                         }
                         e.onGround = false;
-                    }
-                }
-                break;
-            case "Hypixel2":
-
-                if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
-                    if (e.onGround) {
-                        if(ground>0) {
-                            //e.onGround = false;
-                            e.y += 0.001;
-                            //mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.0000041);
-                        }
-                    }else {
-                        ground++;
-                    }
-                }else {
-                    ground = 0;
-                }
-
-                break;
-            case "Hypixel3":
-                if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY || Killaura.attackTarget != null) {
-                    if (e.onGround) {
-                        e.onGround = false;
-                        e.y += 0.00000000000000000001;
-                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.0000041);
                     }
                 }
                 break;

@@ -150,6 +150,10 @@ public class HypixelSpeed extends SpeedModule {
             case "BunnyHop":
                 if(!mc.player.onGround) {
                     if(mc.player.hurtTime > 0 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
+                        if(mc.player.collidedHorizontally || mc.player.collidedVertically){
+                            mc.player.getMotion().x *= 0.75;
+                            mc.player.getMotion().z *= 0.75;
+                        }
                         event.friction *= 0.75;
                         return;
                     }
@@ -157,6 +161,15 @@ public class HypixelSpeed extends SpeedModule {
                     if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) < 2.5) {
                         MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
                         recordYaw = prevYaw;
+                    }else {
+                        if(mc.player.ticksExisted % this.parent.strafeTick.getValue().intValue() == 0) {
+                            MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
+                        }
+                    }
+                    if(Math.abs(this.prevYaw - (double) mc.player.rotationYaw) > 10){
+                        if(this.parent.sneak.isEnable()){
+                            mc.player.movementInput.sneaking = true;
+                        }
                     }
 
                     lastDeltaYaw = deltaYaw;
