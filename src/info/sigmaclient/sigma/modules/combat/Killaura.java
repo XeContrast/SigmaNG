@@ -79,6 +79,9 @@ public class Killaura extends Module {
             new String[]{
                     "Distance", "Health", "Armor", "RArmor"
     });
+
+    public BooleanValue keepsprint = new BooleanValue("KeepSprint",false);
+
     public ModeValue rotation = new ModeValue("Rotation", "NCP", new String[]{
             "NCP",
             "Matrix",
@@ -213,6 +216,7 @@ public class Killaura extends Module {
         registerValue(mode);
         registerValue(switchTicks);
         registerValue(SortMode);
+        registerValue(keepsprint);
         registerValue(rotation);
         registerValue(customRotationMode);
         registerValue(customAddonsMode);
@@ -961,10 +965,7 @@ public class Killaura extends Module {
             interactBlock();
         }
         switch (autoblockMode.getValue()) {
-            case "Basic2":
-                blockTime++;
-                break;
-            case "Always":
+            case "Basic2", "Always", "NCP":
                 blockTime++;
                 break;
             case "Vanilla":
@@ -976,9 +977,6 @@ public class Killaura extends Module {
                 if (mc.player.ticksExisted % 2 == 0) {
                     mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 }
-                break;
-            case "NCP":
-                blockTime++;
                 break;
             case "Percent":
                 if (mc.player.ticksExisted % 3 == 0) {
@@ -1039,11 +1037,7 @@ public class Killaura extends Module {
     public static void unBlock(){
         if(blockTime > 0){
             switch (autoblockMode.getValue()) {
-                case "Legit":
-                    mc.gameSettings.keyBindUseItem.pressed = false;
-                    blockTime = 0;
-                    break;
-                case "Intave":
+                case "Legit", "Intave":
                     mc.gameSettings.keyBindUseItem.pressed = false;
                     blockTime = 0;
                     break;
