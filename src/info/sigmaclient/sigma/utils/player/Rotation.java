@@ -11,4 +11,8 @@ public class Rotation {
         this.yaw = yaw;
         this.pitch = pitch;
     }
+
+    public float[] getRot() {
+        return new float[]{yaw,pitch};
+    }
 }

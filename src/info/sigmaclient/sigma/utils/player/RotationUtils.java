@@ -219,7 +219,7 @@ public class RotationUtils {
         if(e.getBoundingBox().contains(eyes)){
             r.setYaw(0);
         }
-        return limitAngleChange(new Rotation(mc.player.lastReportedYaw, mc.player.lastReportedPitch),r, 30, 20);
+        return r;
     }
     public static double nearestRotation(final AxisAlignedBB bb) {
         final Vector3d eyes = mc.player.getEyePosition(1F);

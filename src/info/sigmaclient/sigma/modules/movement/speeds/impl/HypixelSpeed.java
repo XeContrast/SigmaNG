@@ -13,6 +13,7 @@ import info.sigmaclient.sigma.utils.player.MovementUtils;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,7 @@ public class HypixelSpeed extends SpeedModule {
     private boolean prevOnGround;
     private double posYLast;
     private double prevYaw;
-    private double recordYaw;
+    private ArrayList<Double> recordYaws = new ArrayList<>();
     private double groundYaw;
     private double deltaYaw;
     private double lastDeltaYaw;
@@ -42,6 +43,7 @@ public class HypixelSpeed extends SpeedModule {
    @Override
     public void onEnable() {
         wasSlow = false;
+        recordYaws.clear();
         offGroundTick = 0;
         onGroundTick = 0;
         lastDeltaYaw = 0;
@@ -148,34 +150,44 @@ public class HypixelSpeed extends SpeedModule {
                 }
                 break;
             case "BunnyHop":
-                if(!mc.player.onGround) {
-                    if(mc.player.hurtTime > 0 || mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
+                if (!MovementUtils.isMoving() || mc.player.isHandActive()) {
+                    return;
+                }
+
+                if (!mc.player.onGround) {
+                    if(mc.player.collidedHorizontally || mc.player.collidedVertically || mc.player.fallDistance > 1.8){
                         if(mc.player.collidedHorizontally || mc.player.collidedVertically){
-                            mc.player.getMotion().x *= 0.75;
-                            mc.player.getMotion().z *= 0.75;
+                            mc.player.getMotion().x *= 0.25;
+                            mc.player.getMotion().z *= 0.25;
+                            speed *= 0.9f;
                         }
                         event.friction *= 0.75;
                         return;
                     }
-
-                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) > 2.5 && mc.player.ticksExisted % 3 == 0) {
-                        recordYaw = prevYaw;
+                    if(mc.player.hurtTime > 0){
+                        speed *= 0.98f;
                     }
-
-                    MovementUtils.strafing_yaw(recordYaw, MovementUtils.getSpeed());
-
-                    if(Math.abs(this.prevYaw - (double) mc.player.rotationYaw) > 10){
-                        if(this.parent.sneak.isEnable()){
-                            mc.player.movementInput.sneaking = true;
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) < 2.5) {
+                        MovementUtils.strafing_yaw(prevYaw,MovementUtils.getSpeed() * speed);
+                        recordYaws.clear();
+                    }else {
+                        if(recordYaws.size() > 5){
+                            MovementUtils.strafing_yaw(recordYaws.get(recordYaws.size() - 1),MovementUtils.getSpeed() * speed);
+                            recordYaws.clear();
                         }
+                        recordYaws.add((double) mc.player.rotationYaw);
+
                     }
 
-                    lastDeltaYaw = deltaYaw;
-                    this.deltaYaw += Math.abs(this.prevYaw - (double) mc.player.rotationYaw);
+                    lastDeltaYaw = this.deltaYaw;
 
-                }else {
+                    if(Math.abs(this.prevYaw - (double)mc.player.rotationYaw) > 5) {
+                        this.speed *= 0.97f;
+                        this.deltaYaw += Math.abs(this.prevYaw - (double) mc.player.rotationYaw);
+                    }
+                } else {
                     this.speed = 1;
-                    recordYaw = mc.player.rotationYaw;
+                    recordYaws.clear();
                     deltaYaw = 0;
 
                     lastDeltaYaw = deltaYaw;

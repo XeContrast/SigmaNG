@@ -117,22 +117,8 @@ public class Killaura extends Module {
 
     public NumberValue CPS = new NumberValue("CPS", 10.0, 1, 20, NumberValue.NUMBER_TYPE.INT);
 
-    public NumberValue maxTurnSpeed = new NumberValue("MaxTurn Speed", 80, 1, 180, NumberValue.NUMBER_TYPE.INT){
-        @Override
-        public void onSetValue() {
-            if(this.getValue().floatValue() < minTurnSpeed.getValue().floatValue()){
-                this.pureSetValue(minTurnSpeed.getValue());
-            }
-        }
-    };
-    public NumberValue minTurnSpeed = new NumberValue("MinTurn Speed", 20, 0, 180, NumberValue.NUMBER_TYPE.INT){
-        @Override
-        public void onSetValue() {
-            if(this.getValue().floatValue() > maxTurnSpeed.getValue().floatValue()){
-                this.pureSetValue(maxTurnSpeed.getValue());
-            }
-        }
-    };
+    public NumberValue TurnSpeed = new NumberValue("Turn Speed", 80, 20, 180, NumberValue.NUMBER_TYPE.INT);
+
     public static NumberValue range = new NumberValue("Target Range", 3.0, 0, 8, NumberValue.NUMBER_TYPE.LOW_FLOAT);
     public static NumberValue range2 = new NumberValue("Attack Range", 3.0, 0, 8, NumberValue.NUMBER_TYPE.LOW_FLOAT){
         @Override
@@ -235,8 +221,7 @@ public class Killaura extends Module {
         registerValue(autoblockMode);
         registerValue(cpsMode);
         registerValue(CPS);
-        registerValue(maxTurnSpeed);
-        registerValue(minTurnSpeed);
+        registerValue(TurnSpeed);
         registerValue(range);
         registerValue(range2);
         registerValue(blockRange);
@@ -371,7 +356,7 @@ public class Killaura extends Module {
                 }
                 break;
         }
-        float calcSpeed = (float) (minTurnSpeed.getValue().floatValue() + RotationUtils.random.nextDouble() * (maxTurnSpeed.getValue().floatValue() - minTurnSpeed.getValue().floatValue() + 1));
+        float calcSpeed = TurnSpeed.getValue().intValue();
         if(attackTarget == null){
             Rotation calc = RotationUtils.limitAngleChange(new Rotation(mc.player.lastReportedYaw, mc.player.lastReportedPitch), new Rotation(mc.player.rotationYaw, mc.player.rotationPitch), calcSpeed);
             if(RotationUtils.getAngleDifference(calc.getYaw(), mc.player.lastReportedYaw) >= 5) {
@@ -408,7 +393,7 @@ public class Killaura extends Module {
 
             if(event.isPre()) {
                 //转头
-                float calcSpeed = (float) (minTurnSpeed.getValue().floatValue() + RotationUtils.random.nextDouble() * (maxTurnSpeed.getValue().floatValue() - minTurnSpeed.getValue().floatValue() + 1));
+                float calcSpeed = TurnSpeed.getValue().intValue();
                 doRotation(calcSpeed);
 
                 //Ray
@@ -503,7 +488,12 @@ public class Killaura extends Module {
                 }else{
                     rotations = new float[]{NCP.getYaw(), NCP.getPitch()};
                 }
-
+                if(mc.player.lastReportedYaw != rotations[0]) {
+                    rotations[0] = RotationUtils.rotateToYaw(calcSpeed + RandomUtil.nextFloat(-2, 2), mc.player.lastReportedYaw, rotations[0]);
+                }else {
+                    rotations[0] = (rotations[0] + RandomUtil.nextFloat(-1, 2));
+                    rotations[1] = (rotations[1] + RandomUtil.nextFloat(-1, 2));
+                }
 
                 break;
             case "Custom":
@@ -603,7 +593,7 @@ public class Killaura extends Module {
 
         this.lastRotation = rotations;
         if(rotation.is("NCP")) {
-            RotationUtils.SMOOTH_BACK_TICK = 2;
+            RotationUtils.SMOOTH_BACK_TICK = 5;
         }
         //MoveFix
         if(lastRotation != null) {
@@ -799,6 +789,8 @@ public class Killaura extends Module {
     @Native
     public boolean isTargetEnable(LivingEntity LivingEntity){
         if(!LivingEntity.isAlive()) return false;
+        if(!mc.player.canEntityBeSeen(LivingEntity) && !throughWalls.isEnable())return false;
+
         if(LivingEntity instanceof PlayerEntity) {
             if(naked.isEnable()){
                 boolean nake = true;
@@ -814,6 +806,7 @@ public class Killaura extends Module {
             if(Teams.isTeam((PlayerEntity) LivingEntity)) return false;
             if(SigmaNG.getSigmaNG().friendsManager.isFriend(LivingEntity)) return false;
             if(LivingEntity.equals(mc.player)) return false;
+
             if (invisible.isEnable() && LivingEntity.isInvisible())
                 return true;
             return players.isEnable() && !LivingEntity.isInvisible();
