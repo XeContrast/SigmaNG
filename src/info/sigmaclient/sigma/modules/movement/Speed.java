@@ -1,6 +1,5 @@
 package info.sigmaclient.sigma.modules.movement;
 
-import baritone.api.event.events.TickEvent;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.CustomModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
@@ -12,12 +11,7 @@ import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.modules.movement.speeds.impl.*;
-import info.sigmaclient.sigma.utils.player.MovementUtils;
-import net.minecraft.network.play.client.CConfirmTransactionPacket;
-import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.network.play.server.SPlayerPositionLookPacket;
-import net.minecraft.util.math.MathHelper;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class Speed extends Module {
@@ -150,7 +144,6 @@ public class Speed extends Module {
                 return;
             }
         }
-        
     }
 
     @Override

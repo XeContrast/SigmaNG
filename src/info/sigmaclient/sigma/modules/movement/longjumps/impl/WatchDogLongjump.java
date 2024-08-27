@@ -1,23 +1,17 @@
 package info.sigmaclient.sigma.modules.movement.longjumps.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
 import info.sigmaclient.sigma.modules.movement.LongJump;
 import info.sigmaclient.sigma.modules.movement.longjumps.LongJumpModule;
 import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
-import net.minecraft.network.play.server.SEntityPacket;
-import net.minecraft.network.play.server.SEntityTeleportPacket;
-import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.Hand;
-import net.minecraft.util.registry.Registry;
+
+import java.util.Objects;
 
 public class WatchDogLongjump extends LongJumpModule {
     public WatchDogLongjump(LongJump longJump) {
@@ -28,8 +22,6 @@ public class WatchDogLongjump extends LongJumpModule {
     private int ticks = -1;
     private boolean sentPlace;
     private int initTicks;
-    private boolean thrown;
-
 
 
     @EventTarget
@@ -50,7 +42,7 @@ public class WatchDogLongjump extends LongJumpModule {
         }
         if (initTicks == 1) {
             if (!sentPlace) {
-                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 sentPlace = true;
             }
         } else if (initTicks == 2) {
@@ -59,7 +51,6 @@ public class WatchDogLongjump extends LongJumpModule {
                 lastSlot = -1;
             }
             ticks = 0;
-            thrown = false;
         }
         if (initTicks > 2 && mc.player.onGround) {
             this.parent.toggle();
@@ -90,7 +81,7 @@ public class WatchDogLongjump extends LongJumpModule {
         int a = -1;
         for (int i = 0; i < 9; ++i) {
             final ItemStack getStackInSlot = mc.player.inventory.getStackInSlot(i);
-            if (getStackInSlot != null && getStackInSlot.getItem() == Items.FIRE_CHARGE) {
+            if (getStackInSlot.getItem() == Items.FIRE_CHARGE) {
                 a = i;
                 break;
             }

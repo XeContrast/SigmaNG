@@ -268,8 +268,8 @@ public class HypixelSpeed extends SpeedModule {
                     mc.player.getMotion().x = mc.player.getMotion().z = 0;
                 }
                 if (!mc.player.onGround) {
-                    if (MovementUtils.getSpeed() < 0.11) {
-                        MovementUtils.strafing(0.11f);
+                    if (MovementUtils.getSpeed() < 0.1) {
+                        MovementUtils.strafing(0.1);
                     }
                 }
                 break;
