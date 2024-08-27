@@ -48,17 +48,16 @@ public class AutoLava extends Module {
         List<Entity> e = new ArrayList<>();
         float f = range.getValue().floatValue();
         for (final Entity o : mc.world.getLoadedEntityList()) {
-            if(!(o instanceof LivingEntity)) continue;
-            LivingEntity livingBase = (LivingEntity) o;
+            if(!(o instanceof LivingEntity livingBase)) continue;
             if (o instanceof PlayerEntity) {
-                if (AntiBot.isServerBots((PlayerEntity) livingBase)) continue;
+                if (AntiBot.isServerBots(livingBase)) continue;
                 if (livingBase.isAlive() && livingBase != mc.player &&
                         mc.player.getDistanceNearest(o) <= f) {
                     e.add(o);
                 }
             }
         }
-        if(e.size() == 0) return null;
+        if(e.isEmpty()) return null;
         e.sort(Comparator.comparingInt(a -> (int) (a.getDistanceSqToEntity(mc.player) * 100)));
         return e.get(0);
     }
