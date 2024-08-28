@@ -35,7 +35,7 @@ public class Render {
         }
         Cords.offsetY = offset + 58;
 
-        if (SigmaNG.getSigmaNG().gameMode != SigmaNG.GAME_MODE.dest) {
+        if (SigmaNG.getSigmaNG().gameMode != SigmaNG.GAME_MODE.dest && !HUD.markpng.is("FWMike")) {
             // mark
             GL11.glPushMatrix();
 
@@ -49,7 +49,7 @@ public class Render {
             }
             if (HUD.markpng.is("Default") || !SigmaNG.getSigmaNG().moduleManager.getModule(HUD.class).enabled) {
                 Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("sigmang/images/watermark1.png"));
-            } else {
+            } else if (HUD.markpng.is("Debug") || !SigmaNG.getSigmaNG().moduleManager.getModule(HUD.class).enabled){
                 Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("sigmang/images/debugwatermark.png"));
             }
             GL11.glColor4d(1, 1, 1, 1f);

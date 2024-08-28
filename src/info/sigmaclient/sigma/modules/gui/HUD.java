@@ -30,7 +30,8 @@ public class HUD extends Module {
     public static BooleanValue eat = new BooleanValue("EatingTickShow",false);
     public static BooleanValue time = new BooleanValue("TimerNumber",false);
     public static BooleanValue gradient = new BooleanValue("Gradient", true);
-    public double tick,idk,bps = 0;
+    public double tick,idk = 0;
+    public static float bps;
     public HUD() {
         super("Hud", Category.Gui, "new hud");
         registerValue(speed);
@@ -43,7 +44,7 @@ public class HUD extends Module {
     @EventTarget
     public void onUpdateEvent(UpdateEvent event) {
         MovementUtils.updateBlocksPerSecond();
-        bps = Math.hypot(mc.player.getPosX() - mc.player.prevPosX,mc.player.getPosZ() - mc.player.prevPosZ);
+        bps = (float) Math.hypot(mc.player.getPosX() - mc.player.prevPosX,mc.player.getPosZ() - mc.player.prevPosZ);
         if (eat.isEnable()) {
             if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood()  || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem) {
                 if (mc.gameSettings.keyBindUseItem.pressed) {
@@ -99,7 +100,7 @@ public class HUD extends Module {
         if (speed.isEnable()) {
             final double height = Minecraft.getInstance().getMainWindow().getScaledHeight();
             final double width = Minecraft.getInstance().getMainWindow().getScaledWidth();
-            FontUtil.sfuiFontBold17.drawString(MathUtils.round((float) bps * (speed.isEnable() ? 20f : 72f) * mc.timer.getTimerSpeed()) + " Speed", (float) (width / 2) - 10, (float) (height / 2) + 40, new Color(220, 220, 220).getRGB());
+            FontUtil.sfuiFontBold17.drawString(MathUtils.round(bps * (speed.isEnable() ? 20f : 72f) * mc.timer.getTimerSpeed()) + " Speed", (float) (width / 2) - 10, (float) (height / 2) + 40, new Color(220, 220, 220).getRGB());
         }
     }
     @EventTarget
