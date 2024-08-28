@@ -84,17 +84,11 @@ public class ClickMode {
 
 
     public static int[] normalClick(int cps) {
-        Random random = new Random();
-        int[] clickArray = new int[20];
+        int[] clickArray = new int[cps];
         int clicks = cps;
 
         for (int i = 0; i < clicks; i++) {
-            int r = random.nextInt(clickArray.length);
-            if(clickArray[r] == 0) {
-                clickArray[r] += 1;
-            }else {
-                i--;
-            }
+            clickArray[i] += 1;
         }
 
         return clickArray;

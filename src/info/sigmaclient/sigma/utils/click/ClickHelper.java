@@ -47,7 +47,8 @@ public class ClickHelper {
         }else  {
             tick = 0;
             cps = getCps(c,type);
-            return getClick();
+            getClick();
+            return 2;
         }
     }
 

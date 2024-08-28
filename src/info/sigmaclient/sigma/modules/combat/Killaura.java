@@ -1,5 +1,7 @@
 package info.sigmaclient.sigma.modules.combat;
 
+import com.viaversion.viaversion.ViaVersionPlugin;
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
@@ -8,11 +10,13 @@ import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.*;
 import info.sigmaclient.sigma.premium.PremiumManager;
+import info.sigmaclient.sigma.process.impl.player.BlinkProcess;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
 import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.click.ClickHelper;
+import info.sigmaclient.sigma.utils.player.AutoBlockUtil;
 import info.sigmaclient.sigma.utils.render.blurs.Gradient;
 import info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager;
 import info.sigmaclient.sigma.gui.hud.notification.NotificationManager;
@@ -287,6 +291,7 @@ public class Killaura extends Module {
     @Native
     @Override
     public void onDisable() {
+        BlinkProcess.stopBlink();
         KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1),false);
         canFallHit = false;
         cacheAttackTarget = null;
@@ -409,24 +414,25 @@ public class Killaura extends Module {
                 //转头
                 float calcSpeed = TurnSpeed.getValue().intValue();
                 doRotation(calcSpeed);
+            }
 
-                //Ray
+            //攻击
+            if(!BadPacketsProcess.bad(false,false,false,false,false,true,false)) {
                 if(!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))){
-                    mc.objectMouseOver = new EntityRayTraceResult(attackTarget);
-                }
-
-                //攻击
-                if(mc.objectMouseOver.getType() == RayTraceResult.Type.ENTITY){
-                    if(!BadPacketsProcess.bad(false,false,false,false,false,true,true)) {
-                        this.doAttack();
-                    }
+                    this.doAttack();
                 }
             }
+
+
+
             if(isABEnable() && canBlock) {
                 block(event);
             }
         }else {
             if(event.isPre()) {
+                if(BlinkProcess.isBlinking()){
+                    BlinkProcess.stopBlink();
+                }
                 RotationUtils.movementFixYaw = NO_ROTATION;
                 RotationUtils.movementFixPitch = NO_ROTATION;
             }
@@ -620,6 +626,7 @@ public class Killaura extends Module {
 
     public void doAttack(){
         boolean canHit = new Random().nextInt(100) > hitChange.getValue().floatValue();
+
         if(mc.player.getDistanceNearest(attackTarget) <= range2.getValue().floatValue() && !canHit) {
             clickHelper.runClick(
                     ()->{
@@ -670,8 +677,9 @@ public class Killaura extends Module {
         switch (autoblockMode.getValue()) {
             case "Hypixel2":
                 if(packet instanceof CPlayerDiggingPacket && canBlock){
-                    event.setCancelled();
-                    return;
+                    if(!BlinkProcess.isBlinking()) {
+                        BlinkProcess.startBlink();
+                    }
                 }
                 break;
         }
@@ -935,9 +943,9 @@ public class Killaura extends Module {
 
     @Native
     public void interactBlock(){
-        EntityRayTraceResult entityraytraceresult = new EntityRayTraceResult(attackTarget);
-        mc.playerController.interactWithEntity(mc.player, attackTarget, entityraytraceresult, Hand.OFF_HAND);
+
         mc.playerController.interactWithEntity(mc.player, attackTarget, Hand.OFF_HAND);
+        mc.rightClickMouse();
     }
 
     @Native
@@ -947,23 +955,8 @@ public class Killaura extends Module {
         }
         switch (autoblockMode.getValue()) {
             case "Hypixel2":
-                mc.gameSettings.keyBindSprint.setPressed(false);
-                if(mc.player.isSprinting()){
-                    mc.player.setSprinting(false);
-                }
 
-                if(blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)){
-                    if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    }
-                }
 
-                if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                    blockTime++;
-                }else {
-                    blockTime = 0;
-                }
                 break;
         }
     }
@@ -1010,34 +1003,29 @@ public class Killaura extends Module {
                 blockTime++;
                 break;
             case "Hypixel2":
-                mc.gameSettings.keyBindSprint.setPressed(false);
-                if(mc.player.isSprinting()){
-                    mc.player.setSprinting(false);
+
+
+                if(blockTime > 1) {
+                    BlinkProcess.stopBlink();
+
+                    blockTime = 1;
                 }
 
 
-                if(blockTime > 0){
-                    if(mc.player.offGroundTicks > 0 && mc.player.offGroundTicks % 4 == 0){
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 8 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                        blockTime = 0;
+                if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
+                    if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
+                        AutoBlockUtil.BlockWithInteract(attackTarget);
                     }else {
-                        return;
+                        AutoBlockUtil.Block();
+                    }
+                    if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
+                        blockTime++;
+                    }else {
+                        blockTime = 0;
                     }
                 }
 
-                if(blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)){
-                    if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    }
-                }
 
-                if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                    blockTime++;
-                }else {
-                    blockTime = 0;
-                }
                 break;
         }
     }
@@ -1089,6 +1077,7 @@ public class Killaura extends Module {
                     break;
                 case "Hypixel2":
                     if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
+                        BlinkProcess.stopBlink();
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
                         blockTime = 0;
