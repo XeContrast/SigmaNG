@@ -46,7 +46,7 @@ public class HUD extends Module {
         MovementUtils.updateBlocksPerSecond();
         bps = (float) Math.hypot(mc.player.getPosX() - mc.player.prevPosX,mc.player.getPosZ() - mc.player.prevPosZ);
         if (eat.isEnable()) {
-            if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood()  || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem) {
+            if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood() || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof PotionItem || mc.player.getHeldItem(Hand.OFF_HAND).isFood()) {
                 if (mc.gameSettings.keyBindUseItem.pressed) {
                     tick++;
                 } else {
@@ -74,7 +74,7 @@ public class HUD extends Module {
             FontUtil.sfuiFontBold17.drawString(L, 12 + x, 15, new Color(220, 220, 220).getRGB());
         }
         if (eat.isEnable()) {
-            if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood() || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem) {
+            if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood() || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof PotionItem || mc.player.getHeldItem(Hand.OFF_HAND).isFood()) {
                 double math;
                 final double height = Minecraft.getInstance().getMainWindow().getScaledHeight();
                 final double width = Minecraft.getInstance().getMainWindow().getScaledWidth();
@@ -86,7 +86,7 @@ public class HUD extends Module {
                 }
                 double left = (width / 2) - math;
                 double right = (width / 2) + math;
-                if (mc.gameSettings.keyBindUseItem.pressed) FontUtil.sfuiFontBold17.drawString(MathUtils.round((float) tick / (64 / mc.timer.getTimerSpeed())) * 100 + "%", (float) (width / 2) - 5, (float) (height / 2) + 10, new Color(220, 220, 220).getRGB());
+                if (mc.gameSettings.keyBindUseItem.pressed) FontUtil.sfuiFontBold17.drawString(MathUtils.round((float) tick / (64 / mc.timer.getTimerSpeed()) * 100) + "%", (float) (width / 2) - 5, (float) (height / 2) + 10, new Color(220, 220, 220).getRGB());
 
                 RenderUtils.drawRect(left, (height / 2) + 20, right, (height / 2) + 25, Color.WHITE.getRGB());
                 GlStateManager.disableBlend();

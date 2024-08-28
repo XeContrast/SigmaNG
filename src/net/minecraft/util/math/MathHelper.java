@@ -811,6 +811,19 @@ public class MathHelper
         return value;
     }
 
+    public static double wrapAngleTo180_double(double p_wrapAngleTo180_double_0_) {
+        p_wrapAngleTo180_double_0_ %= 360.0;
+        if (p_wrapAngleTo180_double_0_ >= 180.0) {
+            p_wrapAngleTo180_double_0_ -= 360.0;
+        }
+
+        if (p_wrapAngleTo180_double_0_ < -180.0) {
+            p_wrapAngleTo180_double_0_ += 360.0;
+        }
+
+        return p_wrapAngleTo180_double_0_;
+    }
+
     public static double roundToHalf(double d) {
         return Math.round(d * 2) / 2.0;
     }

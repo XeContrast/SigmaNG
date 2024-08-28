@@ -83,7 +83,7 @@ public class Disabler extends Module {
                     final double posY = mc.player.getPosY();
                     final CPlayerPacket.PositionPacket position = new CPlayerPacket.PositionPacket(posX, posY + doubleValue, mc.player.getPosZ(), mc.player.onGround);
 //                    packetPlayerList.add((CPlayerPacket)position);
-                    mc.getConnection().sendPacket((IPacket<?>)position);
+                    mc.getConnection().sendPacket(position);
                 }
                 break;
             case "Intave":
@@ -122,9 +122,8 @@ public class Disabler extends Module {
         if(mc.player == null || mc.world == null)return;
         switch (mode.getValue()) {
             case "MineMalia":
-                if (event.packet instanceof SPlayerPositionLookPacket && mc.currentScreen == null && (SigmaNG.getSigmaNG().moduleManager.getModule(Speed.class).enabled || SigmaNG.getSigmaNG().moduleManager.getModule(Fly.class).enabled)) {
+                if (event.packet instanceof SPlayerPositionLookPacket packetIn && mc.currentScreen == null && (SigmaNG.getSigmaNG().moduleManager.getModule(Speed.class).enabled || SigmaNG.getSigmaNG().moduleManager.getModule(Fly.class).enabled)) {
                     ClientPlayerEntity playerentity = mc.player;
-                    SPlayerPositionLookPacket packetIn = (SPlayerPositionLookPacket) event.packet;
                     mc.getConnection().sendPacket(new CConfirmTeleportPacket(packetIn.getTeleportId()));
                     mc.getConnection().sendPacket(new CPlayerPacket.PositionRotationPacket(playerentity.getPosX(), playerentity.getPosY(), playerentity.getPosZ(), playerentity.rotationYaw, playerentity.rotationPitch, false));
 
