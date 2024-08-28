@@ -116,7 +116,6 @@ public class Sigma5LoadProgressGui extends ResourceLoadProgressGui
         }
         RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 1f), (float)(int)((n3 - 4) * min), 16.0f, 6, new Color(霥瀳놣㠠釒(-65794, 0.9f * n)));
 
-        System.out.println((float)(round + n4 + n7 + 2));
         GL11.glPopMatrix();
     }
     public boolean isPauseScreen()

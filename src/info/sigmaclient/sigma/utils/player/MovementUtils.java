@@ -10,6 +10,7 @@ import net.minecraft.util.math.MathHelper;
 import static info.sigmaclient.sigma.modules.Module.mc;
 
 public class MovementUtils {
+    public static double bps;
     public static boolean notJump = false;
     private static double speed;
 
@@ -48,6 +49,17 @@ public class MovementUtils {
         final double yaw = direction();
         mc.player.getMotion().x = -MathHelper.sin((float) yaw) * getSpeed();
         mc.player.getMotion().z = MathHelper.cos((float) yaw) * getSpeed();
+    }
+
+    public static void updateBlocksPerSecond(){
+        if (mc.player == null || mc.player.ticksExisted < 1) {
+            bps = 0.0;
+        }
+        double x = mc.player.getPosX();
+        double y = mc.player.getPosY();
+        double z = mc.player.getPosZ();
+        double dis = mc.player.getDistance(x,y,z);
+        bps = dis * (20 * mc.timer.getTimerSpeed());
     }
 
 

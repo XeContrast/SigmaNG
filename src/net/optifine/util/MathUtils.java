@@ -4,6 +4,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class MathUtils
 {
     public static final float PI = (float)Math.PI;
@@ -32,6 +35,12 @@ public class MathUtils
             int i = getSum(vals);
             return i / vals.length;
         }
+    }
+
+    public static float round(float value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.floatValue();
     }
 
     public static int getSum(int[] vals)

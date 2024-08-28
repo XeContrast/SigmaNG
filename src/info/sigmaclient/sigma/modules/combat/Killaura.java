@@ -150,7 +150,11 @@ public class Killaura extends Module {
     };
     public static BooleanValue Interact = new BooleanValue("Interact autoblock", false);
     public ModeValue movementFix = new ModeValue("Move Correction", "None", new String[]{
-            "None", "Matrix", "Strict"
+            "None",
+            "Silent",
+            "Matrix",
+            "Strict",
+            "Vanilla"
     });
     public BooleanValue silentFix = new BooleanValue("SilentFix", false);
     public BooleanValue throughWalls = new BooleanValue("Through walls", false);
@@ -243,7 +247,6 @@ public class Killaura extends Module {
         registerValue(movementFix);
         registerValue(silentFix);
         registerValue(throughWalls);
-        registerValue(silent);
         registerValue(raytrace);
         registerValue(shieldBreaker);
         registerValue(cooldown);
@@ -369,7 +372,7 @@ public class Killaura extends Module {
                 RotationUtils.movementFixYaw = lastRotation[0];
                 RotationUtils.movementFixPitch = lastRotation[1];
                 RotationUtils.fixing = isMoveFix();
-                RotationUtils.slient = silentFix.isEnable();
+                RotationUtils.slient = movementFix.is("Silent");
             }
             return;
         }
@@ -380,6 +383,13 @@ public class Killaura extends Module {
             OldHitting.blocking = true;
         }
 
+    }
+
+    @EventTarget
+    public void onStrafeEvent(StrafeEvent event) {
+        if (movementFix.is("Vanilla") && !targets.isEmpty()) {
+            event.yaw = RotationUtils.getYaw();
+        }
     }
 
 
@@ -604,7 +614,7 @@ public class Killaura extends Module {
             RotationUtils.movementFixYaw = lastRotation[0];
             RotationUtils.movementFixPitch = lastRotation[1];
             RotationUtils.fixing = isMoveFix();
-            RotationUtils.slient = silentFix.isEnable();
+            RotationUtils.slient = movementFix.is("Silent");
         }
     }
 
@@ -725,13 +735,12 @@ public class Killaura extends Module {
 
     @Native
     public boolean isMoveFix(){
-        if(movementFix.is("Strict")){
-            return true;
-        }else if(movementFix.is("Matrix")){
-            return groundTime > 1 && Math.abs(RotationUtils.getAngleDifference(mc.player.rotationYaw, mc.player.lastReportedYaw)) <= 60;
-        }else{
-            return false;
-        }
+        return switch (movementFix.getValue()) {
+            case "Strict" -> true;
+            case "Matrix" ->
+                    groundTime > 1 && Math.abs(RotationUtils.getAngleDifference(mc.player.rotationYaw, mc.player.lastReportedYaw)) <= 60;
+            default -> false;
+        };
     }
 
     HashMap<Entity, ESPTarget> espTargets = new HashMap<>();

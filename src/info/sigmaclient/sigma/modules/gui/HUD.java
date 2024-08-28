@@ -10,10 +10,12 @@ import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.font.FontUtil;
+import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.PotionItem;
 import net.minecraft.util.Hand;
+import net.optifine.util.MathUtils;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -21,18 +23,18 @@ import java.util.Date;
 
 
 public class HUD extends Module {
-    public static ModeValue markpng = new ModeValue("MarkPng","Default",new String[] {
-            "Default","Debug"
+    public static ModeValue markpng = new ModeValue("WaterMark","Default",new String[] {
+            "Default","Debug","FWMike"
     });
-    public static BooleanValue sigmaWaterMark = new BooleanValue("SigmaNGWaterMark",false);
+    public static BooleanValue speed = new BooleanValue("SpeedShow",false);
     public static BooleanValue eat = new BooleanValue("EatingTickShow",false);
     public static BooleanValue time = new BooleanValue("TimerNumber",false);
     public static BooleanValue gradient = new BooleanValue("Gradient", true);
-    public double tick,idk = 0;
+    public double tick,idk,bps = 0;
     public HUD() {
         super("Hud", Category.Gui, "new hud");
+        registerValue(speed);
         registerValue(markpng);
-        registerValue(sigmaWaterMark);
         registerValue(eat);
         registerValue(time);
         registerValue(gradient);
@@ -40,6 +42,8 @@ public class HUD extends Module {
 
     @EventTarget
     public void onUpdateEvent(UpdateEvent event) {
+        MovementUtils.updateBlocksPerSecond();
+        bps = Math.hypot(mc.player.getPosX() - mc.player.prevPosX,mc.player.getPosZ() - mc.player.prevPosZ);
         if (eat.isEnable()) {
             if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood()  || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem) {
                 if (mc.gameSettings.keyBindUseItem.pressed) {
@@ -57,7 +61,7 @@ public class HUD extends Module {
 
     @EventTarget
     public void onRenderEvent(RenderEvent event) {
-        if (sigmaWaterMark.isEnable()) {
+        if (markpng.is("FWMike")) {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
             String L = " §8- §rIamFrozenMilk §8- §r" + Minecraft.debugFPS + " fps" + " §8-§r " + formatter.format(new Date(System.currentTimeMillis()));
             String s1 = "Nursultan" + L;
@@ -81,7 +85,7 @@ public class HUD extends Module {
                 }
                 double left = (width / 2) - math;
                 double right = (width / 2) + math;
-                if (mc.gameSettings.keyBindUseItem.pressed) FontUtil.sfuiFontBold17.drawString((tick / (64 / mc.timer.getTimerSpeed())) * 100 + "%", (float) (width / 2) - 5, (float) (height / 2) + 10, new Color(220, 220, 220).getRGB());
+                if (mc.gameSettings.keyBindUseItem.pressed) FontUtil.sfuiFontBold17.drawString(MathUtils.round((float) tick / (64 / mc.timer.getTimerSpeed())) * 100 + "%", (float) (width / 2) - 5, (float) (height / 2) + 10, new Color(220, 220, 220).getRGB());
 
                 RenderUtils.drawRect(left, (height / 2) + 20, right, (height / 2) + 25, Color.WHITE.getRGB());
                 GlStateManager.disableBlend();
@@ -91,6 +95,11 @@ public class HUD extends Module {
             final double height = Minecraft.getInstance().getMainWindow().getScaledHeight();
             final double width = Minecraft.getInstance().getMainWindow().getScaledWidth();
             FontUtil.sfuiFontBold17.drawString(mc.timer.getTimerSpeed() + " Timer", (float) (width / 2) - 10, (float) (height / 2) + 30, new Color(220, 220, 220).getRGB());
+        }
+        if (speed.isEnable()) {
+            final double height = Minecraft.getInstance().getMainWindow().getScaledHeight();
+            final double width = Minecraft.getInstance().getMainWindow().getScaledWidth();
+            FontUtil.sfuiFontBold17.drawString(MathUtils.round((float) bps * (speed.isEnable() ? 20f : 72f) * mc.timer.getTimerSpeed()) + " Speed", (float) (width / 2) - 10, (float) (height / 2) + 40, new Color(220, 220, 220).getRGB());
         }
     }
     @EventTarget
