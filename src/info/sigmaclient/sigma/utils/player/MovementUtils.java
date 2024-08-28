@@ -62,6 +62,20 @@ public class MovementUtils {
         bps = dis * (20 * mc.timer.getTimerSpeed());
     }
 
+    public static double direction(float rotationYaw, final double moveForward, final double moveStrafing) {
+        if (moveForward < 0F) rotationYaw += 180F;
+
+        float forward = 1F;
+
+        if (moveForward < 0F) forward = -0.5F;
+        else if (moveForward > 0F) forward = 0.5F;
+
+        if (moveStrafing > 0F) rotationYaw -= 90F * forward;
+        if (moveStrafing < 0F) rotationYaw += 90F * forward;
+
+        return Math.toRadians(rotationYaw);
+    }
+
 
     public static double directionNoRadians(){
         float rotationYaw = mc.player.rotationYaw;

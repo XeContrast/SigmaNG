@@ -1,7 +1,6 @@
 package info.sigmaclient.sigma.modules.combat;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
 import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
@@ -10,7 +9,6 @@ import info.sigmaclient.sigma.event.impl.player.*;
 import info.sigmaclient.sigma.premium.PremiumManager;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
-import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.click.ClickHelper;
 import info.sigmaclient.sigma.utils.render.blurs.Gradient;
@@ -50,8 +48,6 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.SConfirmTransactionPacket;
-import net.minecraft.network.play.server.SKeepAlivePacket;
-import net.minecraft.network.play.server.SPlayerDiggingPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
@@ -149,16 +145,13 @@ public class Killaura extends Module {
         }
     };
     public static BooleanValue Interact = new BooleanValue("Interact autoblock", false);
-    public ModeValue movementFix = new ModeValue("Move Correction", "None", new String[]{
+    public static ModeValue movementFix = new ModeValue("Move Correction", "None", new String[]{
             "None",
-            "Silent",
             "Matrix",
             "Strict",
             "Vanilla"
     });
-    public BooleanValue silentFix = new BooleanValue("SilentFix", false);
     public BooleanValue throughWalls = new BooleanValue("Through walls", false);
-    public BooleanValue silent = new BooleanValue("Silent", true);
     public static BooleanValue raytrace = new BooleanValue("Raytrace", false);
     public ModeValue TraceMode = new ModeValue("Trace Mode", "Target", new String[]{
             "Target", "All"
@@ -192,9 +185,9 @@ public class Killaura extends Module {
         }
     };
     // anims
-    private PartialTicksAnim translate = new PartialTicksAnim(0);
-    private PartialTicksAnim translate2 = new PartialTicksAnim(0);
-    private PartialTicksAnim translate3 = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate2 = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate3 = new PartialTicksAnim(0);
     private ClickHelper clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
     private boolean back = false;
     private int switchTime = 0;
@@ -206,9 +199,8 @@ public class Killaura extends Module {
     private final ArrayList<LivingEntity> targets = new ArrayList<>();
     public float[] lastRotation = null;
     private boolean canFallHit = false;
-    private boolean sprintHit = false;
     private int groundTime = 0;
-    private static TimerUtil timer = new TimerUtil();
+    private static final TimerUtil timer = new TimerUtil();
 
 
     private static double blockTime;
@@ -245,7 +237,6 @@ public class Killaura extends Module {
         registerValue(limit);
         registerValue(Interact);
         registerValue(movementFix);
-        registerValue(silentFix);
         registerValue(throughWalls);
         registerValue(raytrace);
         registerValue(shieldBreaker);
@@ -265,7 +256,7 @@ public class Killaura extends Module {
         index = 0;
         delay_ping = 0;
         switchTime = 0;
-        sprintHit = false;
+        boolean sprintHit = false;
         clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
         canFallHit = false;
         groundTime = 0;
@@ -324,7 +315,7 @@ public class Killaura extends Module {
         targets.clear();
         getTargets();
 
-        if(this.movementFix.is("Strict") && (mc.player.fallDistance > 0 || canFallHit) && fallhit.getValue() && attackTarget != null){
+        if(movementFix.is("Strict") && (mc.player.fallDistance > 0 || canFallHit) && fallhit.getValue() && attackTarget != null){
             mc.player.setSprinting(false);
             mc.gameSettings.keyBindSprint.pressed = false;
         }
@@ -372,7 +363,6 @@ public class Killaura extends Module {
                 RotationUtils.movementFixYaw = lastRotation[0];
                 RotationUtils.movementFixPitch = lastRotation[1];
                 RotationUtils.fixing = isMoveFix();
-                RotationUtils.slient = movementFix.is("Silent");
             }
             return;
         }
@@ -387,6 +377,15 @@ public class Killaura extends Module {
 
     @EventTarget
     public void onStrafeEvent(StrafeEvent event) {
+        if (!targets.isEmpty()) {
+            if (movementFix.is("Vanilla")) {
+                event.yaw = RotationUtils.getYaw();
+            }
+        }
+    }
+
+    @EventTarget
+    public void onJumpEvent(JumpEvent event) {
         if (movementFix.is("Vanilla") && !targets.isEmpty()) {
             event.yaw = RotationUtils.getYaw();
         }
@@ -416,7 +415,7 @@ public class Killaura extends Module {
                 }
 
                 //攻击
-                if(mc.objectMouseOver.getType() == RayTraceResult.Type.ENTITY){
+                if(Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY){
                     if(!BadPacketsProcess.bad(false,false,false,false,false,true,true)) {
                         this.doAttack();
                     }
@@ -436,8 +435,7 @@ public class Killaura extends Module {
 
     private void getTargets(){
         for (Entity entity : mc.world.getLoadedEntityList()){
-            if(!(entity instanceof LivingEntity) || mc.player.getDistanceNearest(entity) > range.getValue().floatValue())continue;
-            LivingEntity e = (LivingEntity) entity;
+            if(!(entity instanceof LivingEntity e) || mc.player.getDistanceNearest(entity) > range.getValue().floatValue())continue;
             if(isTargetEnable(e) && !targets.contains(e)){
                 targets.add(e);
             }
@@ -471,9 +469,7 @@ public class Killaura extends Module {
                 rotations = new float[]{mc.player.prevRotationYaw, mc.player.prevRotationPitch};
                 break;
             case "Matrix":
-                if (attackTarget.getBoundingBox().contains(mc.player.getEyePosition(1F))) {
-                    rotations = null;
-                }else {
+                if (!attackTarget.getBoundingBox().contains(mc.player.getEyePosition(1F)))  {
                     Rotation matrix = NCPRotation.NCPRotation(attackTarget);
                     rotations = new float[]{matrix.getYaw(), matrix.getPitch()};
 //                        if (mc.player.lastTickPosX != mc.player.getPosX() || mc.player.lastTickPosZ != mc.player.getPosZ() || mc.player.lastTickPosY != mc.player.getPosY()) {
@@ -514,7 +510,6 @@ public class Killaura extends Module {
                 Rotation calc = null;
                 switch (customRotationMode.getValue()){
                     case "Nearest":
-                        if(rots == null) break;
                         calc = rots;
                         break;
                     case "EyeHeight":
@@ -614,7 +609,6 @@ public class Killaura extends Module {
             RotationUtils.movementFixYaw = lastRotation[0];
             RotationUtils.movementFixPitch = lastRotation[1];
             RotationUtils.fixing = isMoveFix();
-            RotationUtils.slient = movementFix.is("Silent");
         }
     }
 
@@ -667,13 +661,10 @@ public class Killaura extends Module {
         boolean canBlock = attackTarget != null && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem &&
                 mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
 
-        switch (autoblockMode.getValue()) {
-            case "Hypixel2":
-                if(packet instanceof CPlayerDiggingPacket && canBlock){
-                    event.setCancelled();
-                    return;
-                }
-                break;
+        if (autoblockMode.getValue().equals("Hypixel2")) {
+            if (packet instanceof CPlayerDiggingPacket && canBlock) {
+                event.setCancelled();
+            }
         }
     }
 
@@ -744,7 +735,7 @@ public class Killaura extends Module {
     }
 
     HashMap<Entity, ESPTarget> espTargets = new HashMap<>();
-    class ESPTarget {
+    static class ESPTarget {
         public Sigma5AnimationUtil anim = new Sigma5AnimationUtil(300, 300);
         public float alpha = 0;
     }
@@ -853,11 +844,9 @@ public class Killaura extends Module {
     @Native
     public static void unBlockTarget(){
         if(blockTime > 0){
-            switch (autoblockMode.getValue()) {
-                case "Basic2":
-                    blockTime = 0;
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    break;
+            if (autoblockMode.getValue().equals("Basic2")) {
+                blockTime = 0;
+                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
             }
         }
     }
@@ -899,7 +888,6 @@ public class Killaura extends Module {
         GlStateManager.resetColor();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        float a = 0.75f;
         Gradient.applyGradient(-24 * 11, -24 * 11, 48 * 22, 48 * 22,0.8f,
                 ColorUtils.blend(ColorChanger.getColor(0, 10), new Color(255,255,255), 0.8f),
                 ColorUtils.blend(ColorChanger.getColor(50, 10), new Color(255,255,255), 0.8f),
@@ -945,26 +933,24 @@ public class Killaura extends Module {
         if(Interact.isEnable() && blockTime < 1) {
             interactBlock();
         }
-        switch (autoblockMode.getValue()) {
-            case "Hypixel2":
-                mc.gameSettings.keyBindSprint.setPressed(false);
-                if(mc.player.isSprinting()){
-                    mc.player.setSprinting(false);
-                }
+        if (autoblockMode.getValue().equals("Hypixel2")) {
+            mc.gameSettings.keyBindSprint.setPressed(false);
+            if (mc.player.isSprinting()) {
+                mc.player.setSprinting(false);
+            }
 
-                if(blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)){
-                    if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    }
+            if (blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)) {
+                if (mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
+                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 }
+            }
 
-                if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                    blockTime++;
-                }else {
-                    blockTime = 0;
-                }
-                break;
+            if (mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem) {
+                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
+                blockTime++;
+            } else {
+                blockTime = 0;
+            }
         }
     }
 

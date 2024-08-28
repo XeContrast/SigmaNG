@@ -1,5 +1,7 @@
 package info.sigmaclient.sigma.utils.player;
 
+import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
+import info.sigmaclient.sigma.modules.combat.Killaura;
 import info.sigmaclient.sigma.utils.RandomUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -11,14 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static info.sigmaclient.sigma.modules.Module.mc;
 
 public class RotationUtils {
+    private static float movementYaw;
     public static int SMOOTH_BACK_TICK = 0;
     public static int NEXT_SLOT = -1;
     public static float NO_ROTATION = -999;
@@ -280,7 +283,7 @@ public class RotationUtils {
 
             mc.getProfiler().startSection("pick");
             Vector3d vector3d1 = entity.getLookCustom(1.0f, yaw, pitch);
-            Vector3d vector3d2 = vector3d.add(vector3d1.x * (double) 4.5, vector3d1.y * (double) 4.5, vector3d1.z * (double) 4.5);
+            Vector3d vector3d2 = vector3d.add(vector3d1.x * 4.5, vector3d1.y * 4.5, vector3d1.z * 4.5);
             AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow(expand).expand(vector3d1.scale(4.5)).grow(1.0D, 1.0D, 1.0D);
             EntityRayTraceResult entityraytraceresult = ProjectileHelper.rayTraceEntities(entity, vector3d, vector3d2,
                     axisalignedbb, (p_lambda$getMouseOver$0_0_) ->
@@ -299,6 +302,24 @@ public class RotationUtils {
 
         return false;
     }
+
+
+    public static void SilentMoveFix(StrafeEvent event,Boolean Working) {
+        if (Working) {
+            double forward = event.forword;
+            double strafe = event.strafe;
+            if (event.cancelable) {
+                return;
+            }
+            double factor = strafe * strafe + forward * forward;
+            double angleDiff =
+                    ((MathHelper.wrapAngleTo180_float(mc.player.rotationYaw - getYaw() - 22.5f - 135.0f) + 180.0) / (45.0));
+            double calcYaw = getYaw() + 45.0f * angleDiff;
+
+        }
+    }
+
+
 
     public static float updateRotation(float current, float calc, float maxDelta) {
         float f = MathHelper.wrapAngleTo180_float(calc - current);
@@ -350,7 +371,7 @@ public class RotationUtils {
         if (yaw == currentYaw) {
             return currentYaw;
         }
-        if ((double)mc.gameSettings.mouseSensitivity == 0.5) {
+        if (mc.gameSettings.mouseSensitivity == 0.5) {
             mc.gameSettings.mouseSensitivity = 0.47887325f;
         }
         float f1 = (float) (mc.gameSettings.mouseSensitivity * 0.6f + 0.2f);
@@ -366,7 +387,7 @@ public class RotationUtils {
         if (pitch != calcPitch) {
             pitch = (float)((double)pitch + (double)RandomUtil.nextFloat(1.0f, 2.0f) * Math.sin((double)mc.player.rotationYaw * Math.PI));
         }
-        if ((double)mc.gameSettings.mouseSensitivity == 0.5) {
+        if (mc.gameSettings.mouseSensitivity == 0.5) {
             mc.gameSettings.mouseSensitivity = 0.47887325f;
         }
         float f1 = (float) (mc.gameSettings.mouseSensitivity * 0.6f + 0.2f);
@@ -413,13 +434,8 @@ public class RotationUtils {
         int i = 0;
         int temp_def = 99999999;
         int temp = 0;
-        double top[] = {0.1,0.4,0.8,1,0.6};
+        double[] top = {0.1,0.4,0.8,1,0.6};
         for (ItemStack armorItem : entity.getArmorInventoryList()){
-            if(armorItem.getItem() == null){
-                temp_def = 0;
-                temp = i;
-                continue;
-            }
             if(armorItem.getItem() instanceof ArmorItem){
                 int damageReduce = (int) (((ArmorItem)armorItem.getItem()).damageReduceAmount + (4 * armorItem.getItem().getItemEnchantability() * 0.01) * ((ArmorItem)armorItem.getItem()).damageReduceAmount);
                 if(damageReduce <= temp_def){
