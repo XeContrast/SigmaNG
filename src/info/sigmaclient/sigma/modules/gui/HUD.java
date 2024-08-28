@@ -64,13 +64,13 @@ public class HUD extends Module {
     public void onRenderEvent(RenderEvent event) {
         if (markpng.is("FWMike")) {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-            String L = " §8- §rIamFrozenMilk §8- §r" + Minecraft.debugFPS + " fps" + " §8-§r " + formatter.format(new Date(System.currentTimeMillis()));
+            String L = " §8- §rLUMO Development §8- §r" + Minecraft.debugFPS + " fps" + " §8-§r " + formatter.format(new Date(System.currentTimeMillis()));
             String s1 = "Nursultan" + L;
             float width = FontUtil.sfuiFontBold17.getStringWidth(s1) + 2;
             int height = 14;
             float d = 7;
             Shader.drawRoundRectWithGlowing(10 - d, 10 - d, 10 + width + d, 10 + height + d, new Color(0.117647059f, 0.117647059f, 0.117647059f));
-            float x = FontUtil.sfuiFontBold17.drawStringChroma("nursultan", 12, 15);
+            float x = FontUtil.sfuiFontBold17.drawStringChroma("SigmaNextGen", 12, 15);
             FontUtil.sfuiFontBold17.drawString(L, 12 + x, 15, new Color(220, 220, 220).getRGB());
         }
         if (eat.isEnable()) {

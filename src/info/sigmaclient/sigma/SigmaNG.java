@@ -28,7 +28,7 @@ public class SigmaNG {
     }
     //大版本.子版本 (hotfix.次数)
     public static String getClientVersion(){
-        return "14.0";
+        return "14.1-WIP";
     }
     public static String getClientAuthor(){
         return "Lumo Development";

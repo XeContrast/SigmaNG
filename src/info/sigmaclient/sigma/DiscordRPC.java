@@ -17,7 +17,7 @@ public class DiscordRPC {
     public static OffsetDateTime time;
     private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger();
     public static void load() {
-        IPCClient client = new IPCClient(1134419237365100684L);
+        IPCClient client = new IPCClient(1278269202863624277L);
         time = OffsetDateTime.now();
         client.setListener(new IPCListener() {
             @Override
