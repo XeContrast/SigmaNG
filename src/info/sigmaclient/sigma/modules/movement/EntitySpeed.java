@@ -1,7 +1,7 @@
 package info.sigmaclient.sigma.modules.movement;
 
 import info.sigmaclient.sigma.config.values.NumberValue;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 
 import static net.minecraft.util.math.MathHelper.cos;
 import static net.minecraft.util.math.MathHelper.sin;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class EntitySpeed extends Module {
@@ -20,7 +19,7 @@ public class EntitySpeed extends Module {
      registerValue(speed);
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if (event.isPre()) {
             if(mc.player.isRidingHorse()) {
                 Entity vehicle = mc.player.getRidingEntity();

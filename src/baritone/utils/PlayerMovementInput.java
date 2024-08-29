@@ -18,6 +18,8 @@
 package baritone.utils;
 
 import baritone.api.utils.input.Input;
+import info.sigmaclient.sigma.SigmaNG;
+import info.sigmaclient.sigma.event.impl.player.MoveInputEvent;
 import net.minecraft.util.MovementInput;
 
 public class PlayerMovementInput extends MovementInput {
@@ -50,6 +52,7 @@ public class PlayerMovementInput extends MovementInput {
         if (this.rightKeyDown = handler.isInputForcedDown(Input.MOVE_RIGHT)) {
             this.moveStrafe--;
         }
+
 
         if (this.sneaking = handler.isInputForcedDown(Input.SNEAK)) {
             this.moveStrafe *= 0.3D;

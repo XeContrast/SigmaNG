@@ -1,7 +1,7 @@
 package info.sigmaclient.sigma.modules.movement.flys.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Fly;
 import info.sigmaclient.sigma.modules.movement.flys.FlyModule;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
@@ -29,7 +29,7 @@ public class VeltPVPFly extends FlyModule {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         timerTick ++;
         mc.player.getMotion().y = 0;

@@ -3,7 +3,7 @@ package net.minecraft.client.world;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import info.sigmaclient.sigma.SigmaNG;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.misc.Backtrack;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -197,7 +197,7 @@ public class ClientWorld extends World
     public void tickEntities()
     {
         if(Backtrack.publicFreeze){
-            ((Backtrack)SigmaNG.getSigmaNG().moduleManager.getModule(Backtrack.class)).onUpdateEvent(new UpdateEvent(0,0,0,0,0,false));
+            ((Backtrack)SigmaNG.getSigmaNG().moduleManager.getModule(Backtrack.class)).onUpdateEvent(new MotionEvent(0,0,0,0,0,false));
             return;
         }
         IProfiler iprofiler = this.getProfiler();

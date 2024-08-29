@@ -1,7 +1,7 @@
 package info.sigmaclient.sigma.modules.render;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.potion.Effect;
@@ -12,7 +12,7 @@ public class AntiBlind extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()){
             if(mc.player.isPotionActive(Effect.get(15))){
                 mc.player.removePotionEffect(Effect.get(15));

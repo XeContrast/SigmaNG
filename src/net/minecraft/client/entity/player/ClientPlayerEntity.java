@@ -9,9 +9,8 @@ import javax.annotation.Nullable;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.SigmaNG;
-import info.sigmaclient.sigma.event.EventManager;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.misc.PortalGui;
 import info.sigmaclient.sigma.modules.movement.NoSlow;
 import info.sigmaclient.sigma.utils.RandomUtil;
@@ -289,31 +288,22 @@ public class ClientPlayerEntity extends AbstractClientPlayerEntity
      */
     private void onUpdateWalkingPlayer()
     {
-        UpdateEvent updateEvent = new UpdateEvent(getPosX(), getBoundingBox().minY, getPosZ(), rotationYaw, rotationPitch, onGround);
-        if(RotationUtils.SMOOTH_BACK_TICK > 0){
-            RotationUtils.SMOOTH_BACK_TICK --;
-            updateEvent.yaw = RotationUtils.rotateToYaw(20 + RandomUtil.nextFloat(0, 15), mc.player.lastReportedYaw, updateEvent.yaw);
-            updateEvent.pitch = mc.player.lastReportedPitch;
+        MotionEvent motionEvent = new MotionEvent(getPosX(), getBoundingBox().minY, getPosZ(), rotationYaw, rotationPitch, onGround);
+
+        mc.player.rotationPitchHead = motionEvent.pitch;
+        SigmaNG.getSigmaNG().eventManager.call(motionEvent);
+        if(motionEvent.changeForce){
+            motionEvent.pitch = motionEvent.forcePitch;
         }
-        if(RotationUtils.isMovefixing()){
-            updateEvent.yaw = RotationUtils.movementFixYaw;
-            updateEvent.pitch = RotationUtils.movementFixPitch;
-            RotationUtils.reset();
-        }
-        mc.player.rotationPitchHead = updateEvent.pitch;
-        SigmaNG.getSigmaNG().eventManager.call(updateEvent);
-        if(updateEvent.changeForce){
-            updateEvent.pitch = updateEvent.forcePitch;
-        }
-        if(!updateEvent.dontRotation) {
-            if (updateEvent.pitch != this.rotationPitch || updateEvent.yaw != this.rotationYaw) {
-                mc.player.rotationYawHead = updateEvent.yaw;
-                mc.player.renderYawOffset = updateEvent.yaw;
+        if(!motionEvent.dontRotation) {
+            if (motionEvent.pitch != this.rotationPitch || motionEvent.yaw != this.rotationYaw) {
+                mc.player.rotationYawHead = motionEvent.yaw;
+                mc.player.renderYawOffset = motionEvent.yaw;
 //                mc.player.capeRotateY
-                mc.player.rotationPitchHead = updateEvent.pitch;
+                mc.player.rotationPitchHead = motionEvent.pitch;
             }
         }
-        if(!updateEvent.cancelable) {
+        if(!motionEvent.cancelable) {
             boolean flag = this.isSprinting();
             if (flag != this.serverSprintState)
             {
@@ -331,52 +321,52 @@ public class ClientPlayerEntity extends AbstractClientPlayerEntity
 
 
             if (this.isCurrentViewEntity()) {
-                double d0 = updateEvent.x - this.lastReportedPosX;
-                double d1 = updateEvent.y - this.lastReportedPosY;
-                double d2 = updateEvent.z - this.lastReportedPosZ;
-                double d3 = updateEvent.yaw - this.lastReportedYaw;
+                double d0 = motionEvent.x - this.lastReportedPosX;
+                double d1 = motionEvent.y - this.lastReportedPosY;
+                double d2 = motionEvent.z - this.lastReportedPosZ;
+                double d3 = motionEvent.yaw - this.lastReportedYaw;
                 boolean otherFix = ViaLoadingBase.getInstance().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19);
-                double d4 = updateEvent.pitch - this.lastReportedPitch;
+                double d4 = motionEvent.pitch - this.lastReportedPitch;
                 ++positionUpdateTicks;
                 boolean _1_17Fix = ViaFixManager.viaFixManager.v117PlaceFix.isEnable();
                 boolean s8Fix = ViaFixManager.viaFixManager.isNegativeTimerFixEnable();
                 boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > (otherFix ? (2.0E-4D * 2.0E-4D) : 9.0E-4D) || this.positionUpdateTicks >= 20;
                 boolean flag4 = d3 != 0.0D || d4 != 0.0D;
-                updateEvent.send = false;
+                motionEvent.send = false;
                 if (this.isPassenger()) {
-                    updateEvent.send = true;
+                    motionEvent.send = true;
                     Vector3d vector3d = this.getMotion();
-                    this.connection.sendPacket(new CPlayerPacket.PositionRotationPacket(vector3d.x, -999.0D, vector3d.z, updateEvent.yaw, updateEvent.pitch, updateEvent.onGround));
+                    this.connection.sendPacket(new CPlayerPacket.PositionRotationPacket(vector3d.x, -999.0D, vector3d.z, motionEvent.yaw, motionEvent.pitch, motionEvent.onGround));
                     flag2 = false;
                 } else if (flag2 && flag4) {
-                    updateEvent.send = true;
-                    this.connection.sendPacket(new CPlayerPacket.PositionRotationPacket(updateEvent.x, updateEvent.y, updateEvent.z, updateEvent.yaw, updateEvent.pitch, updateEvent.onGround));
+                    motionEvent.send = true;
+                    this.connection.sendPacket(new CPlayerPacket.PositionRotationPacket(motionEvent.x, motionEvent.y, motionEvent.z, motionEvent.yaw, motionEvent.pitch, motionEvent.onGround));
                 } else if (flag2) {
-                    updateEvent.send = true;
-                    this.connection.sendPacket(new CPlayerPacket.PositionPacket(updateEvent.x, updateEvent.y, updateEvent.z, updateEvent.onGround));
+                    motionEvent.send = true;
+                    this.connection.sendPacket(new CPlayerPacket.PositionPacket(motionEvent.x, motionEvent.y, motionEvent.z, motionEvent.onGround));
                 } else if (flag4) {
-                    updateEvent.send = true;
-                    this.connection.sendPacket(new CPlayerPacket.RotationPacket(updateEvent.yaw, updateEvent.pitch, updateEvent.onGround));
-                } else if (this.prevOnGround != updateEvent.onGround || ViaFixManager.viaFixManager.isNegativeTimerFixEnable()) {
-                    updateEvent.send = true;
-                    this.connection.sendPacket(new CPlayerPacket(updateEvent.onGround));
+                    motionEvent.send = true;
+                    this.connection.sendPacket(new CPlayerPacket.RotationPacket(motionEvent.yaw, motionEvent.pitch, motionEvent.onGround));
+                } else if (this.prevOnGround != motionEvent.onGround || ViaFixManager.viaFixManager.isNegativeTimerFixEnable()) {
+                    motionEvent.send = true;
+                    this.connection.sendPacket(new CPlayerPacket(motionEvent.onGround));
                 }
                 if (flag2) {
-                    this.lastReportedPosX = updateEvent.x;
-                    this.lastReportedPosY = updateEvent.y;
-                    this.lastReportedPosZ = updateEvent.z;
+                    this.lastReportedPosX = motionEvent.x;
+                    this.lastReportedPosY = motionEvent.y;
+                    this.lastReportedPosZ = motionEvent.z;
                     this.positionUpdateTicks = 0;
                 }
 
                 if (flag4) {
-                    this.lastReportedYaw = updateEvent.yaw;
-                    this.lastReportedPitch = updateEvent.pitch;
+                    this.lastReportedYaw = motionEvent.yaw;
+                    this.lastReportedPitch = motionEvent.pitch;
                 }
 
-                this.prevOnGround = updateEvent.onGround;
+                this.prevOnGround = motionEvent.onGround;
                 this.autoJumpEnabled = this.mc.gameSettings.autoJump;
-                updateEvent.pre = false;
-                SigmaNG.getSigmaNG().eventManager.call(updateEvent);
+                motionEvent.pre = false;
+                SigmaNG.getSigmaNG().eventManager.call(motionEvent);
             }
         }
     }

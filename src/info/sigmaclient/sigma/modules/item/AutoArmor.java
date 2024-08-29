@@ -5,7 +5,7 @@ package info.sigmaclient.sigma.modules.item;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.TimerUtil;
@@ -38,7 +38,7 @@ public class AutoArmor extends Module {
      registerValue(invOnly);
     }
     @EventTarget
-    public void onUpdateEvent(UpdateEvent e) {
+    public void onUpdateEvent(MotionEvent e) {
         if (e.isPost()) return;
         if ((invOnly.isEnable() && !(mc.currentScreen instanceof InventoryScreen)) || (onlyWhileNotMoving.isEnable() && MovementUtils.isMoving())) {
             return;

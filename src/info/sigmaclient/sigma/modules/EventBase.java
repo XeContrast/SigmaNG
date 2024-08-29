@@ -7,7 +7,7 @@ import info.sigmaclient.sigma.event.impl.render.*;
 
 public class EventBase {
     public void onMoveEvent(MoveEvent event) {}
-    public void onUpdateEvent(UpdateEvent event) {}
+    public void onUpdateEvent(MotionEvent event) {}
     public void onRenderEvent(RenderEvent event) {}
     public void onKeyEvent(KeyEvent event) {}
     public void onClickEvent(ClickEvent event) {}

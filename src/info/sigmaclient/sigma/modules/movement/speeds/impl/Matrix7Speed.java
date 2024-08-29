@@ -1,11 +1,10 @@
 package info.sigmaclient.sigma.modules.movement.speeds.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
-import net.minecraft.client.settings.KeyBinding;
 
 public class Matrix7Speed extends SpeedModule {
     public Matrix7Speed(Speed speed) {
@@ -17,7 +16,7 @@ public class Matrix7Speed extends SpeedModule {
      */
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
+    public void onUpdateEvent(MotionEvent event) {
         if (event.isPre()) {
             mc.player.getMotion().y -= 0.00348;
             mc.player.jumpMovementFactor = 0.026f;

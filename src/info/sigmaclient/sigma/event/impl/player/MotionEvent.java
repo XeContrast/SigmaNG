@@ -2,14 +2,14 @@ package info.sigmaclient.sigma.event.impl.player;
 
 import info.sigmaclient.sigma.event.Event;
 
-public class UpdateEvent extends Event {
+public class MotionEvent extends Event {
     public double x, y, z;
     public float yaw;
     public float pitch;
     public float forcePitch;
     public boolean onGround, dontRotation, changeForce;
     public boolean send;
-    public UpdateEvent(double x, double y, double z, float yaw, float pitch, boolean onGround){
+    public MotionEvent(double x, double y, double z, float yaw, float pitch, boolean onGround){
         this.x = x;
         this.y = y;
         this.z = z;

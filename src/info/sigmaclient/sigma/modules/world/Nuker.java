@@ -4,7 +4,7 @@ import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ColorValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WindowUpdateEvent;
 import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
@@ -129,7 +129,7 @@ public class Nuker extends Module {
         }
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             // LOL
             ScaffoldUtils.BlockCache blockCache = getBlockCache(new BlockPos(mc.player.getPositionVector()) ,range.getValue().intValue());

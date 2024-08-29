@@ -4,7 +4,7 @@ package info.sigmaclient.sigma.modules.gui;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.KeyEvent;
 import info.sigmaclient.sigma.event.impl.player.MouseClickEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
 import info.sigmaclient.sigma.modules.Category;
@@ -171,7 +171,7 @@ public class KeyStrokes extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         if(!InputMappings.isKeyDown(mc.gameSettings.keyBindForward.keyCode.getKeyCode())){
             W = false;

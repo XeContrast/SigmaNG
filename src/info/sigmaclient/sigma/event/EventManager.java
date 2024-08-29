@@ -12,7 +12,6 @@ import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.event.impl.render.RenderShaderEvent;
 import info.sigmaclient.sigma.gui.clickgui.JelloClickGui;
 import info.sigmaclient.sigma.gui.clickgui.musicplayer.MusicWaveRender;
-import info.sigmaclient.sigma.gui.othergui.anticrack.AntiCrack;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.gui.hide.ClickGUI;
 import info.sigmaclient.sigma.modules.movement.BlockFly;
@@ -123,8 +122,8 @@ public class EventManager {
 //        }
         if(Minecraft.getInstance().player == null || Minecraft.getInstance().world == null) return event;
 
-        if(event instanceof UpdateEvent){
-            if(((UpdateEvent) event).isPre()){
+        if(event instanceof MotionEvent){
+            if(((MotionEvent) event).isPre()){
                 if(RotationUtils.NEXT_SLOT != -1){
                     Minecraft.getInstance().getConnection().sendPacketNOEvent(new CHeldItemChangePacket(RotationUtils.NEXT_SLOT));
                     RotationUtils.NEXT_SLOT = -1;
@@ -189,12 +188,12 @@ public class EventManager {
                 JelloClickGui.leave.interpolate(1.7f, 3);
             }
         }
-        if(event instanceof UpdateEvent){
-            if(((UpdateEvent) event).isPre()) {
+        if(event instanceof MotionEvent){
+            if(((MotionEvent) event).isPre()) {
                 ((BlockFly)SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).tickForAnim();
                 SigmaNG.getSigmaNG().notificationManager.onTick();
             }else{
-                if(!((UpdateEvent) event).send){
+                if(!((MotionEvent) event).send){
                     Timer.violation -= 1;
 //                    ChatUtils.sendMessageWithPrefix("1 " + violation);
                     Timer.violation = Math.max(Timer.violation, 0);

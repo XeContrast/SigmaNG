@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.combat;
 
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.network.play.client.CPlayerPacket;
@@ -16,7 +16,7 @@ public class Regen extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()) {
             for (int i = 0; i < amount.getValue().longValue(); i++) {
                 mc.getConnection().sendPacketNOEvent(new CPlayerPacket(mc.player.onGround));

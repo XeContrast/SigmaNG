@@ -2,10 +2,9 @@ package info.sigmaclient.sigma.modules.item;
 
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
-import info.sigmaclient.sigma.modules.world.Timer;
 import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.TimerUtil;
 
@@ -32,7 +31,7 @@ public class ItemSwaper extends Module {
     }
 
     @EventTarget
-    private void onMotion(UpdateEvent event){
+    private void onMotion(MotionEvent event){
 
         if (event.isPost()) return;
         mc.player.inventory.currentItem = slot;

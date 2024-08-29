@@ -6,7 +6,7 @@ import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.AttackEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.network.INetHandler;
@@ -89,7 +89,7 @@ public class AntiKnockBack extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         suffix = mode.getValue();
         if(event.isPre()){
             switch (mode.getValue()){

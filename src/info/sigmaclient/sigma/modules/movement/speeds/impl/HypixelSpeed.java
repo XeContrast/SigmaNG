@@ -5,15 +5,13 @@ import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.JumpEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
-import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.math.BlockPos;
 
@@ -219,7 +217,7 @@ public class HypixelSpeed extends SpeedModule {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if (event.isPost()) return;
         if(mc.player.onGround){
             offGroundTick = 0;

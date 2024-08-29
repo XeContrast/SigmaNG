@@ -1,21 +1,15 @@
 package info.sigmaclient.sigma.modules.movement;
 
 import info.sigmaclient.sigma.config.values.BooleanValue;
-import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
-import info.sigmaclient.sigma.utils.player.MovementUtils;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.play.client.CEntityActionPacket;
-
-import static net.minecraft.network.play.client.CEntityActionPacket.Action.START_FALL_FLYING;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class ElytraHelper extends Module {
@@ -49,7 +43,7 @@ public class ElytraHelper extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             if(mc.player.onGround && !jump && mc.player.fallDistance == 0 && jumped.isEnable()){
                 mc.player.jump();

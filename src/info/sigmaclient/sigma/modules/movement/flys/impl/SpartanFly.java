@@ -1,10 +1,9 @@
 package info.sigmaclient.sigma.modules.movement.flys.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Fly;
 import info.sigmaclient.sigma.modules.movement.flys.FlyModule;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class SpartanFly extends FlyModule {
@@ -22,7 +21,7 @@ public class SpartanFly extends FlyModule {
         super.onDisable();
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
 //        mc.player.getPositionVec().y = parent.cacheY;
         if (mc.player.onGround) {

@@ -2,12 +2,11 @@ package info.sigmaclient.sigma.modules.movement.flys.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Fly;
 import info.sigmaclient.sigma.modules.movement.flys.FlyModule;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 
-import java.util.Random;
 import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 @Native
@@ -31,7 +30,7 @@ public class CubecraftFly extends FlyModule {
         super.onDisable();
     }
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         double[] motions = new double[]{0.2, 0.31, 0.18, 0.03};
         if(mc.player.ticksExisted % 2 == 0){

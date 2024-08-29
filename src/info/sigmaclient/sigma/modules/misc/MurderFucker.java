@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.misc;
 
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.gui.hud.notification.NotificationManager;
 import info.sigmaclient.sigma.modules.Category;
@@ -41,7 +41,7 @@ public class MurderFucker extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         for(PlayerEntity PlayerEntity : mc.world.getPlayers()){
             if(PlayerEntity.equals(mc.player)) continue;

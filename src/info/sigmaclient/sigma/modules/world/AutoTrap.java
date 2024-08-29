@@ -4,7 +4,7 @@ import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ColorValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -215,7 +215,7 @@ public BooleanValue invisible = new BooleanValue("Invisible", false),
         return bestSlot;
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             Entity target = findTarget();
             // LOL

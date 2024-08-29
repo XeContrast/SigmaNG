@@ -1,7 +1,7 @@
 package info.sigmaclient.sigma.modules.movement;
 
 import info.sigmaclient.sigma.config.values.ModeValue;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -27,7 +27,7 @@ public class NoWeb extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
+    public void onUpdateEvent(MotionEvent event) {
         if (event.isPre()) {
             this.suffix = type.getValue();
         }

@@ -4,7 +4,7 @@ package info.sigmaclient.sigma.modules.item;
 
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.entity.player.PlayerInventory;
@@ -41,7 +41,7 @@ public class AutoTotem extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent e)
+    public void onUpdateEvent(MotionEvent e)
     {
         if(e.isPost()) return;
         movingTotem = false;

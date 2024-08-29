@@ -4,7 +4,7 @@ import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.player.PlayerUtil;
@@ -74,7 +74,7 @@ public class AntiVoid extends Module {
     boolean flag = false;
     int vulcantick = 0;
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             if(mc.player.fallDistance >= 2 && isOnVoid()){
                 if(!flag) {

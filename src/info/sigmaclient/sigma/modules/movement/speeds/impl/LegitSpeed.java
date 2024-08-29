@@ -1,11 +1,10 @@
 package info.sigmaclient.sigma.modules.movement.speeds.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.modules.movement.speeds.SpeedModule;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class LegitSpeed extends SpeedModule {
@@ -20,7 +19,7 @@ public class LegitSpeed extends SpeedModule {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         mc.gameSettings.keyBindJump.pressed = MovementUtils.isMoving();
        

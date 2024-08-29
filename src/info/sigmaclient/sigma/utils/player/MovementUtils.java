@@ -77,6 +77,7 @@ public class MovementUtils {
     }
 
 
+
     public static double directionNoRadians(){
         float rotationYaw = mc.player.rotationYaw;
         if (mc.player.movementInput.moveForward < 0f) rotationYaw += 180f;
@@ -213,7 +214,6 @@ public class MovementUtils {
             doMotion = false;
         }
     }
-
 
 
     public static void setSpeed(double speed) {

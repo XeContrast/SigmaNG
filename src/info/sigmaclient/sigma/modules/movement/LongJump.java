@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.movement;
 
 import info.sigmaclient.sigma.config.values.CustomModeValue;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -37,7 +37,7 @@ public class LongJump extends Module {
         this.type.getCurrent().onPacketEvent(event);
     }
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         this.type.getCurrent().onUpdateEvent(event);
     }
 }

@@ -1425,20 +1425,7 @@ public abstract class Entity implements INameable, ICommandSource
             relative.x = event.strafe;
             relative.z = event.forword;
             p_213309_1_ = (float) event.friction;
-            if(RotationUtils.isMovefixingMove()){
-                yaw = RotationUtils.getYaw();
-                if(SigmaNG.getSigmaNG().moduleManager.getModule(BlockFly.class).enabled
-                        && BlockFly.backward
-                ){
-                    BlockFly.backward = false;
-                    relative.x = -relative.x;
-                    relative.z = -relative.z;
-                    if(Math.abs(RotationUtils.getAngleDifference(RotationUtils.movementFixYaw, this.rotationYaw)) < 45){
-                        relative.z = -relative.z;
-                        relative.x = -relative.x;
-                    }
-                }
-            }
+
         }
         Vector3d vector3d = getAbsoluteMotion(relative, p_213309_1_, yaw);
         this.setMotion(this.getMotion().add(vector3d));

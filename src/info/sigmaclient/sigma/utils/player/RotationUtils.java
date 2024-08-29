@@ -21,10 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static info.sigmaclient.sigma.modules.Module.mc;
 
 public class RotationUtils {
-    private static float movementYaw;
-    public static int SMOOTH_BACK_TICK = 0;
     public static int NEXT_SLOT = -1;
-    public static float NO_ROTATION = -999;
     public static Random random = new Random();
 
     public static boolean isVisibleFOV(final Entity e, final float fov) {
@@ -62,28 +59,6 @@ public class RotationUtils {
                 (float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ))))
         ));
     }
-    /**
-     * Translate vec to rotation
-     *
-     * @param vec     target vec
-     * @return rotation
-     */
-    public static Rotation toRotationTimer(final Vector3d vec) {
-        final double x2 = mc.player.lastTickPosX + (mc.player.getPosX() - mc.player.lastTickPosX) * mc.timer.renderPartialTicks;
-        final double z2 = mc.player.lastTickPosZ + (mc.player.getPosZ() - mc.player.lastTickPosZ) * mc.timer.renderPartialTicks;
-        final Vector3d eyesPos = new Vector3d(x2, mc.player.getPosY() + mc.player.getEyeHeight(), z2);
-
-        final double diffX = vec.x - eyesPos.x;
-        final double diffY = vec.y - eyesPos.y;
-        final double diffZ = vec.z - eyesPos.z;
-
-        return new Rotation(MathHelper.wrapAngleTo180_float(
-                (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F
-        ), MathHelper.wrapAngleTo180_float(
-                (float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ))))
-        ));
-    }
-
 
     /**
      * Translate vec to rotation
@@ -105,16 +80,6 @@ public class RotationUtils {
         ), MathHelper.wrapAngleTo180_float(
                 (float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ))))
         ));
-    }
-    /**
-     * Calculate difference between two rotations
-     *
-     * @param a rotation
-     * @param b rotation
-     * @return difference between rotation
-     */
-    public static double getRotationDifference(final Rotation a, final Rotation b) {
-        return Math.hypot(getAngleDifference(a.getYaw(), b.getYaw()), a.getPitch() - b.getPitch());
     }
 
     /**
@@ -247,32 +212,7 @@ public class RotationUtils {
         }
         return vecRotation3d.distanceTo(eyes);
     }
-    public static void reset(){
-        RotationUtils.movementFixYaw = NO_ROTATION;
-        RotationUtils.movementFixPitch = NO_ROTATION;
-        RotationUtils.slient = false;
-        fixing = false;
-    }
-    public static boolean isMovefixing(){
-        return RotationUtils.movementFixYaw != NO_ROTATION && RotationUtils.movementFixPitch != NO_ROTATION;
-    }
-    public static boolean isMovefixingMove(){
-        return RotationUtils.movementFixYaw != NO_ROTATION && RotationUtils.movementFixPitch != NO_ROTATION && fixing;
-    }
-    public static int getDiff(){
-        return (int) ((MathHelper.wrapAngleTo180_float(mc.player.rotationYaw - movementFixYaw - 22.5f - 135.0f) + 180.0) / 45.0);
-    }
-    public static float getYaw() {
-        int angleDiff = getDiff();
-        if (slient) {
-            return movementFixYaw + 45.0f * angleDiff;
-        }
-        return movementFixYaw;
-    }
-    public static float movementFixYaw = NO_ROTATION;
-    public static float movementFixPitch = NO_ROTATION;
-    public static boolean slient = false;
-    public static boolean fixing = false;
+
     public static boolean isMouseOver(final float yaw, final float pitch, final Entity target, final float range, float expand, boolean onlytarget) {
         final float partialTicks = mc.timer.renderPartialTicks;
         final Entity entity = mc.player;
@@ -303,21 +243,6 @@ public class RotationUtils {
         return false;
     }
 
-
-    public static void SilentMoveFix(StrafeEvent event,Boolean Working) {
-        if (Working) {
-            double forward = event.forword;
-            double strafe = event.strafe;
-            if (event.cancelable) {
-                return;
-            }
-            double factor = strafe * strafe + forward * forward;
-            double angleDiff =
-                    ((MathHelper.wrapAngleTo180_float(mc.player.rotationYaw - getYaw() - 22.5f - 135.0f) + 180.0) / (45.0));
-            double calcYaw = getYaw() + 45.0f * angleDiff;
-
-        }
-    }
 
 
 
@@ -382,22 +307,6 @@ public class RotationUtils {
         return yaw;
     }
 
-    public static float rotateToPitch(float pitchSpeed, float currentPitch, float calcPitch) {
-        float pitch = updateRotation(currentPitch, calcPitch, pitchSpeed + RandomUtil.nextFloat(0.0f, 15.0f));
-        if (pitch != calcPitch) {
-            pitch = (float)((double)pitch + (double)RandomUtil.nextFloat(1.0f, 2.0f) * Math.sin((double)mc.player.rotationYaw * Math.PI));
-        }
-        if (mc.gameSettings.mouseSensitivity == 0.5) {
-            mc.gameSettings.mouseSensitivity = 0.47887325f;
-        }
-        float f1 = (float) (mc.gameSettings.mouseSensitivity * 0.6f + 0.2f);
-        float f2 = f1 * f1 * f1 * 8.0f;
-        int deltaY = (int)((6.667 * (double)pitch - 6.666667 * (double)currentPitch) / (double)f2) * -1;
-        float f3 = (float)deltaY * f2;
-        float f4 = (float)((double)currentPitch - (double)f3 * 0.15);
-        pitch = MathHelper.clamp(f4, -90.0f, 90.0f);
-        return pitch;
-    }
 
     public static float[] getRotationsNeeded(final Entity entity) {
         if (entity == null) {

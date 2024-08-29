@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.render;
 
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.potion.EffectInstance;
@@ -24,7 +24,7 @@ public class Fullbright extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             mc.player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 99999999));
         }

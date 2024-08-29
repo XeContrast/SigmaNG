@@ -17,7 +17,7 @@ import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.impl.player.JumpEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -25,8 +25,6 @@ import info.sigmaclient.sigma.modules.combat.Killaura;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.player.RotationUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -192,7 +190,7 @@ public final class TargetStrafe extends Module {
 
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
+    public void onUpdateEvent(MotionEvent event) {
         if(event.isPost()) {
             if (mc.gameSettings.keyBindLeft.isPressed()) {
                 this.direction = 1;

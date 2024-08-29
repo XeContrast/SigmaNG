@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.movement;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.BlockColEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
@@ -30,7 +30,7 @@ public class WaterSpeed extends Module {
         
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             if(mc.player.isInWater()){
                 switch (type.getValue()){

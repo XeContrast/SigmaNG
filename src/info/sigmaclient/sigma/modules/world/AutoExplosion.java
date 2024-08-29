@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.world;
 
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.TimerUtil;
@@ -59,7 +59,7 @@ public class AutoExplosion extends Module {
         return itemStack.getItem() instanceof EnderCrystalItem || itemStack.getTranslationKey().contains("crystal");
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             if(!isCrystal(mc.player.getHeldItemMainhand()) && !isCrystal(mc.player.getHeldItemOffhand()) && !(mc.player.getHeldItemMainhand().getTranslationKey().contains("anchor")) && !(mc.player.getHeldItemMainhand().getTranslationKey().contains("glow") && mc.player.getHeldItemMainhand().getTranslationKey().contains("stone"))) return;
             if(!mc.gameSettings.keyBindUseItem.pressed) return;

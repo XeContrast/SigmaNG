@@ -4,7 +4,7 @@ import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.AttackEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +28,7 @@ public class SuperKnockBack extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
+    public void onUpdateEvent(MotionEvent event) {
         if (tick > 0) {
             tick--;
         }

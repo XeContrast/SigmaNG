@@ -1,5 +1,7 @@
 package net.minecraft.util;
 
+import info.sigmaclient.sigma.SigmaNG;
+import info.sigmaclient.sigma.event.impl.player.MoveInputEvent;
 import net.minecraft.client.GameSettings;
 
 public class MovementInputFromOptions extends MovementInput
@@ -24,6 +26,14 @@ public class MovementInputFromOptions extends MovementInput
         this.moveStrafe = this.leftKeyDown == this.rightKeyDown ? 0.0F : (this.leftKeyDown ? 1.0F : -1.0F);
         this.jump = this.gameSettings.keyBindJump.isKeyDown();
         this.sneaking = this.gameSettings.keyBindSneak.isKeyDown();
+
+
+        MoveInputEvent event = new MoveInputEvent(moveForward,moveStrafe);
+        SigmaNG.getSigmaNG().eventManager.call(event);
+
+        moveForward = event.getForward();
+        moveStrafe = event.getStrafe();
+
 
         if (p_225607_1_)
         {

@@ -6,7 +6,7 @@ import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.other.WorldChangeEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.movement.Fly;
@@ -14,7 +14,6 @@ import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.TimerUtil;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CConfirmTeleportPacket;
 import net.minecraft.network.play.client.CEntityActionPacket;
 import net.minecraft.network.play.client.CPlayerPacket;
@@ -53,7 +52,7 @@ public class Disabler extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(mc.player == null || mc.world == null)return;
         this.suffix = mode.getValue();
         switch (mode.getValue()) {

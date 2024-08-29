@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.gui;
 import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.KeyEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
 import info.sigmaclient.sigma.gui.hud.JelloTabGUI;
@@ -34,7 +34,7 @@ public class TabGUI extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             tabgui.tick();
             int x = 0;

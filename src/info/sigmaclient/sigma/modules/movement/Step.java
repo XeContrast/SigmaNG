@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.movement;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.impl.player.StepEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
@@ -57,7 +57,7 @@ public class Step extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.pre){
             if(keepTicks > 0){
                 keepTicks --;

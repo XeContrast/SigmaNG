@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.scripts;
 import com.ql.util.express.DefaultContext;
 import com.ql.util.express.ExpressRunner;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
 import info.sigmaclient.sigma.event.impl.render.RenderEvent;
@@ -61,7 +61,7 @@ public class ScriptModule extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         try {
             runner.execute("onUpdateEvent", context, null, true, false, 1000);
         } catch (Exception e) {

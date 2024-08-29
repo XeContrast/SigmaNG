@@ -1,7 +1,7 @@
 package info.sigmaclient.sigma.modules.movement.longjumps.impl;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.LongJump;
 import info.sigmaclient.sigma.modules.movement.longjumps.LongJumpModule;
 import info.sigmaclient.sigma.utils.ChatUtils;
@@ -25,7 +25,7 @@ public class WatchDogLongjump extends LongJumpModule {
 
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(initTicks < 2){
             mc.player.getMotion().x = 0;
             mc.player.getMotion().z = 0;

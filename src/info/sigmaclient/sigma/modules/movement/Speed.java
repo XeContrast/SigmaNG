@@ -161,7 +161,7 @@ public class Speed extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         mode.getCurrent().onUpdateEvent(event);
        
     }

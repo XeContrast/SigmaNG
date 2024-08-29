@@ -5,7 +5,7 @@ import info.sigmaclient.sigma.config.values.ColorValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
 import info.sigmaclient.sigma.gui.Sigma5LoadProgressGui;
@@ -332,7 +332,7 @@ public class AutoCrystal extends Module {
         return -1;
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             if(antiTrap.isEnable()){
                 BlockPos bb = new BlockPos(mc.player.getPositionVec());
@@ -624,7 +624,7 @@ public class AutoCrystal extends Module {
             }
             return bestSlot;
         }
-        public boolean updateEvent(UpdateEvent event) {
+        public boolean updateEvent(MotionEvent event) {
             if(event.isPre()){
                 Entity target = findTarget();
                 // LOL

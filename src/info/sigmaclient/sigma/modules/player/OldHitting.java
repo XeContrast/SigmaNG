@@ -6,7 +6,7 @@ import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.utils.render.anims.PartialTicksAnim;
@@ -299,7 +299,7 @@ public class OldHitting extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.pre){
             attackAnim.interpolate(0, mode.is("Tomy") ? -0.8 : -0.6);
             if(mode.is("Tomy")) {

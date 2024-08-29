@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.movement;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.gui.clickgui.NursultanClickGui;
 import info.sigmaclient.sigma.modules.Category;
@@ -88,7 +88,7 @@ public final class InvMove extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()) {
             if (mc.currentScreen instanceof ContainerScreen || mc.currentScreen instanceof JelloClickGui || mc.currentScreen instanceof NursultanClickGui) {
                 updateStates();

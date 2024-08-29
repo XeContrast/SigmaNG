@@ -3,11 +3,10 @@ package info.sigmaclient.sigma.modules.movement;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class Spider extends Module {
@@ -33,7 +32,7 @@ public class Spider extends Module {
     }
 
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if (event.isPre()) {
             switch (type.getValue()) {
                 case "Vanilla":

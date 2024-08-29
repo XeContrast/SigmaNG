@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.world;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.MouseClickEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 
@@ -12,7 +12,7 @@ public class Auto32k extends Module {
         super("Auto32k", Category.World, "Auto place shulk and use 32k. (cant use)");
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
        
     }
 

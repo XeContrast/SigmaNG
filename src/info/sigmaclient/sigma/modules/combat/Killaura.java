@@ -1,9 +1,6 @@
 package info.sigmaclient.sigma.modules.combat;
 
-import com.viaversion.viaversion.ViaVersionPlugin;
-import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import info.sigmaclient.sigma.modules.movement.Speed;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
 import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
@@ -11,9 +8,10 @@ import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.*;
 import info.sigmaclient.sigma.premium.PremiumManager;
 import info.sigmaclient.sigma.process.impl.player.BlinkProcess;
+import info.sigmaclient.sigma.process.impl.player.RotationManager;
+import info.sigmaclient.sigma.process.impl.player.StrafeFixManager;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
-import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.click.ClickHelper;
 import info.sigmaclient.sigma.utils.player.AutoBlockUtil;
@@ -54,8 +52,6 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.SConfirmTransactionPacket;
-import net.minecraft.network.play.server.SKeepAlivePacket;
-import net.minecraft.network.play.server.SPlayerDiggingPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
@@ -66,7 +62,6 @@ import java.awt.*;
 import java.util.*;
 
 import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
-import static info.sigmaclient.sigma.utils.player.RotationUtils.NO_ROTATION;
 
 
 public class Killaura extends Module {
@@ -160,7 +155,6 @@ public class Killaura extends Module {
             "Strict",
             "Vanilla"
     });
-    public BooleanValue silentFix = new BooleanValue("SilentFix", false);
     public static BooleanValue raytrace = new BooleanValue("Raytrace", false);
     public ModeValue TraceMode = new ModeValue("Trace Mode", "Target", new String[]{
             "Target", "All"
@@ -243,7 +237,6 @@ public class Killaura extends Module {
         registerValue(throughWalls);
         registerValue(limit);
         registerValue(movementFix);
-        registerValue(silentFix);
         registerValue(raytrace);
         registerValue(noswing);
         registerValue(disable_on_death);
@@ -287,7 +280,6 @@ public class Killaura extends Module {
         cacheAttackTarget = null;
         attackTarget = null;
         reset();
-        SigmaNG.getSigmaNG().eventManager.nextLegitUnblock = true;
         if(isABEnable()) {
             OldHitting.blocking = false;
         }
@@ -364,10 +356,10 @@ public class Killaura extends Module {
             if(RotationUtils.getAngleDifference(calc.getYaw(), mc.player.lastReportedYaw) >= 5) {
                 float[] calc2 = RotationUtils.mouseSens(calc.getYaw(), calc.getPitch(), mc.player.lastReportedYaw, mc.player.lastReportedPitch);
                 lastRotation = new float[]{calc2[0], calc2[1]};
-                RotationUtils.movementFixYaw = lastRotation[0];
-                RotationUtils.movementFixPitch = lastRotation[1];
-                RotationUtils.fixing = isMoveFix();
-                RotationUtils.slient = movementFix.is("Silent");
+                RotationManager.setRotYaw(lastRotation[0]);
+                RotationManager.setRotPitch(lastRotation[1]);
+                StrafeFixManager.StrafeFix = isMoveFix();
+                StrafeFixManager.silent = movementFix.is("Silent");
             }
             return;
         }
@@ -380,16 +372,9 @@ public class Killaura extends Module {
 
     }
 
-    @EventTarget
-    public void onStrafeEvent(StrafeEvent event) {
-        if (movementFix.is("Vanilla") && !targets.isEmpty()) {
-            event.yaw = RotationUtils.getYaw();
-        }
-    }
-
 
     @EventTarget
-    public void onMotionEvent(UpdateEvent event){
+    public void onMotionEvent(MotionEvent event){
         if(!targets.isEmpty()){
             //取消格挡
             boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
@@ -424,8 +409,7 @@ public class Killaura extends Module {
                 if(BlinkProcess.isBlinking()){
                     BlinkProcess.stopBlink();
                 }
-                RotationUtils.movementFixYaw = NO_ROTATION;
-                RotationUtils.movementFixPitch = NO_ROTATION;
+
             }
         }
 
@@ -604,18 +588,18 @@ public class Killaura extends Module {
 
         this.lastRotation = rotations;
         if(rotation.is("NCP")) {
-            RotationUtils.SMOOTH_BACK_TICK = 5;
+            RotationManager.SMOOTH_BACK_TICK = 5;
         }
         //MoveFix
         if(lastRotation != null) {
-            RotationUtils.movementFixYaw = lastRotation[0];
-            RotationUtils.movementFixPitch = lastRotation[1];
-            RotationUtils.fixing = isMoveFix();
-            RotationUtils.slient = movementFix.is("Silent");
+            RotationManager.setRotYaw(lastRotation[0]);
+            RotationManager.setRotPitch(lastRotation[1]);
+            StrafeFixManager.StrafeFix = isMoveFix();
+            StrafeFixManager.silent = movementFix.is("Silent");
         }
     }
 
-    public void doAttack(UpdateEvent event){
+    public void doAttack(MotionEvent event){
         boolean canHit = new Random().nextInt(100) > hitChange.getValue().floatValue();
 
         if(mc.player.getDistanceNearest(attackTarget) <= range2.getValue().floatValue() && !canHit) {
@@ -747,7 +731,7 @@ public class Killaura extends Module {
     @Native
     public boolean isMoveFix(){
         return switch (movementFix.getValue()) {
-            case "Strict" -> true;
+            case "Strict","Silent" -> true;
             case "Matrix" ->
                     groundTime > 1 && Math.abs(RotationUtils.getAngleDifference(mc.player.rotationYaw, mc.player.lastReportedYaw)) <= 60;
             default -> false;
@@ -934,7 +918,7 @@ public class Killaura extends Module {
 
 
     @Native
-    public void priorityBlock(UpdateEvent event){
+    public void priorityBlock(MotionEvent event){
         switch (autoblockMode.getValue()) {
             case "Hypixel":
                 if(blockTime > 2 && BlinkProcess.isBlinking()){
@@ -944,7 +928,7 @@ public class Killaura extends Module {
         }
     }
     @Native
-    public void block(UpdateEvent event){
+    public void block(MotionEvent event){
         switch (autoblockMode.getValue()) {
             case "NCP":
                 blockTime++;

@@ -1,22 +1,19 @@
 package info.sigmaclient.sigma.modules.movement;
 
 import info.sigmaclient.sigma.config.values.ModeValue;
-import info.sigmaclient.sigma.event.impl.other.PrintChatMesEvent;
 import info.sigmaclient.sigma.event.impl.other.WorldChangeEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.process.impl.player.BlinkProcess;
-import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.TimerUtil;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.player.PlayerUtil;
 import net.minecraft.block.GlassBlock;
 import net.minecraft.item.BowItem;
 import net.minecraft.network.play.client.CPlayerPacket;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class Phase extends Module {
@@ -118,7 +115,7 @@ public class Phase extends Module {
         super.onDisable();
     }
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
             switch (type.getValue()){
                 case "Clip":

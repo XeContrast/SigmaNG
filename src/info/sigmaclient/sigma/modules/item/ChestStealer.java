@@ -8,7 +8,7 @@ import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WindowUpdateEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.modules.Category;
@@ -102,7 +102,7 @@ public class ChestStealer extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent e) {
+    public void onUpdateEvent(MotionEvent e) {
         if(e.isPre()){
             if (aura.isEnable()) {
                 final int radius = auraRange.getValue().intValue();

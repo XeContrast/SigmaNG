@@ -5,7 +5,7 @@ import info.sigmaclient.sigma.config.values.ColorValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WindowUpdateEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
@@ -13,6 +13,8 @@ import info.sigmaclient.sigma.gui.Sigma5LoadProgressGui;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.combat.AntiBot;
+import info.sigmaclient.sigma.process.impl.player.RotationManager;
+import info.sigmaclient.sigma.process.impl.player.StrafeFixManager;
 import info.sigmaclient.sigma.utils.TimerUtil;
 import info.sigmaclient.sigma.utils.VecUtils;
 import info.sigmaclient.sigma.utils.player.RotationUtils;
@@ -327,9 +329,9 @@ public class AutoAnchor extends Module {
                     180,
                     180,
                     false);
-            RotationUtils.movementFixYaw = calcRotation[0];
-            RotationUtils.movementFixPitch = calcRotation[1];
-            RotationUtils.fixing = true;
+            RotationManager.setRotYaw(calcRotation[0]);
+            RotationManager.setRotPitch(calcRotation[1]);
+            StrafeFixManager.StrafeFix = true;
             mc.playerController.processRightClickBlock(
                     mc.player,
                     mc.world,
@@ -431,7 +433,7 @@ public class AutoAnchor extends Module {
         return -1;
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()){
         }
        
@@ -616,7 +618,7 @@ public class AutoAnchor extends Module {
             }
             return bestSlot;
         }
-        public boolean updateEvent(UpdateEvent event) {
+        public boolean updateEvent(MotionEvent event) {
             if(event.isPre()){
                 Entity target = findTarget();
                 // LOL
@@ -645,9 +647,9 @@ public class AutoAnchor extends Module {
                 BlockPos currentPos = this.currentPos.getPosition();
                 if(rotations.isEnable()){
                     float[] rots = RotationUtils.scaffoldRots(currentPos.getX() + 0.5, currentPos.getY() + 0.5, currentPos.getZ() + 0.5, mc.player.prevRotationYaw, mc.player.prevRotationPitch, 180, 180, false);
-                    RotationUtils.movementFixYaw = rots[0];
-                    RotationUtils.movementFixPitch = rots[1];
-                    RotationUtils.fixing = true;
+                    RotationManager.setRotYaw(rots[0]);
+                    RotationManager.setRotPitch(rots[1]);
+                    StrafeFixManager.StrafeFix = true;
                 }
                 Block block = mc.world.getBlockState(blockCache.getPosition()).getBlock();
                 if(lastCurrentPos == null) {

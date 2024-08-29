@@ -8,10 +8,12 @@ import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.ClickEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
+import info.sigmaclient.sigma.process.impl.player.RotationManager;
+import info.sigmaclient.sigma.process.impl.player.StrafeFixManager;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
 import info.sigmaclient.sigma.sigma5.utils.Sigma5AnimationUtil;
 import info.sigmaclient.sigma.sigma5.utils.Sigma5DrawText;
@@ -205,7 +207,7 @@ public class BlockFly extends Module {
                 !block.getTranslationKey().contains("_bed") &&
                 !block.getTranslationKey().contains("_stairs");
     }
-    float[] rots = new float[]{NO_ROTATION, NO_ROTATION};
+    float[] rots = new float[]{0, 0};
     public int getSlot(){
         for(int i = 0; i < 9 ; i++){
             final ItemStack itemStack = mc.player.inventory.mainInventory.get(i);
@@ -965,11 +967,11 @@ public class BlockFly extends Module {
 //            click();
 //        }
         // do movement fix
-            movementFixYaw = rots[0];
-            movementFixPitch = rots[1];
-            fixing = movementFix.isEnable() && !(type.is("Hypixel") || type.is("NCP"));
+        RotationManager.setRotYaw(rots[0]);
+        RotationManager.setRotPitch(rots[1]);
+        StrafeFixManager.StrafeFix = movementFix.isEnable() && !(type.is("Hypixel") || type.is("NCP"));
 //            RotationUtils.slient = placeTime.is("Telly");
-            backward = (!placeTime.is("Telly") || isTellying()) && fixing;
+            backward = (!placeTime.is("Telly") || isTellying()) && StrafeFixManager.StrafeFix;
         if(slot == -1) return;
         if(blockPos != null) {
 //            if(place.is("Legit")){
@@ -1011,7 +1013,7 @@ public class BlockFly extends Module {
         return airTicks >= 2;
     }
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
        
     }
 

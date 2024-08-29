@@ -2,7 +2,7 @@ package info.sigmaclient.sigma.modules.world;
 
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.MouseClickEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.block.AirBlock;
@@ -15,7 +15,7 @@ public class Eagle extends Module {
     }
     int sneakAfterTick = 0;
   @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPre()) return;
         boolean block = mc.world.getBlockState(
                 new BlockPos(mc.player.getPosX(), mc.player.getPosY() - 0.5, mc.player.getPosZ())

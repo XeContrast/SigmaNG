@@ -4,11 +4,14 @@ import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
+import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
 import info.sigmaclient.sigma.event.impl.player.WindowUpdateEvent;
 import info.sigmaclient.sigma.event.impl.player.WorldEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.movement.BlockFly;
+import info.sigmaclient.sigma.process.impl.player.RotationManager;
+import info.sigmaclient.sigma.process.impl.player.StrafeFixManager;
 import info.sigmaclient.sigma.utils.Variable;
 import info.sigmaclient.sigma.utils.VecUtils;
 import info.sigmaclient.sigma.utils.player.RotationUtils;
@@ -95,9 +98,9 @@ public class AutoLava extends Module {
                     180,
                     180,
                     false);
-            RotationUtils.movementFixYaw = calcRotation[0];
-            RotationUtils.movementFixPitch = calcRotation[1];
-            RotationUtils.fixing = true;
+            RotationManager.setRotYaw(calcRotation[0]);
+            RotationManager.setRotPitch(calcRotation[1]);
+            StrafeFixManager.StrafeFix = true;
             if(mc.playerController.processRightClickBlock(
                     mc.player,
                     mc.world,

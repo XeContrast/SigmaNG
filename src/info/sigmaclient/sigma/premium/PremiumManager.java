@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.config.ConfigManager;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Fly;
 import info.sigmaclient.sigma.modules.movement.flys.impl.VulcanFly;
 import info.sigmaclient.sigma.modules.movement.speeds.impl.GrimSpeed;
@@ -261,7 +261,7 @@ public class PremiumManager {
         };
         VulcanFly.premium1 = (e, p) -> {
             Fly parent = (Fly) p;
-            UpdateEvent event = (UpdateEvent) e;
+            MotionEvent event = (MotionEvent) e;
 //        mc.player.getPositionVec().y = parent.cacheY;
             if (mc.player.onGround) {
 //            mc.player.getMotion().y = 0.41999998688697815;

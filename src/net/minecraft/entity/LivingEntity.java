@@ -2522,10 +2522,13 @@ public abstract class LivingEntity extends Entity
 
         Vector3d vector3d = this.getMotion();
         this.setMotion(vector3d.x, (double)f, vector3d.z);
-        float yaw = RotationUtils.isMovefixingMove() ? RotationUtils.movementFixYaw : this.rotationYaw;
+        float yaw = this.rotationYaw;
         boolean boost = this.isSprinting();
+
         JumpEvent event = new JumpEvent(yaw , boost);
-        SigmaNG.getSigmaNG().eventManager.call(event);
+        if(this == mc.player) {
+            SigmaNG.getSigmaNG().eventManager.call(event);
+        }
         if(event.cancelable)return;
         boost = event.boost;
         yaw = event.yaw;

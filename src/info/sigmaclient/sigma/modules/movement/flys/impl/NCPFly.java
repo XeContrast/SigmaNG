@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.movement.flys.impl;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.movement.Fly;
 import info.sigmaclient.sigma.modules.movement.flys.FlyModule;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
@@ -16,7 +16,6 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class NCPFly extends FlyModule {
@@ -106,7 +105,7 @@ public class NCPFly extends FlyModule {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+    public void onUpdateEvent(MotionEvent event){
         if(event.isPost()) return;
         if(isTeleportMode()){
             mc.timer.tickLength = 1000.0F / 20F / 0.2F;

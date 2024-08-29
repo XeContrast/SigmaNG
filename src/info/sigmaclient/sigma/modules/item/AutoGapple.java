@@ -5,7 +5,7 @@ import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.player.ClickEvent;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import net.minecraft.entity.player.PlayerInventory;
@@ -54,7 +54,7 @@ public class AutoGapple extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent e) {
+    public void onUpdateEvent(MotionEvent e) {
         if(e.isPost()) return;
         if (mc.player.getHealth() > health.getValue().intValue()) {
             no();

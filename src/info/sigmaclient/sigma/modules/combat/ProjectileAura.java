@@ -14,6 +14,8 @@ import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.movement.BlockFly;
 import info.sigmaclient.sigma.modules.player.Blink;
+import info.sigmaclient.sigma.process.impl.player.RotationManager;
+import info.sigmaclient.sigma.process.impl.player.StrafeFixManager;
 import info.sigmaclient.sigma.utils.TimerUtil;
 import info.sigmaclient.sigma.utils.player.RotationUtils;
 import net.minecraft.client.settings.KeyBinding;
@@ -143,10 +145,10 @@ public class ProjectileAura extends Module {
             double v = ve * 3.0f;
             float bowTrajectory = (float) ((double) ((float) (-Math.toDegrees(this.getLaunchAngle(target, v)))) - 3.8);
             if (trajectoryTheta90 <= 360.0f && bowTrajectory <= 360.0f) {
-                RotationUtils.movementFixYaw = trajectoryTheta90;
-                RotationUtils.movementFixPitch = bowTrajectory;
-                RotationUtils.fixing = movementFix.getValue();
-                RotationUtils.slient = true;
+                RotationManager.setRotYaw(trajectoryTheta90);
+                RotationManager.setRotYaw(bowTrajectory);
+                StrafeFixManager.StrafeFix = movementFix.getValue();
+                StrafeFixManager.silent = true;
 
             }
 

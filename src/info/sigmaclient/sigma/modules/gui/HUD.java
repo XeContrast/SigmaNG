@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
-import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
+import info.sigmaclient.sigma.event.impl.player.MotionEvent;
 import info.sigmaclient.sigma.event.impl.player.WindowUpdateEvent;
 import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.modules.Category;
@@ -13,9 +13,7 @@ import info.sigmaclient.sigma.utils.font.FontUtil;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
-import net.minecraft.item.UseAction;
 import net.minecraft.util.Hand;
 import net.optifine.util.MathUtils;
 
@@ -44,7 +42,7 @@ public class HUD extends Module {
     }
 
     @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
+    public void onUpdateEvent(MotionEvent event) {
         MovementUtils.updateBlocksPerSecond();
         bps = (float) Math.hypot(mc.player.getPosX() - mc.player.prevPosX,mc.player.getPosZ() - mc.player.prevPosZ);
         if (eat.isEnable()) {
