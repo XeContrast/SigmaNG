@@ -13,7 +13,9 @@ import info.sigmaclient.sigma.utils.font.FontUtil;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.Hand;
 import net.optifine.util.MathUtils;
 

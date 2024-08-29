@@ -41,10 +41,7 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.SConfirmTransactionPacket;
@@ -108,7 +105,7 @@ public class Killaura extends Module {
 
     public static ModeValue autoblockMode = new ModeValue("AutoBlock", "Vanilla",
             new String[]{
-                    "None", "Vanilla", "NCP", "Always", "Percent", "Fake", "Hypixel","Hypixel2", "Basic1", "Basic2", "Legit", "Intave"
+                    "None", "Vanilla","Hypixel"
     });
     public ModeValue cpsMode = new ModeValue("ClickType", "Butterfly", new String[]{
             "Butterfly", "Drag","Stabilized","DoubleClick","NormalClick"
@@ -190,10 +187,10 @@ public class Killaura extends Module {
     private final PartialTicksAnim translate3 = new PartialTicksAnim(0);
     private ClickHelper clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
     private boolean back = false;
+    public static boolean blocking = false;
     private int switchTime = 0;
     private int index = 0;
     boolean c07ed;
-    private int legitABdelay = 0;
     private int delay_ping = 0;
     private final TimerUtil attackTimer = new TimerUtil();
     private final ArrayList<LivingEntity> targets = new ArrayList<>();
@@ -262,7 +259,6 @@ public class Killaura extends Module {
         groundTime = 0;
         reset();
         timer.reset();
-        legitABdelay = 0;
         blockTime = 0;
         translate.setValue(0);
 
@@ -278,15 +274,16 @@ public class Killaura extends Module {
     @Native
     @Override
     public void onDisable() {
+        blocking = false;
+        if (blocking) {
+            mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM,BlockPos.ZERO,Direction.DOWN));
+        }
         KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1),false);
         canFallHit = false;
         cacheAttackTarget = null;
         attackTarget = null;
         reset();
         SigmaNG.getSigmaNG().eventManager.nextLegitUnblock = true;
-        if(isABEnable()) {
-            OldHitting.blocking = false;
-        }
         super.onDisable();
     }
 
@@ -369,10 +366,6 @@ public class Killaura extends Module {
 
         cacheAttackTarget = attackTarget;
 
-        if(isABEnable()) {
-            OldHitting.blocking = true;
-        }
-
     }
 
     @EventTarget
@@ -391,41 +384,52 @@ public class Killaura extends Module {
         }
     }
 
+    /**
+     * by Xebook1
+     * 傻逼牛奶老子给你妈杀了
+     * 写的什么沟槽玩意我日尼玛的
+     * 取消放砍你发你妈的UP呢
+     */
 
     @EventTarget
-    public void onMotionEvent(UpdateEvent event){
-        if(!targets.isEmpty()){
-            //取消格挡
+    public void onUpdateEvent(UpdateEvent event) {
+        if (!targets.isEmpty()) {
+            if (blockTime > 0) {
+                mc.getConnection().sendPacket(new CAnimateHandPacket(Hand.OFF_HAND));
+            }
             boolean canBlock = mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem &&
                     mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
-            if(isABEnable() && canBlock) {
-                priorityBlock(event);
-            }
             unBlockTarget();
-            unBlock();
 
-            if(event.isPre()) {
+            if (event.isPre()) {
                 //转头
                 float calcSpeed = TurnSpeed.getValue().intValue();
                 doRotation(calcSpeed);
 
                 //Ray
-                if(!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))){
+                if (!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))) {
                     mc.objectMouseOver = new EntityRayTraceResult(attackTarget);
                 }
 
                 //攻击
-                if(Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY){
-                    if(!BadPacketsProcess.bad(false,false,false,false,false,true,true)) {
+                if (Objects.requireNonNull(mc.objectMouseOver).getType() == RayTraceResult.Type.ENTITY) {
+                    if (!BadPacketsProcess.bad(false, false, false, false, false, true, true)) {
                         this.doAttack();
                     }
                 }
             }
-            if(isABEnable() && canBlock) {
-                block(event);
+            if (!blocking) {
+                blocking = true;
             }
-        }else {
-            if(event.isPre()) {
+            if (blocking) {
+                block();
+                blockingPacket();
+            }
+        } else {
+            if (blocking) {
+                unBlock();
+            }
+            if (event.isPre()) {
                 RotationUtils.movementFixYaw = NO_ROTATION;
                 RotationUtils.movementFixPitch = NO_ROTATION;
             }
@@ -837,11 +841,6 @@ public class Killaura extends Module {
     }
 
     @Native
-    public boolean isABEnable(){
-        return !autoblockMode.is("None");
-    }
-
-    @Native
     public static void unBlockTarget(){
         if(blockTime > 0){
             if (autoblockMode.getValue().equals("Basic2")) {
@@ -922,166 +921,53 @@ public class Killaura extends Module {
     }
 
     @Native
-    public void interactBlock(){
+    public static void interactBlock(){
         EntityRayTraceResult entityraytraceresult = new EntityRayTraceResult(attackTarget);
         mc.playerController.interactWithEntity(mc.player, attackTarget, entityraytraceresult, Hand.OFF_HAND);
         mc.playerController.interactWithEntity(mc.player, attackTarget, Hand.OFF_HAND);
     }
 
     @Native
-    public void priorityBlock(UpdateEvent event){
-        if(Interact.isEnable() && blockTime < 1) {
-            interactBlock();
-        }
-        if (autoblockMode.getValue().equals("Hypixel2")) {
-            mc.gameSettings.keyBindSprint.setPressed(false);
-            if (mc.player.isSprinting()) {
-                mc.player.setSprinting(false);
-            }
-
-            if (blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)) {
-                if (mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                }
-            }
-
-            if (mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem) {
-                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                blockTime++;
-            } else {
-                blockTime = 0;
-            }
-        }
-    }
-
-    @Native
-    public void block(UpdateEvent event){
+    public static void block(){
         if(Interact.isEnable() && blockTime < 1) {
             interactBlock();
         }
         switch (autoblockMode.getValue()) {
-            case "Basic2", "Always", "NCP":
-                blockTime++;
-                break;
+            case "Hypixel":
             case "Vanilla":
-                blockTime++;
-                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                break;
-            case "Basic1":
-                blockTime++;
-                if (mc.player.ticksExisted % 2 == 0) {
+                if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem) {
+                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                } else if (mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem) {
+                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
+                } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
                     mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 }
-                break;
-            case "Percent":
-                if (mc.player.ticksExisted % 3 == 0) {
-                    mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
-                    blockTime++;
-                }
-                break;
-            case "Legit":
-                legitABdelay = 2;
-                mc.gameSettings.keyBindUseItem.pressed = true;
-                blockTime++;
-                break;
-            case "Intave":
-                if(mc.player.ticksExisted % 20 >= 4 && mc.player.ticksExisted % 20 <= 8) {
-                    legitABdelay = 2;
-                    mc.gameSettings.keyBindUseItem.pressed = true;
-                }
-                blockTime++;
-                break;
-            case "Hypixel":
-                KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1),true);
-                blockTime++;
-                break;
-            case "Hypixel2":
-                mc.gameSettings.keyBindSprint.setPressed(false);
-                if(mc.player.isSprinting()){
-                    mc.player.setSprinting(false);
-                }
-
-
-                if(blockTime > 0){
-                    if(mc.player.offGroundTicks > 0 && mc.player.offGroundTicks % 4 == 0){
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 8 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                        blockTime = 0;
-                    }else {
-                        return;
-                    }
-                }
-
-                if(blockTime == 0 || !(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem)){
-                    if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    }
-                }
-
-                if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                    blockTime++;
-                }else {
-                    blockTime = 0;
-                }
+                blocking = true;
                 break;
         }
     }
 
     @Native
-    public static void unBlock(){
-        if(blockTime > 0){
-            switch (autoblockMode.getValue()) {
-                case "Legit", "Intave":
-                    mc.gameSettings.keyBindUseItem.pressed = false;
-                    blockTime = 0;
-                    break;
-                case "Basic2":
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    blockTime = 0;
-                    break;
-                case "Always":
-                    blockTime = 0;
-                    break;
-                case "Vanilla":
-                    mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
-                    blockTime = 0;
-                    break;
-                case "NCP":
-                    if (attackTarget == null) {
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    } else {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    }
-                    blockTime = 0;
-                    break;
-                case "Basic1":
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    blockTime = 0;
-                    break;
-                case "Percent":
-                    Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
-                    blockTime = 0;
-                    break;
-                case "Hypixel":
-                    if(attackTarget == null) {
-                        KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1), false);
-                        blockTime = 0;
-                    }
-                    break;
-                case "Hypixel2":
-                    if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                        blockTime = 0;
-                    }
-                    break;
-            }
+    public void blockingPacket() {
+        if (!blocking) return;
+        switch (autoblockMode.getValue()) {
+            case "Hypixel":
+            mc.getConnection().sendPacket(new CHeldItemChangePacket((mc.player.inventory.currentItem + 1) % 9));
+            mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
+            break;
+        }
+    }
 
+    @Native
+    public static void unBlock() {
+        switch (autoblockMode.getValue()) {
+            case "Hypixel":
+            case "Vanilla":
+                if (blocking) {
+                    mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
+                    blocking = false;
+                }
+                break;
         }
     }
 

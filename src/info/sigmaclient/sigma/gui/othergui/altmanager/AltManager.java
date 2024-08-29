@@ -95,8 +95,8 @@ public class AltManager extends Screen {
             RenderUtils.drawRoundedRect(215, 40 + o, width - 10, 50 + o + 30, 2, new Color(200, 200, 200, 230).getRGB());
 
             FontUtil.sfuiFont18.drawString(alt.name,215 + 3, 40 + o + 3, new Color(0x000000));
-            FontUtil.sfuiFont18.drawString(alt.offline ? "\u00a7coffline" : "\u00a7aonline",215 + 3, 40 + o + 3 + 8 + 2, new Color(0x000000));
-            FontUtil.sfuiFont18.drawString("\u00a7cDelete",width - 40, 40 + o + 3 + 8 + 2 - 1, new Color(0x000000));
+            FontUtil.sfuiFont18.drawString(alt.offline ? "§coffline" : "§aonline",215 + 3, 40 + o + 3 + 8 + 2, new Color(0x000000));
+            FontUtil.sfuiFont18.drawString("§cDelete",width - 40, 40 + o + 3 + 8 + 2 - 1, new Color(0x000000));
             FontUtil.sfuiFont18.drawString((System.currentTimeMillis() - alt.time) / (1000 * 60 * 60) + " hours ago",215 + 3, 40 + o + 3 + 8 + 2 + 8, new Color(0x000000));
             o += 50;
         }
@@ -177,11 +177,10 @@ public class AltManager extends Screen {
                     mc.session = new Session(nameInput.getText(), UUID.randomUUID().toString(), "0", "Legacy");
                     AltConfig.Instance.alts.add(new Alt(mc.session.getUsername(), mc.session.getPlayerID()));
                     SigmaNG.getSigmaNG().configManager.saveDefaultConfig();
-                    return false;
                 }else{
                     alert("we unsupported this...");
-                    return false;
                 }
+                return false;
             }
             return false;
         }
