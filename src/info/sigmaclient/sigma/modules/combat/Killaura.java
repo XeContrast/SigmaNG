@@ -984,13 +984,6 @@ public class Killaura extends Module {
                     mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
                     blockTime = 0;
                     break;
-                case "NCP":
-                    if (attackTarget == null) {
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    }
-                    blockTime = 0;
-                    break;
                 case "Interact":
                     if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
                         BlinkProcess.stopBlink();
