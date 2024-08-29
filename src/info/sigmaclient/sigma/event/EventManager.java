@@ -159,10 +159,6 @@ public class EventManager {
                 }
             }
         }
-        if(event instanceof ClickEvent && nextLegitUnblock){
-            unBlock();
-            nextLegitUnblock = false;
-        }
         if(event instanceof RenderEvent){
             GPSCommand.render();
             ((BlockFly)SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).renderBlockCounter();

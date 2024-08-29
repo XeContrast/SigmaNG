@@ -194,6 +194,7 @@ public class Criticals extends Module {
                     if (!mc.player.onGround) {
                         addYPos(-0.0001,false);
                     }
+                    break;
             }
             cri_t++;
         }

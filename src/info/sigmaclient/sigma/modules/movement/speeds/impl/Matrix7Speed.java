@@ -18,17 +18,18 @@ public class Matrix7Speed extends SpeedModule {
 
     @EventTarget
     public void onUpdateEvent(UpdateEvent event) {
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.keyCode,false);
-        mc.player.setMotion(mc.player.getMotion().getX(), mc.player.getMotion().y -= 0.00348, mc.player.getMotion().getZ());
-        mc.player.jumpMovementFactor = 0.026f;
-        if (mc.player.onGround) {
-            if (MovementUtils.isMoving()) {
-                mc.player.jump();
-            }
-            MovementUtils.strafing();
-        } else {
-            if (MovementUtils.getSpeed() < 0.19f) {
-                MovementUtils.strafing();
+        if (event.isPre()) {
+            mc.player.getMotion().y -= 0.00348;
+            mc.player.jumpMovementFactor = 0.026f;
+            if (mc.player.onGround) {
+                if (MovementUtils.isMoving()) {
+                    mc.player.jump();
+                    MovementUtils.strafing();
+                }
+            } else {
+                if (MovementUtils.getSpeed() < 0.19f) {
+                    MovementUtils.strafing();
+                }
             }
         }
     }
