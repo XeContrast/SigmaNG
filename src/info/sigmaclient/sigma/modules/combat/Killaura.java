@@ -936,10 +936,6 @@ public class Killaura extends Module {
     @Native
     public void block(MotionEvent event){
         switch (autoblockMode.getValue()) {
-            case "NCP":
-                blockTime++;
-                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                break;
             case "Vanilla":
                 blockTime++;
                 mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
