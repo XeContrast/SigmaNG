@@ -110,7 +110,7 @@ public class Killaura extends Module {
 
     public static ModeValue autoblockMode = new ModeValue("AutoBlock", "Vanilla",
             new String[]{
-                    "None", "Vanilla", "NCP", "Fake", "Hypixel"
+                    "None", "Vanilla", "Fake", "Swap", "Interact"
     });
     public ModeValue cpsMode = new ModeValue("ClickType", "Butterfly", new String[]{
             "Butterfly", "Drag","Stabilized","DoubleClick","NormalClick"
@@ -192,14 +192,11 @@ public class Killaura extends Module {
     private boolean back = false;
     private int switchTime = 0;
     private int index = 0;
-    boolean c07ed;
-    private int legitABdelay = 0;
-    private int delay_ping = 0;
-    private final TimerUtil attackTimer = new TimerUtil();
+
     private final ArrayList<LivingEntity> targets = new ArrayList<>();
     public float[] lastRotation = null;
     private boolean canFallHit = false;
-    private boolean sprintHit = false;
+
     private int groundTime = 0;
     private static TimerUtil timer = new TimerUtil();
 
@@ -250,15 +247,12 @@ public class Killaura extends Module {
     @Override
     public void onEnable() {
         index = 0;
-        delay_ping = 0;
         switchTime = 0;
-        sprintHit = false;
         clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
         canFallHit = false;
         groundTime = 0;
         reset();
         timer.reset();
-        legitABdelay = 0;
         blockTime = 0;
         translate.setValue(0);
 
@@ -645,12 +639,6 @@ public class Killaura extends Module {
     @EventPriority(1)
     @EventTarget
     public void onPacket(PacketEvent event){
-        if(event.isRevive()) {
-            if (event.packet instanceof SConfirmTransactionPacket) {
-                delay_ping = 0;
-            }
-            delay_ping++;
-        }
         if(event.cancelable)return;
         IPacket packet = event.packet;
         boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
@@ -658,7 +646,7 @@ public class Killaura extends Module {
                 && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem;
 
         switch (autoblockMode.getValue()) {
-            case "Hypixel":
+            case "Interact":
                 if(packet instanceof CPlayerDiggingPacket && canBlock){
                     if(!BlinkProcess.isBlinking()) {
                         blockTime = 0;
@@ -668,7 +656,11 @@ public class Killaura extends Module {
                     }
                 }
                 break;
-
+            case "Swap":
+                if(packet instanceof CPlayerDiggingPacket && canBlock){
+                    event.setCancelled();
+                }
+                break;
         }
     }
 
@@ -920,9 +912,23 @@ public class Killaura extends Module {
     @Native
     public void priorityBlock(MotionEvent event){
         switch (autoblockMode.getValue()) {
-            case "Hypixel":
+            case "Interact":
                 if(blockTime > 2 && BlinkProcess.isBlinking()){
                     BlinkProcess.stopBlink();
+                }
+                break;
+            case "Swap":
+                if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
+                    if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
+                        AutoBlockUtil.BlockWithInteract(attackTarget);
+                    }else {
+                        AutoBlockUtil.Block();
+                    }
+                    if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
+                        blockTime++;
+                    }else {
+                        blockTime = 0;
+                    }
                 }
                 break;
         }
@@ -938,9 +944,22 @@ public class Killaura extends Module {
                 blockTime++;
                 mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 break;
-            case "Hypixel":
+            case "Interact":
 
-
+                if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
+                    if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
+                        AutoBlockUtil.BlockWithInteract(attackTarget);
+                    }else {
+                        AutoBlockUtil.Block();
+                    }
+                    if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
+                        blockTime++;
+                    }else {
+                        blockTime = 0;
+                    }
+                }
+                break;
+            case "Swap":
                 if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
                     if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
                         AutoBlockUtil.BlockWithInteract(attackTarget);
@@ -972,9 +991,16 @@ public class Killaura extends Module {
                     }
                     blockTime = 0;
                     break;
-                case "Hypixel":
+                case "Interact":
                     if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
                         BlinkProcess.stopBlink();
+                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
+                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
+                        blockTime = 0;
+                    }
+                    break;
+                case "Swap":
+                    if(mc.player.offGroundTicks % 4 == 0 || attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
                         blockTime = 0;
