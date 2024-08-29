@@ -104,17 +104,17 @@ public class Sigma5LoadProgressGui extends ResourceLoadProgressGui
         final int round = Math.round((sr.getScaledHeight() - n4) / 2f - 14.0f * n);
         final float n6 = 0.5f;
         GL11.glPushMatrix();
-        RenderUtils.drawTextureLocationZoom((float)n5 + n3 * 0.25f, (float)round + n4 * 0.25f, (float)n3 * 0.5f, (float)n4 * 0.5f, "logo2", new Color(霥瀳놣㠠釒(-65794, n)));
+        RenderUtils.drawTextureLocationZoom((float)n5 + n3 * 0.25f, (float)round + n4 * 0.25f, (float)n3 * 0.5f, (float)n4 * 0.5f, "logo2", new Color(applyColor(-65794, n)));
         GL11.glTranslatef((float)(sr.getScaledWidth() / 2), (float)(sr.getScaledHeight() / 2), 0.0f);
         GL11.glScalef(n6, n6, 0.0f);
         GL11.glTranslatef((float)(-sr.getScaledWidth() / 2), (float)(-sr.getScaledHeight() / 2), 0.0f);
         final float min = Math.min(1.0f, n2 * 1.02f);
         final int n7 = 80;
         if (n == 1.0f) {
-            RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 0.5f), (float)(int)((n3 - 4)), 17.0f, 6, new Color(霥瀳놣㠠釒(-65794, 0.9f * n)));
-            RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 1f), (float)(int)((n3 - 4)), 16.0f, 6, new Color(霥瀳놣㠠釒(0, 1.0f * n)));
+            RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 0.5f), (float)(int)((n3 - 4)), 17.0f, 6, new Color(applyColor(-65794, 0.9f * n)));
+            RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 1f), (float)(int)((n3 - 4)), 16.0f, 6, new Color(applyColor(0, 1.0f * n)));
         }
-        RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 1f), (float)(int)((n3 - 4) * min), 16.0f, 6, new Color(霥瀳놣㠠釒(-65794, 0.9f * n)));
+        RoundedRectShader.drawRound((float)(n5 + 2), (float)(round + n4 + n7 + 1f), (float)(int)((n3 - 4) * min), 16.0f, 6, new Color(applyColor(-65794, 0.9f * n)));
 
         GL11.glPopMatrix();
     }
@@ -123,7 +123,7 @@ public class Sigma5LoadProgressGui extends ResourceLoadProgressGui
         return true;
     }
 
-    public static int 霥瀳놣㠠釒(final int n, final float n2) {
+    public static int applyColor(final int n, final float n2) {
         return (int)(n2 * 255.0f) << 24 | (n & 0xFFFFFF);
     }
     public void update()

@@ -508,7 +508,7 @@ public class AutoAnchor extends Module {
         @EventTarget
         public void onRender3DEvent(Render3DEvent event) {
             if (this.currentPos != null) {
-                final int 霥瀳놣㠠釒 = Sigma5LoadProgressGui.霥瀳놣㠠釒(colorValue.getColorInt(), 0.2f);
+                final int 霥瀳놣㠠釒 = Sigma5LoadProgressGui.applyColor(colorValue.getColorInt(), 0.2f);
                 GL11.glPushMatrix();
                 GL11.glDisable(2929);
                 RenderUtils.renderPos r = RenderUtils.getRenderPos();

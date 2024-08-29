@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.UUID;
 
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouseX;
 import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouseY;
 import static info.sigmaclient.sigma.modules.Module.mc;
@@ -296,7 +296,7 @@ public class JelloAltManager extends Screen {
                 continue;
             }
             RenderUtils.drawRoundShadow(竁藸뎫捉睬, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height,
-                    霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n2));
+                    applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n2));
             JelloFontUtil.jelloFont24.drawNoBSString(alt.name, 竁藸뎫捉睬 + 55, n5 + 13, Color.BLACK.getRGB());
                 JelloFontUtil.jelloFont15.drawNoBSString("Username: " + alt.name, 竁藸뎫捉睬 + 55, n5 + 27.5f, -6710887);
                 JelloFontUtil.jelloFont15.drawNoBSString(alt.offline ? "Offline account" :  "Online account", 竁藸뎫捉睬 + 55, n5 + 35, -6710887);

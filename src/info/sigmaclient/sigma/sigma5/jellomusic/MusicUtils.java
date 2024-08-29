@@ -42,7 +42,7 @@ public class MusicUtils {
 //            final byte[] array3;
 //            this.ꁈ硙ၝ敤䢶.write(array3, 0, array3.length);;
 //            final float[] array4;
-//            new 佉䂷㠠觯콵(array4.length).錌浣䢶ᜄ㔢(array4);
+//            new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
 //            final float[][] array5;
 //            this.펊瀳藸鶲픓.add(㐖䆧쿨콵浦(array5[0], array5[1]));
 //            if (this.펊瀳藸鶲픓.size() > 18) {
