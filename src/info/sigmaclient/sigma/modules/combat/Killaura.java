@@ -116,7 +116,7 @@ public class Killaura extends Module {
 
     public static ModeValue autoblockMode = new ModeValue("AutoBlock", "Vanilla",
             new String[]{
-                    "None", "Vanilla", "NCP", "Always", "Percent", "Fake", "Hypixel","Hypixel2", "Basic1", "Basic2", "Legit", "Intave"
+                    "None", "Vanilla", "NCP", "Fake", "Hypixel"
     });
     public ModeValue cpsMode = new ModeValue("ClickType", "Butterfly", new String[]{
             "Butterfly", "Drag","Stabilized","DoubleClick","NormalClick"
@@ -152,7 +152,7 @@ public class Killaura extends Module {
             return !mode.is("Single");
         }
     };
-    public static BooleanValue Interact = new BooleanValue("Interact autoblock", false);
+
     public ModeValue movementFix = new ModeValue("Move Correction", "None", new String[]{
             "None",
             "Silent",
@@ -247,7 +247,6 @@ public class Killaura extends Module {
         registerValue(animals);
         registerValue(naked);
         registerValue(limit);
-        registerValue(Interact);
         registerValue(movementFix);
         registerValue(silentFix);
         registerValue(throughWalls);
@@ -407,7 +406,6 @@ public class Killaura extends Module {
             if(isABEnable() && canBlock) {
                 priorityBlock(event);
             }
-            unBlockTarget();
             unBlock();
 
             if(event.isPre()) {
@@ -675,7 +673,7 @@ public class Killaura extends Module {
                 mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
 
         switch (autoblockMode.getValue()) {
-            case "Hypixel2":
+            case "Hypixel":
                 if(packet instanceof CPlayerDiggingPacket && canBlock){
                     if(!BlinkProcess.isBlinking()) {
                         BlinkProcess.startBlink();
@@ -858,18 +856,6 @@ public class Killaura extends Module {
         return !autoblockMode.is("None");
     }
 
-    @Native
-    public static void unBlockTarget(){
-        if(blockTime > 0){
-            switch (autoblockMode.getValue()) {
-                case "Basic2":
-                    blockTime = 0;
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    break;
-            }
-        }
-    }
-
     public void draw(){
         if(attackTarget == null) return;
         GlStateManager.pushMatrix();
@@ -941,76 +927,30 @@ public class Killaura extends Module {
         GlStateManager.popMatrix();
     }
 
-    @Native
-    public void interactBlock(){
-
-        mc.playerController.interactWithEntity(mc.player, attackTarget, Hand.OFF_HAND);
-        mc.rightClickMouse();
-    }
 
     @Native
     public void priorityBlock(UpdateEvent event){
-        if(Interact.isEnable() && blockTime < 1) {
-            interactBlock();
-        }
         switch (autoblockMode.getValue()) {
-            case "Hypixel2":
-
-
+            case "Hypixel":
                 break;
         }
     }
 
     @Native
     public void block(UpdateEvent event){
-        if(Interact.isEnable() && blockTime < 1) {
-            interactBlock();
-        }
         switch (autoblockMode.getValue()) {
-            case "Basic2", "Always", "NCP":
+            case "NCP":
                 blockTime++;
                 break;
             case "Vanilla":
                 blockTime++;
                 mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 break;
-            case "Basic1":
-                blockTime++;
-                if (mc.player.ticksExisted % 2 == 0) {
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                }
-                break;
-            case "Percent":
-                if (mc.player.ticksExisted % 3 == 0) {
-                    mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
-                    blockTime++;
-                }
-                break;
-            case "Legit":
-                legitABdelay = 2;
-                mc.gameSettings.keyBindUseItem.pressed = true;
-                blockTime++;
-                break;
-            case "Intave":
-                if(mc.player.ticksExisted % 20 >= 4 && mc.player.ticksExisted % 20 <= 8) {
-                    legitABdelay = 2;
-                    mc.gameSettings.keyBindUseItem.pressed = true;
-                }
-                blockTime++;
-                break;
             case "Hypixel":
-                KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1),true);
-                blockTime++;
-                break;
-            case "Hypixel2":
-
-
                 if(blockTime > 1) {
                     BlinkProcess.stopBlink();
-
                     blockTime = 1;
                 }
-
 
                 if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
                     if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
@@ -1024,8 +964,6 @@ public class Killaura extends Module {
                         blockTime = 0;
                     }
                 }
-
-
                 break;
         }
     }
@@ -1034,19 +972,6 @@ public class Killaura extends Module {
     public static void unBlock(){
         if(blockTime > 0){
             switch (autoblockMode.getValue()) {
-                case "Legit", "Intave":
-                    mc.gameSettings.keyBindUseItem.pressed = false;
-                    blockTime = 0;
-                    break;
-                case "Basic2":
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    blockTime = 0;
-                    break;
-                case "Always":
-                    blockTime = 0;
-                    break;
                 case "Vanilla":
                     mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
                     blockTime = 0;
@@ -1060,22 +985,7 @@ public class Killaura extends Module {
                     }
                     blockTime = 0;
                     break;
-                case "Basic1":
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                    mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    blockTime = 0;
-                    break;
-                case "Percent":
-                    Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
-                    blockTime = 0;
-                    break;
                 case "Hypixel":
-                    if(attackTarget == null) {
-                        KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1), false);
-                        blockTime = 0;
-                    }
-                    break;
-                case "Hypixel2":
                     if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
                         BlinkProcess.stopBlink();
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
