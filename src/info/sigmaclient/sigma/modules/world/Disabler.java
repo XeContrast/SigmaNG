@@ -86,8 +86,6 @@ public class Disabler extends Module {
                     mc.getConnection().sendPacket(position);
                 }
                 break;
-            case "Intave":
-                break;
             case "WatchDog":
                 if(!event.isPost()){
                     if (mc.player.onGround) {

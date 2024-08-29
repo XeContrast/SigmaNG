@@ -72,7 +72,6 @@ public class ModuleManager {
         // combats
         registerModule(new Aimbot());
         registerModule(new InteractRange());
-        registerModule(new WTap());
         registerModule(new AutoTimer());
         registerModule(new AutoLava());
         registerModule(new Killaura());

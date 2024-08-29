@@ -11,6 +11,8 @@ import net.minecraft.item.BowItem;
 import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.util.Hand;
 
+import java.util.Objects;
+
 
 public class FastBow extends Module {
     public ModeValue type = new ModeValue("Type", "Vanilla", new String[]{"Vanilla", "Timer"});
@@ -58,13 +60,12 @@ public class FastBow extends Module {
             switch (type.getValue()){
                 case "Vanilla":
                     for(int i = 0;i < 40;i++){
-                        mc.getConnection().sendPacket(new CPlayerPacket(mc.player.onGround));
+                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerPacket(mc.player.onGround));
                     }
                     mc.playerController.onStoppedUsingItem(mc.player);
                     break;
                 case "timer":
                     mc.timer.setTimerSpeed(timer.getValue().floatValue());
-                    BowItem bow = (BowItem) mc.player.getHeldItem(Hand.MAIN_HAND).getItem();
                     use = true;
                     if(mc.player.getItemInUseCount() >= 72000){
                         mc.playerController.onStoppedUsingItem(mc.player);

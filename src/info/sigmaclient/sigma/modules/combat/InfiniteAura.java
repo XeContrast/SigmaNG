@@ -26,10 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -88,7 +85,7 @@ public class InfiniteAura extends Module {
     public boolean isTargetEnable(LivingEntity LivingEntity){
         if(!LivingEntity.isLiving()) return false;
         if(LivingEntity instanceof PlayerEntity) {
-            if(AntiBot.isServerBots((PlayerEntity) LivingEntity)) return false;
+            if(AntiBot.isServerBots(LivingEntity)) return false;
             if(Teams.isTeam((PlayerEntity) LivingEntity)) return false;
             if(LivingEntity.equals(mc.player)) return false;
             if (invisible.isEnable() && LivingEntity.isInvisible())
@@ -131,7 +128,7 @@ public class InfiniteAura extends Module {
         super.onDisable();
     }
     public void setPos(double x, double y, double z) {
-        mc.getConnection().sendPacket(new CPlayerPacket.PositionPacket(x, y, z, false));
+        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerPacket.PositionPacket(x, y, z, false));
     }
     ArrayList<Vector3d> poses = new ArrayList<>();
     public void clicked(){
@@ -139,8 +136,7 @@ public class InfiniteAura extends Module {
         if (attackTimer.hasTimeElapsed(cps, true)) {
             reset();
             for (Entity entity : mc.world.getLoadedEntityList()) {
-                if (!(entity instanceof LivingEntity)) continue;
-                LivingEntity e = (LivingEntity) entity;
+                if (!(entity instanceof LivingEntity e)) continue;
                 if (!isTargetEnable(e)) continue;
                 if (entity.getDistance(mc.player) > range.getValue().floatValue()) continue;
                 targets.add(e);
@@ -153,7 +149,7 @@ public class InfiniteAura extends Module {
                     targets.sort(Comparator.comparingDouble(LivingEntity::getHealth));
                     break;
             }
-            if (targets.size() > 0)
+            if (!targets.isEmpty())
                 attackTarget = targets.get(0);
             if(attackTarget == null) return;
 
@@ -205,8 +201,6 @@ public class InfiniteAura extends Module {
                 GlStateManager.disableLighting();
                 GL11.glLineWidth(1f);
                 GL11.glDisable(GL_TEXTURE_2D);
-//                GL11.glEnable(GL_LINE_SMOOTH);
-//                GL11.glEnable(GL_POINT_SMOOTH);
                 GL11.glEnable(GL_BLEND);
                 GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -240,8 +234,6 @@ public class InfiniteAura extends Module {
                 GL11.glDepthMask(true);
 //                GL11.glAlphaFunc(GL_GREATER, 0.1f);
                 GlStateManager.enableCull();
-//                GL11.glDisable(GL_LINE_SMOOTH);
-//                GL11.glEnable(GL_POINT_SMOOTH);
                 GL11.glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
                 GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
                 GL11.glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
