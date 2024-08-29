@@ -84,7 +84,6 @@ public class Killaura extends Module {
                     "Distance", "Health", "Armor", "RArmor"
     });
 
-    public BooleanValue keepsprint = new BooleanValue("KeepSprint",false);
 
     public ModeValue rotation = new ModeValue("Rotation", "NCP", new String[]{
             "NCP",
@@ -146,6 +145,7 @@ public class Killaura extends Module {
     public BooleanValue npcs = new BooleanValue("NPC", false);
     public BooleanValue animals = new BooleanValue("Animals", false);
     public BooleanValue naked = new BooleanValue("No Naked", false);
+    public BooleanValue throughWalls = new BooleanValue("Through walls", false);
     public  BooleanValue limit = new BooleanValue("Lock Target", false){
         @Override
         public boolean isHidden() {
@@ -161,8 +161,6 @@ public class Killaura extends Module {
             "Vanilla"
     });
     public BooleanValue silentFix = new BooleanValue("SilentFix", false);
-    public BooleanValue throughWalls = new BooleanValue("Through walls", false);
-    public BooleanValue silent = new BooleanValue("Silent", true);
     public static BooleanValue raytrace = new BooleanValue("Raytrace", false);
     public ModeValue TraceMode = new ModeValue("Trace Mode", "Target", new String[]{
             "Target", "All"
@@ -172,9 +170,6 @@ public class Killaura extends Module {
             return !raytrace.isEnable();
         }
     };
-    public static BooleanValue shieldBreaker = new BooleanValue("ShieldBreaker", false);
-    public BooleanValue cooldown = new BooleanValue("CPS-Cooldown", false);
-    public BooleanValue fallhit = new BooleanValue("Critical Hit", false);
 
     public BooleanValue noswing = new BooleanValue("No Swing", false);
     public BooleanValue disable_on_death = new BooleanValue("Disable on death", false);
@@ -224,7 +219,6 @@ public class Killaura extends Module {
         registerValue(mode);
         registerValue(switchTicks);
         registerValue(SortMode);
-        registerValue(keepsprint);
         registerValue(rotation);
         registerValue(customRotationMode);
         registerValue(customAddonsMode);
@@ -246,14 +240,11 @@ public class Killaura extends Module {
         registerValue(npcs);
         registerValue(animals);
         registerValue(naked);
+        registerValue(throughWalls);
         registerValue(limit);
         registerValue(movementFix);
         registerValue(silentFix);
-        registerValue(throughWalls);
         registerValue(raytrace);
-        registerValue(shieldBreaker);
-        registerValue(cooldown);
-        registerValue(fallhit);
         registerValue(noswing);
         registerValue(disable_on_death);
         registerValue(predict);
@@ -328,7 +319,7 @@ public class Killaura extends Module {
         targets.clear();
         getTargets();
 
-        if(this.movementFix.is("Strict") && (mc.player.fallDistance > 0 || canFallHit) && fallhit.getValue() && attackTarget != null){
+        if(this.movementFix.is("Strict") && (mc.player.fallDistance > 0 || canFallHit) && attackTarget != null){
             mc.player.setSprinting(false);
             mc.gameSettings.keyBindSprint.pressed = false;
         }
@@ -401,12 +392,16 @@ public class Killaura extends Module {
     public void onMotionEvent(UpdateEvent event){
         if(!targets.isEmpty()){
             //取消格挡
-            boolean canBlock = mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem &&
-                    mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
+            boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
+                    attackTarget != null && mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue())
+                    && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem;
+
+
+            unBlock();
+
             if(isABEnable() && canBlock) {
                 priorityBlock(event);
             }
-            unBlock();
 
             if(event.isPre()) {
                 //转头
@@ -416,9 +411,7 @@ public class Killaura extends Module {
 
             //攻击
             if(!BadPacketsProcess.bad(false,false,false,false,false,true,false)) {
-                if(!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))){
-                    this.doAttack();
-                }
+                this.doAttack(event);
             }
 
 
@@ -622,20 +615,27 @@ public class Killaura extends Module {
         }
     }
 
-    public void doAttack(){
+    public void doAttack(UpdateEvent event){
         boolean canHit = new Random().nextInt(100) > hitChange.getValue().floatValue();
 
         if(mc.player.getDistanceNearest(attackTarget) <= range2.getValue().floatValue() && !canHit) {
             clickHelper.runClick(
                     ()->{
-                        if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                            if (!noswing.isEnable()) {
-                                mc.player.swingArm(Hand.MAIN_HAND);
-                            }
-                            mc.playerController.attackEntity(mc.player, attackTarget);
+                        if(!raytrace.getValue() || RotationUtils.isMouseOver(event.yaw, event.pitch, attackTarget, range.getValue().floatValue(), hitboxExpand.getValue().floatValue(), TraceMode.getValue().equals("Target"))) {
 
-                        } else {
-                            mc.playerController.attackEntity(mc.player, attackTarget);
+                            if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+                                if (!noswing.isEnable()) {
+                                    mc.player.swingArm(Hand.MAIN_HAND);
+                                }
+                                mc.playerController.attackEntity(mc.player, attackTarget);
+
+                            } else {
+                                mc.playerController.attackEntity(mc.player, attackTarget);
+                                if (!noswing.isEnable()) {
+                                    mc.player.swingArm(Hand.MAIN_HAND);
+                                }
+                            }
+                        }else {
                             if (!noswing.isEnable()) {
                                 mc.player.swingArm(Hand.MAIN_HAND);
                             }
@@ -669,17 +669,22 @@ public class Killaura extends Module {
         }
         if(event.cancelable)return;
         IPacket packet = event.packet;
-        boolean canBlock = attackTarget != null && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem &&
-                mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue();
+        boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
+                attackTarget != null && mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue())
+                && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem;
 
         switch (autoblockMode.getValue()) {
             case "Hypixel":
                 if(packet instanceof CPlayerDiggingPacket && canBlock){
                     if(!BlinkProcess.isBlinking()) {
+                        blockTime = 0;
                         BlinkProcess.startBlink();
+                    }else {
+                        event.setCancelled();
                     }
                 }
                 break;
+
         }
     }
 
@@ -932,25 +937,25 @@ public class Killaura extends Module {
     public void priorityBlock(UpdateEvent event){
         switch (autoblockMode.getValue()) {
             case "Hypixel":
+                if(blockTime > 2 && BlinkProcess.isBlinking()){
+                    BlinkProcess.stopBlink();
+                }
                 break;
         }
     }
-
     @Native
     public void block(UpdateEvent event){
         switch (autoblockMode.getValue()) {
             case "NCP":
                 blockTime++;
+                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 break;
             case "Vanilla":
                 blockTime++;
                 mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                 break;
             case "Hypixel":
-                if(blockTime > 1) {
-                    BlinkProcess.stopBlink();
-                    blockTime = 1;
-                }
+
 
                 if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
                     if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
@@ -980,8 +985,6 @@ public class Killaura extends Module {
                     if (attackTarget == null) {
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                    } else {
-                        mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                     }
                     blockTime = 0;
                     break;

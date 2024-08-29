@@ -77,6 +77,10 @@ public class BlinkProcess extends BProcess {
         return packets.size();
     }
 
+    public static CopyOnWriteArrayList<IPacket> getPackets() {
+        return packets;
+    }
+
     @EventTarget
     public void onWorldChange(WorldChangeEvent event){
         blink = false;

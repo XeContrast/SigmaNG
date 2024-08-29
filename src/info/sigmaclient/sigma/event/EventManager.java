@@ -70,7 +70,7 @@ public class EventManager {
     public void register(Object obj) {
         Class<?> clazz = obj.getClass();
         Method[] methods = clazz.getDeclaredMethods();
-
+        if(methodObjectMap.containsValue(obj))return;
         for (Method method : methods) {
             Annotation[] annotations = method.getDeclaredAnnotations();
 

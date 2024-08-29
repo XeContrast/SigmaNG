@@ -15,9 +15,9 @@ public class MiniMap extends Module {
     public static int offsetY = 0;
     @Override
     public void onEnable() {
-        this.setEnabled(false);
+//        this.setEnabled(false);
 //        NotificationManager.notify("MiniMap", "itz WIP, so I disable it.", 4000);
-        NotificationManager.notify("MiniMap", "this module is unstable", 4000);
+//        NotificationManager.notify("MiniMap", "this module is unstable", 4000);
         super.onEnable();
     }
 

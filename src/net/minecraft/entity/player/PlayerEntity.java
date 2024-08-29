@@ -1456,7 +1456,7 @@ public abstract class PlayerEntity extends LivingEntity
                                 targetEntity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F));
                             }
 
-                            if((AutoSprint.keepSprint.isEnable() || (!AutoSprint.keepSprint2.isEnable() || this.hurtTime == 0)) && SigmaNG.getSigmaNG().moduleManager.getModule(AutoSprint.class).enabled && this instanceof ClientPlayerEntity){
+                            if((AutoSprint.keepSprint.isEnable() && (!AutoSprint.noHurt.isEnable() || this.hurtTime == 0)) && SigmaNG.getSigmaNG().moduleManager.getModule(AutoSprint.class).enabled && this instanceof ClientPlayerEntity){
                                 // keep
                             } else {
                                 this.setMotion(this.getMotion().mul(0.6D, 1.0D, 0.6D));
