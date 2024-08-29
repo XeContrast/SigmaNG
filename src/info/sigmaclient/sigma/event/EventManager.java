@@ -33,10 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static info.sigmaclient.sigma.modules.Module.mc;
-import static info.sigmaclient.sigma.modules.combat.Killaura.unBlock;
 
 public class EventManager {
-    public boolean nextLegitUnblock = false;
     private boolean init = false;
     public void init(){
         init = true;

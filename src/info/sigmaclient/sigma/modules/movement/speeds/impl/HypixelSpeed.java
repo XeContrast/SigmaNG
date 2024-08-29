@@ -257,19 +257,20 @@ public class HypixelSpeed extends SpeedModule {
 
         switch (this.parent.hypixelMode.getValue()){
             case "SemiStrafe":
-                if (mc.player.collidedVertically && MovementUtils.isMoving()) {
-                    BlockPos blockPos = new BlockPos(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ());
-                    if (mc.player.onGround && MovementUtils.isMoving() && !(mc.world.getBlockState(blockPos).getBlock() instanceof StairsBlock)) {
-                        mc.player.getMotion().y = MovementUtils.getJumpBoostModifier(0.41999998688698F);
-                        MovementUtils.strafing((float) Math.max(MovementUtils.getBaseMoveSpeed(), 0.475f + 0.04F * MovementUtils.getSpeedEffect()));
+                if (event.isPre()) {
+                    if (mc.player.onGround) {
+                        if (MovementUtils.isMoving()) {
+                            MovementUtils.strafing();
+                            mc.player.jump();
+                            mc.player.getMotion().y -= 0.00348;
+                        }
                     }
                 }
-                if (!MovementUtils.isMoving()) {
-                    mc.player.getMotion().x = mc.player.getMotion().z = 0;
-                }
                 if (!mc.player.onGround) {
-                    if (MovementUtils.getSpeed() < 0.1) {
-                        MovementUtils.strafing(0.1);
+                    if (mc.player.fallDistance > 0) {
+                        if (MovementUtils.getSpeed() < 0.1) {
+                            MovementUtils.strafing(0.1);
+                        }
                     }
                 }
                 break;

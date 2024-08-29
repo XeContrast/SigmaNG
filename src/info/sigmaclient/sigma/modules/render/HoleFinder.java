@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
 
 
@@ -59,7 +59,7 @@ public class HoleFinder extends Module {
         GlStateManager.disableLighting();
         if (this.holes != null) {
             for(BlockPos currentPos : holes) {
-                final int 霥瀳놣㠠釒 = 霥瀳놣㠠釒(colorValue.getColorInt(), 0.1f);
+                final int 霥瀳놣㠠釒 = applyColor(colorValue.getColorInt(), 0.1f);
                 GL11.glPushMatrix();
                 GL11.glDisable(2929);
                 RenderUtils.renderPos r = RenderUtils.getRenderPos();

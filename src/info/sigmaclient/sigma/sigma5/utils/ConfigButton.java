@@ -8,7 +8,7 @@ import net.minecraft.util.text.StringTextComponent;
 
 import java.awt.*;
 
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 
 public class ConfigButton extends Button {
     private static String[] 醧쿨浣ᔎ甐;
@@ -55,8 +55,8 @@ public class ConfigButton extends Button {
         this.isHovered = mouseX >= n2 - 汌蚳洝陬괠ꪕ / 2 && mouseY >= n3 && mouseX < n2 + 汌蚳洝陬괠ꪕ / 2 && mouseY < n3 + n4;
         this.㐈뫤뼢嘖竬.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
         final float n5 = (float) Math.pow(this.㐈뫤뼢嘖竬.getAnim(), 3.0);
-        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, 霥瀳놣㠠釒(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
-        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), 霥瀳놣㠠釒(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
+        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
+        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
 //        super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
 
     }
@@ -72,8 +72,8 @@ public class ConfigButton extends Button {
         this.isHovered = mouseX >= n2 - 汌蚳洝陬괠ꪕ / 2 && mouseY >= n3 && mouseX < n2 + 汌蚳洝陬괠ꪕ / 2 && mouseY < n3 + n4;
         this.㐈뫤뼢嘖竬.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
         final float n5 = (float) Math.pow(this.㐈뫤뼢嘖竬.getAnim(), 3.0);
-        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, 霥瀳놣㠠釒(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
-        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), 霥瀳놣㠠釒(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
+        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
+        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
 //        super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
 
     }

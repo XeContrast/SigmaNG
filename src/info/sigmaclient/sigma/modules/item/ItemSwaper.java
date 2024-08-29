@@ -11,11 +11,11 @@ import info.sigmaclient.sigma.utils.TimerUtil;
 
 public class ItemSwaper extends Module {
     private int slot = 0;
-    private TimerUtil timer = new TimerUtil();
-    private NumberValue delay = new NumberValue("Delay",500,100,5000, NumberValue.NUMBER_TYPE.INT);
+    private final TimerUtil timer = new TimerUtil();
+    private final NumberValue delay = new NumberValue("Delay",500,100,5000, NumberValue.NUMBER_TYPE.INT);
 
-    private NumberValue Slot1 = new NumberValue("Slot-a",0,0,8, NumberValue.NUMBER_TYPE.INT);
-    private NumberValue Slot2 = new NumberValue("Slot-b",0,0,8, NumberValue.NUMBER_TYPE.INT);
+    private final NumberValue Slot1 = new NumberValue("Slot-a",0,0,8, NumberValue.NUMBER_TYPE.INT);
+    private final NumberValue Slot2 = new NumberValue("Slot-b",0,0,8, NumberValue.NUMBER_TYPE.INT);
 
     public ItemSwaper() {
         super("ItemSwaper", Category.Item, "Auto Swap Your current item");
@@ -34,10 +34,8 @@ public class ItemSwaper extends Module {
     @EventTarget
     private void onMotion(UpdateEvent event){
 
-        if(event.isPost())return;
-        //if(mc.player.inventory.currentItem != slot){
-            mc.player.inventory.currentItem = slot;
-        //}
+        if (event.isPost()) return;
+        mc.player.inventory.currentItem = slot;
         if(timer.hasTimeElapsed(delay.getValue().intValue(),true)){
             ChatUtils.sendMessageWithPrefix(slot+"");
             if(slot == Slot1.getValue().intValue()) {

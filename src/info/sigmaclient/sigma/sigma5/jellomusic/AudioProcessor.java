@@ -1,8 +1,7 @@
 package info.sigmaclient.sigma.sigma5.jellomusic;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
-public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
+public class AudioProcessor implements 掬좯鼒蓳酭 {
     private static String[] 杭쥡璧ꦱಽ;
     private static final int 㠠樽螜唟㐈 = 16;
     private static final int[][] 汌웎ใ㱙䡸;
@@ -10,9 +9,9 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
     private final int[] 鶊웎掬쟗钘;
     private float[] 湗웨敤韤햖;
 
-    public 佉䂷㠠觯콵(int 쇼펊ኞ㨳㐖) {
+    public AudioProcessor(int 쇼펊ኞ㨳㐖) {
         if (!揩䖼瀧䆧鄡(쇼펊ኞ㨳㐖)) {
-            throw new IllegalArgumentException(佉䂷㠠觯콵.杭쥡璧ꦱಽ[0]);
+            throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[0]);
         }
         if (쇼펊ኞ㨳㐖 > 0) {
             this.쇼펊ኞ㨳㐖 = 쇼펊ኞ㨳㐖;
@@ -32,7 +31,7 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
             }
             return;
         }
-        throw new IllegalArgumentException(佉䂷㠠觯콵.杭쥡璧ꦱಽ[1]);
+        throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[1]);
     }
 
     @Override
@@ -119,7 +118,7 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
             }
             return;
         }
-        throw new IllegalArgumentException(佉䂷㠠觯콵.杭쥡璧ꦱಽ[2] + this.쇼펊ኞ㨳㐖 + 佉䂷㠠觯콵.杭쥡璧ꦱಽ[3]);
+        throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[2] + this.쇼펊ኞ㨳㐖 + AudioProcessor.杭쥡璧ꦱಽ[3]);
     }
 
 
@@ -145,7 +144,7 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
 
     private static int 츚㝛眓㐖웨(int n, int n2) {
         if (true) {
-            return 佉䂷㠠觯콵.콗䂷鏟Ꮺ㥇(n, n2);
+            return AudioProcessor.콗䂷鏟Ꮺ㥇(n, n2);
         }
         return 汌웎ใ㱙䡸[n2 - 1][n];
     }
@@ -164,8 +163,8 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
         if (object == null || this.getClass() != object.getClass()) {
             return false;
         }
-        佉䂷㠠觯콵 佉䂷㠠觯콵2 = (佉䂷㠠觯콵)object;
-        return this.쇼펊ኞ㨳㐖 == 佉䂷㠠觯콵2.쇼펊ኞ㨳㐖;
+        AudioProcessor AudioProcessor2 = (AudioProcessor)object;
+        return this.쇼펊ኞ㨳㐖 == AudioProcessor2.쇼펊ኞ㨳㐖;
     }
 
     public int hashCode() {
@@ -176,18 +175,18 @@ public class 佉䂷㠠觯콵 implements 掬좯鼒蓳酭 {
         return 杭쥡璧ꦱಽ[4] + this.쇼펊ኞ㨳㐖 + '}';
     }
 
-    public static int 卒쇽待曞啖(佉䂷㠠觯콵 佉䂷㠠觯콵2) {
-        return 佉䂷㠠觯콵2.쇼펊ኞ㨳㐖;
+    public static int 卒쇽待曞啖(AudioProcessor AudioProcessor2) {
+        return AudioProcessor2.쇼펊ኞ㨳㐖;
     }
     static {
-        佉䂷㠠觯콵.杭쥡璧ꦱಽ = new String[]{"N is not a power of 2", "N must be greater than 0", "Number of samples must be ", " for this instance of JavaFFT", "JavaFFT{N="};
+        AudioProcessor.杭쥡璧ꦱಽ = new String[]{"N is not a power of 2", "N must be greater than 0", "Number of samples must be ", " for this instance of JavaFFT", "JavaFFT{N="};
         汌웎ใ㱙䡸 = new int[16][];
         final int n = 2;
         for (int i = 1; i <= 16; ++i) {
-            佉䂷㠠觯콵.汌웎ใ㱙䡸[i - 1] = new int[n];
+            AudioProcessor.汌웎ใ㱙䡸[i - 1] = new int[n];
             int n2 = 0;
             while (n2 < n) {
-                佉䂷㠠觯콵.汌웎ใ㱙䡸[i - 1][n2] = 콗䂷鏟Ꮺ㥇(n2, i);
+                AudioProcessor.汌웎ใ㱙䡸[i - 1][n2] = 콗䂷鏟Ꮺ㥇(n2, i);
                 ++n2;
             }
         }

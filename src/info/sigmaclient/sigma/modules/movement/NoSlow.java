@@ -41,22 +41,26 @@ public class NoSlow extends Module {
             "Hypixel",
 
     });
-    public static ModeValue hypmode = new ModeValue("HypixelMode","Mode1",new String[] {
+    public static ModeValue hypmode = new ModeValue("HypixelMode", "Mode1", new String[]{
             "Mode1",
             "Mode2",
             "Mode3",
             "Mode4"
     }) {
         @Override
-        public boolean isHidden() { return !mode.is("Hypixel"); }
+        public boolean isHidden() {
+            return !mode.is("Hypixel");
+        }
     };
-    public static ModeValue grimmode = new ModeValue("GrimMode","Mode1",new String[] {
+    public static ModeValue grimmode = new ModeValue("GrimMode", "Mode1", new String[]{
             "Mode1",
             "Mode2",
             "Mode3"
     }) {
         @Override
-        public boolean isHidden() { return !mode.is("GrimAC");}
+        public boolean isHidden() {
+            return !mode.is("GrimAC");
+        }
     };
     public static BooleanValue sword = new BooleanValue("Sword", true);
     public static BooleanValue food = new BooleanValue("Food", true);
@@ -64,6 +68,7 @@ public class NoSlow extends Module {
     public static BooleanValue potion = new BooleanValue("Potion", true);
     public static BooleanValue shield = new BooleanValue("Shield", true);
     private int offGround = 0;
+
     public NoSlow() {
         super("NoSlow", Category.Movement, "No slow for use items");
         registerValue(mode);
@@ -75,12 +80,14 @@ public class NoSlow extends Module {
         registerValue(potion);
         registerValue(shield);
     }
+
     private boolean h4_change = false;
     private int h4_tick = 0;
     private int h4_ground = 0;
-    public static boolean isNeedNoslow(){
-        if(mode.is("ReallyWorld")){
-            if(mc.player.onGround || mc.player.fallDistance == 0)
+
+    public static boolean isNeedNoslow() {
+        if (mode.is("ReallyWorld")) {
+            if (mc.player.onGround || mc.player.fallDistance == 0)
                 return false;
         }
         return SigmaNG.SigmaNG.moduleManager.getModule(NoSlow.class).enabled &&
@@ -92,25 +99,27 @@ public class NoSlow extends Module {
                 && (shield.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem))
                 && (potion.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem));
     }
+
     boolean noSlowing = false;
     boolean reset = false, slow = false;
     boolean send = false;
 
     @EventTarget
-    public void onTick(ClickEvent event){
-        if(hypmode.is("Mode3") && mode.is("Hypixel")){
-            if(mc.player.isHandActive()){
-                Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemOnBlockPacket(Hand.MAIN_HAND == mc.player.getActiveHand()?Hand.OFF_HAND:Hand.MAIN_HAND,new BlockRayTraceResult(new Vector3d(-1, -1, -1), Direction.DOWN, new BlockPos(0,0,0),false)));
+    public void onTick(ClickEvent event) {
+        if (hypmode.is("Mode3") && mode.is("Hypixel")) {
+            if (mc.player.isHandActive()) {
+                Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemOnBlockPacket(Hand.MAIN_HAND == mc.player.getActiveHand() ? Hand.OFF_HAND : Hand.MAIN_HAND, new BlockRayTraceResult(new Vector3d(-1, -1, -1), Direction.DOWN, new BlockPos(0, 0, 0), false)));
             }
         }
     }
+
     @EventTarget
     public void onPacketEvent(PacketEvent event) {
         IPacket<?> packet = event.packet;
         //hypixel modez
         if (!mc.player.isRidingHorse() && mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget != null) {
-            if(packet instanceof SWindowItemsPacket) {
-                if(!noSlowing) {
+            if (packet instanceof SWindowItemsPacket) {
+                if (!noSlowing) {
                     event.cancelable = true;
                 }
             }
@@ -154,9 +163,9 @@ public class NoSlow extends Module {
             case "Hypixel":
                 if (hypmode.is("Mode2")) {
                     ItemStack item = mc.player.getHeldItem(mc.player.getActiveHand());
-                    if(packet instanceof CPlayerTryUseItemOnBlockPacket && !mc.player.isHandActive()){
+                    if (packet instanceof CPlayerTryUseItemOnBlockPacket && !mc.player.isHandActive()) {
                         BlockRayTraceResult blockRayTraceResult = ((CPlayerTryUseItemOnBlockPacket) packet).func_218794_c();
-                        if(blockRayTraceResult.getFace() == Direction.UP) {
+                        if (blockRayTraceResult.getFace() == Direction.UP) {
                             mc.player.getHeldItem(((CPlayerTryUseItemOnBlockPacket) packet).getHand());
                             if ((item.getItem().isFood() || item.getItem() instanceof BowItem) && offGround < 2) {
                                 if (mc.player.onGround && !mc.gameSettings.keyBindJump.isKeyDown()) {
@@ -166,7 +175,7 @@ public class NoSlow extends Module {
                                 event.cancelable = true;
                             }
                         }
-                    } else if(packet instanceof CPlayerTryUseItemPacket && !mc.player.isHandActive()) {
+                    } else if (packet instanceof CPlayerTryUseItemPacket && !mc.player.isHandActive()) {
                         mc.player.getHeldItem(mc.player.getActiveHand());
                         if ((item.getItem().isFood() || item.getItem() instanceof BowItem) && offGround < 2) {
 
@@ -181,8 +190,9 @@ public class NoSlow extends Module {
                 break;
         }
     }
-  @EventTarget
-    public void onUpdateEvent(UpdateEvent event){
+
+    @EventTarget
+    public void onUpdateEvent(UpdateEvent event) {
         suffix = mode.getValue();
         if (mc.player.isHandActive() && !mc.player.isRidingHorse()) {
             if (!isNeedNoslow()) {
@@ -199,13 +209,13 @@ public class NoSlow extends Module {
                                 if (mc.gameSettings.keyBindUseItem.pressed && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
                                     Objects.requireNonNull(mc.getConnection()).sendPacket(new CEntityActionPacket(mc.player, CEntityActionPacket.Action.PRESS_SHIFT_KEY));
                                     reset = true;
-                                }else if(reset){
+                                } else if (reset) {
                                     Objects.requireNonNull(mc.getConnection()).sendPacket(new CEntityActionPacket(mc.player, CEntityActionPacket.Action.RELEASE_SHIFT_KEY));
                                 }
                             }
                             break;
                         case "Mode2":
-                            if(event.isPre()){
+                            if (event.isPre()) {
                                 if (mc.player.onGround) {
                                     offGround = 0;
                                 } else {
@@ -215,7 +225,7 @@ public class NoSlow extends Module {
                                 if (MovementUtils.isMoving()) {
                                     if (offGround == 4 && send) {
                                         send = false;
-                                        Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM,BlockPos.ZERO,Direction.DOWN));
+                                        Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
                                     } else if (mc.player.isHandActive() && !mc.player.isPassenger() && (item.getItem().isFood() || item.getItem() instanceof BowItem)) {
                                         event.y = (event.y + 1E-14);
                                     }
@@ -227,52 +237,52 @@ public class NoSlow extends Module {
                                 if (event.isPre()) {
                                     if (!(mc.player.getActiveItemStack().isFood() && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BowItem) && mc.player.isHandActive() && mc.player.ticksExisted % 3 == 0 && !mc.player.onGround) {
                                         Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(mc.player.getActiveHand()));
-                                        mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM,BlockPos.ZERO,Direction.DOWN));
+                                        mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
                                     }
                                 }
                             }
                             break;
                         case "Mode4":
-                            if (MovementUtils.isMoving() && mc.player.isHandActive() && !mc.player.isPassenger() && (mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget!= null)) {
+                            if (MovementUtils.isMoving() && mc.player.isHandActive() && !mc.player.isPassenger() && (mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget != null)) {
                                 if (event.isPre()) {
 
-                                    if(!h4_change && h4_tick % 7 == 0 && h4_tick > 0) {
+                                    if (!h4_change && h4_tick % 7 == 0 && h4_tick > 0) {
                                         h4_change = true;
                                         Objects.requireNonNull(mc.getConnection()).sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 8 + 1));
                                         mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 7 + 2));
                                     }
-                                    if(!event.onGround) {
+                                    if (!event.onGround) {
                                         h4_ground = 0;
                                         h4_tick++;
-                                    }else {
-                                        if(h4_ground < 2){
+                                    } else {
+                                        if (h4_ground < 2) {
                                             h4_tick++;
                                         }
                                         h4_ground++;
                                     }
 
                                 }
-                                if(h4_change){
+                                if (h4_change) {
                                     h4_change = false;
                                     Objects.requireNonNull(mc.getConnection()).sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
                                     mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(mc.player.getActiveHand()));
-                                    if(mc.player.getActiveItemStack().getItem() instanceof SwordItem){
+                                    if (mc.player.getActiveItemStack().getItem() instanceof SwordItem) {
                                         mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
                                     }
                                 }
-                            }else {
+                            } else {
                                 h4_tick = 0;
                             }
                             break;
                     }
                     break;
                 case "Advance":
-                    if (mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget!= null && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
+                    if (mc.gameSettings.keyBindUseItem.pressed || Killaura.attackTarget != null && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
                         if (noSlowing) {
                             noSlowing = false;
                             return;
                         }
-                        if(event.isPre()) {
+                        if (event.isPre()) {
                             if (mc.player.ticksExisted % 3 == 0)
                                 Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemOnBlockPacket(
                                         Hand.MAIN_HAND,
@@ -300,9 +310,9 @@ public class NoSlow extends Module {
                 case "Intave":
                     if (event.isPre()) {
                         if (mc.player.getHeldItem(Hand.MAIN_HAND).isFood() || mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem) {
-                            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
-                        } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof  ShieldItem) {
-                            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                            Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
+                        } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem) {
+                            Objects.requireNonNull(mc.getConnection()).sendPacketNOEvent(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                         }
                     }
 
@@ -354,7 +364,7 @@ public class NoSlow extends Module {
                     break;
             }
         }
-       
+
     }
 
     @Override

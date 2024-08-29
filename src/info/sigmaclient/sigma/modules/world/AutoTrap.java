@@ -34,7 +34,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.modules.world.AutoCrystal.damageFromPos;
 import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -121,7 +121,7 @@ public BooleanValue invisible = new BooleanValue("Invisible", false),
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (this.currentPos != null) {
-            final int 霥瀳놣㠠釒 = 霥瀳놣㠠釒(colorValue.getColorInt(), 0.4f);
+            final int 霥瀳놣㠠釒 = applyColor(colorValue.getColorInt(), 0.4f);
             GL11.glPushMatrix();
             GL11.glDisable(2929);
             RenderUtils.renderPos r = RenderUtils.getRenderPos();

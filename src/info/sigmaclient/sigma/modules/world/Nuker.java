@@ -10,7 +10,6 @@ import info.sigmaclient.sigma.event.impl.render.Render3DEvent;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
-import info.sigmaclient.sigma.utils.ChatUtils;
 import info.sigmaclient.sigma.utils.player.RotationUtils;
 import info.sigmaclient.sigma.utils.player.ScaffoldUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
@@ -21,14 +20,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3i;
 import org.lwjgl.opengl.GL11;
 
 import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 
 public class Nuker extends Module {
     public ModeValue modeValue = new ModeValue("Type", "Bed", new String[]{"Bed"});
@@ -76,7 +72,7 @@ public class Nuker extends Module {
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (this.currentPos != null) {
-            final int 霥瀳놣㠠釒 = 霥瀳놣㠠釒(colorValue.getColorInt(), 0.4f);
+            final int 霥瀳놣㠠釒 = applyColor(colorValue.getColorInt(), 0.4f);
             GL11.glPushMatrix();
             GL11.glDisable(2929);
             RenderUtils.renderPos r = RenderUtils.getRenderPos();

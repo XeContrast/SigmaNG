@@ -1,12 +1,12 @@
 package info.sigmaclient.sigma.sigma5.jellomusic.player;
 
+import info.sigmaclient.sigma.sigma5.jellomusic.AudioProcessor;
 import info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager;
 import info.sigmaclient.sigma.utils.render.rendermanagers.ScaledResolution;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
 import info.sigmaclient.sigma.gui.clickgui.musicplayer.MusicPlayer;
 import info.sigmaclient.sigma.sigma5.jellomusic.MusicUtils;
 import info.sigmaclient.sigma.sigma5.jellomusic.Player;
-import info.sigmaclient.sigma.sigma5.jellomusic.佉䂷㠠觯콵;
 import info.sigmaclient.sigma.sigma5.utils.핇댠䂷呓贞;
 import info.sigmaclient.sigma.modules.gui.hide.ClickGUI;
 import info.sigmaclient.sigma.utils.render.ColorUtils;
@@ -30,13 +30,11 @@ import java.util.Random;
 
 import static info.sigmaclient.sigma.minimap.minimap.Minimap.mc;
 import static info.sigmaclient.sigma.sigma5.utils.Sigma5DrawText.drawString;
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
-
-import top.fl0wowp4rty.phantomshield.annotations.Native;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 
 
 public class JelloMusic {
-  static public List<double[]> 펊瀳藸鶲픓;
+  static public List<double[]> spectrumData;
   public ArrayList<Double> spectrum;
 
   private static final long serialVersionUID = 1L;
@@ -63,7 +61,7 @@ public class JelloMusic {
   public static String durationInSeconds = "0:00";
   public InputStream inputStreamVar;
   {
-    펊瀳藸鶲픓 = new ArrayList<>();
+    spectrumData = new ArrayList<>();
     this.spectrum = new ArrayList<>();
   }
   public JelloMusic() {
@@ -147,7 +145,7 @@ public class JelloMusic {
 
   // todo 频谱
   public void drawWave() {
-    if (this.펊瀳藸鶲픓.size() == 0) {
+    if (this.spectrumData.size() == 0) {
       return;
     }
 //    if (this.W蒕꿩待쇽 == null) {
@@ -165,7 +163,7 @@ public class JelloMusic {
                 ,MusicPlayer.secondColor
                 , false);
 //        핇댠䂷呓贞.揩ꁈ杭ใ蛊.哺卫콗鱀ಽ
-        RenderUtils.drawRect(index * n2, sr.getScaledHeight() - n4, index * n2 + n2, sr.getScaledHeight(), 霥瀳놣㠠釒(c.getRGB(), 0.7f));
+        RenderUtils.drawRect(index * n2, sr.getScaledHeight() - n4, index * n2 + n2, sr.getScaledHeight(), applyColor(c.getRGB(), 0.7f));
       }
 //      䢶웎쥦걾醧딨();
 //      for (int index2 = 0; index2 < n; ++index2) {
@@ -182,7 +180,7 @@ public class JelloMusic {
     }
   }
   public void drawTexture(){
-    if (this.펊瀳藸鶲픓.size() == 0 || spectrum.size() < 3) {
+    if (this.spectrumData.size() == 0 || spectrum.size() < 3) {
       return;
     }
     ScaledResolution sr = new ScaledResolution(mc);
@@ -213,8 +211,8 @@ public class JelloMusic {
 //      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, 霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
 //      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, 霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
 
-    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
-    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
+    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
+    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
 //      }
 //      else {
 //        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
@@ -238,8 +236,8 @@ public class JelloMusic {
   }
   public void drawLines(){
     if (this.drawSpectrum) {
-      if (this.펊瀳藸鶲픓.size() != 0) {
-        final double[] array = this.펊瀳藸鶲픓.get(0);
+      if (this.spectrumData.size() != 0) {
+        final double[] array = this.spectrumData.get(0);
         if (this.spectrum.isEmpty()) {
           for (int i = 0; i < array.length; ++i) {
             if (this.spectrum.size() < 1024) {
@@ -348,10 +346,10 @@ public class JelloMusic {
 //              for(float fa : array4) {
 //                System.out.println(array4.length);
 //              }
-              final float[][] array5 = new 佉䂷㠠觯콵(array4.length).錌浣䢶ᜄ㔢(array4);
-              펊瀳藸鶲픓.add(musicUtils.㐖䆧쿨콵浦(array5[0], array5[1]));
-              if (펊瀳藸鶲픓.size() > 18) {
-                펊瀳藸鶲픓.remove(0);
+              final float[][] array5 = new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
+              spectrumData.add(musicUtils.㐖䆧쿨콵浦(array5[0], array5[1]));
+              if (spectrumData.size() > 18) {
+                spectrumData.remove(0);
               }
               musicUtils.瀧揩뎫㦖婯(playingSource, volume);
             }

@@ -10,7 +10,6 @@ import info.sigmaclient.sigma.event.impl.player.ClickEvent;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
 import info.sigmaclient.sigma.event.impl.player.UpdateEvent;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
-import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
@@ -21,7 +20,6 @@ import info.sigmaclient.sigma.sigma5.utils.핇댠䂷呓贞;
 import info.sigmaclient.sigma.utils.*;
 import info.sigmaclient.sigma.utils.player.MovementUtils;
 import info.sigmaclient.sigma.utils.player.Rotation;
-import info.sigmaclient.sigma.utils.player.RotationUtils;
 import info.sigmaclient.sigma.utils.player.ScaffoldUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import info.sigmaclient.sigma.utils.render.StencilUtil;
@@ -30,8 +28,6 @@ import info.sigmaclient.sigma.utils.render.rendermanagers.ScaledResolution;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -48,11 +44,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.霥瀳놣㠠釒;
-import static info.sigmaclient.sigma.utils.player.MovementUtils.setSpeed;
+import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.utils.player.RotationUtils.*;
 import static info.sigmaclient.sigma.utils.player.ScaffoldUtils.isOkBlock;
-import static net.optifine.reflect.Reflector.Minecraft;
 
 public class BlockFly extends Module {
     public ModeValue type = new ModeValue("Type", "Hypixel", new String[]{
@@ -371,16 +365,16 @@ public class BlockFly extends Module {
         final int n7 = 32 / 2;
         n -= n6 / 2;
         GL11.glPushMatrix();
-        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, 霥瀳놣㠠釒(-15461356, 0.8f * n3));
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
+        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, applyColor(-15461356, 0.8f * n3));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
         n += 11 / 2f + n6 / 2;
         n2 += n7;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)n, (float)n2, 0.0f);
         GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
         GL11.glTranslatef((float)(-n), (float)(-n2), 0.0f);
-        RenderUtils.drawTextureLocation((float)n, (float)n2, 9.0f / 2, 23.0f / 2, "alt/select", new Color(霥瀳놣㠠釒(-15461356, 0.8f * n3), true));
+        RenderUtils.drawTextureLocation((float)n, (float)n2, 9.0f / 2, 23.0f / 2, "alt/select", new Color(applyColor(-15461356, 0.8f * n3), true));
         GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
@@ -398,9 +392,9 @@ public class BlockFly extends Module {
         StencilUtil.readStencilBuffer(1);
 
         GL11.glPushMatrix();
-        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, 霥瀳놣㠠釒(new Color(36,36,36).getRGB(), 0.8f * n3));
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", 霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
+        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, applyColor(new Color(36,36,36).getRGB(), 0.8f * n3));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
         GL11.glPopMatrix();
 
         StencilUtil.uninitStencilBuffer();
