@@ -17,8 +17,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.骰괠啖㕠挐酋;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawFilledBox;
 import static info.sigmaclient.sigma.sigma5.utils.㱙롤웎钘㐈.殢嶗퉧竬鼒ศ;
 import static info.sigmaclient.sigma.sigma5.utils.㱙롤웎钘㐈.霥뚔玑䬾頉蒕;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
@@ -108,8 +108,8 @@ public class Projectiles extends Module {
                     final double n19 = 柿鱀쿨亟.䩉핇韤䡸쿨.getWidth() / 2.0f + 0.2f;
                     final AxisAlignedBB 骰㕠驋嘖渺 = new AxisAlignedBB(n16 - n19, n17, n18 - n19, n16 + n19, n17 +
                             (柿鱀쿨亟.䩉핇韤䡸쿨.getHeight() + 0.1f), n18 + n19);
-                    ࡅ揩柿괠竁頉(骰㕠驋嘖渺, 霥瀳놣㠠釒(-16723258, 0.1f));
-                    骰괠啖㕠挐酋(骰㕠驋嘖渺, 1.8f * SigmaNG.lineWidth, 霥瀳놣㠠釒(-16723258, 0.1f));
+                    drawOutlinedBox(骰㕠驋嘖渺, 霥瀳놣㠠釒(-16723258, 0.1f));
+                    drawFilledBox(骰㕠驋嘖渺, 1.8f * SigmaNG.lineWidth, 霥瀳놣㠠釒(-16723258, 0.1f));
                 }
             } else {
                 final double n20 = 柿鱀쿨亟.ꪕ셴錌ศ딨 - r.renderPosX;
@@ -122,8 +122,8 @@ public class Projectiles extends Module {
                 GL11.glRotatef(90.0f, this.掬陂㹔ꪕ褕.鷏蚳甐嶗轐((float) 酭ꦱ岋刃䬾Ꮺ.getZ()), this.掬陂㹔ꪕ褕.㥇掬卫曞ᔎ((float) 酭ꦱ岋刃䬾Ꮺ.getY()), this.掬陂㹔ꪕ褕.鷏躚騜콗婯((float) (-酭ꦱ岋刃䬾Ꮺ.getX())));
                 GL11.glTranslatef(-0.5f, 0.0f, -0.5f);
                 final AxisAlignedBB 骰㕠驋嘖渺2 = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0, 1.0);
-                ࡅ揩柿괠竁頉(骰㕠驋嘖渺2, 霥瀳놣㠠釒(-21931, 0.1f));
-                骰괠啖㕠挐酋(骰㕠驋嘖渺2, 1.8f * SigmaNG.lineWidth, 霥瀳놣㠠釒(-21931, 0.1f));
+                drawOutlinedBox(骰㕠驋嘖渺2, 霥瀳놣㠠釒(-21931, 0.1f));
+                drawFilledBox(骰㕠驋嘖渺2, 1.8f * SigmaNG.lineWidth, 霥瀳놣㠠釒(-21931, 0.1f));
                 GL11.glPopMatrix();
             }
             GL11.glDisable(2896);

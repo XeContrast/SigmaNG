@@ -1,12 +1,4 @@
-//Deobfuscated with https://github.com/SimplyProgrammer/Minecraft-Deobfuscator3000 using mappings "C:\Users\1\Desktop\Minecraft-Deobfuscator3000-1.2.3\config"!
 
-/*
- * LiquidBounce+ Hacked Client
- * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
- * https://github.com/WYSI-Foundation/LiquidBouncePlus/
- * 
- * This code belongs to WYSI-Foundation. Please give credits when using this in your repository.
- */
 package info.sigmaclient.sigma.sigma5.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -33,8 +25,8 @@ public class BlurUtils {
     private static ResourceLocation blurShader = new ResourceLocation("shaders/post/blur.json");
     public static ShaderGroup shaderGroup;
     private static float width, height;
-    public static Framebuffer 捉䢶欫哺酭;
-    public static Framebuffer 햖鶊Ꮤ䈔藸;
+    public static Framebuffer primaryFramebuffer;
+    public static Framebuffer secondaryFramebuffer;
 
     private static void setValues(float strength) {
         for (int i = 0; i < 2; i++) {
@@ -60,13 +52,13 @@ public class BlurUtils {
             width = mc.getMainWindow().getFramebufferWidth();
             height = mc.getMainWindow().getFramebufferHeight();
             setValues(35.0f);
-            捉䢶欫哺酭 = shaderGroup.getFramebufferRaw("jello");
-            햖鶊Ꮤ䈔藸 = shaderGroup.getFramebufferRaw("jelloswap");
+            primaryFramebuffer = shaderGroup.getFramebufferRaw("jello");
+            secondaryFramebuffer = shaderGroup.getFramebufferRaw("jelloswap");
         }
-        捉䢶欫哺酭.framebufferClear(Minecraft.IS_RUNNING_ON_MAC);
-        햖鶊Ꮤ䈔藸.framebufferClear(Minecraft.IS_RUNNING_ON_MAC);
+        primaryFramebuffer.framebufferClear(Minecraft.IS_RUNNING_ON_MAC);
+        secondaryFramebuffer.framebufferClear(Minecraft.IS_RUNNING_ON_MAC);
 
-        捉䢶欫哺酭.bindFramebuffer(true);
+        primaryFramebuffer.bindFramebuffer(true);
         GL11.glEnable(GL_DEPTH_TEST);
 //        GL11.glEnable(GL_LIGHTING);
         GL11.glDisable(GL_LINE_SMOOTH);
@@ -106,7 +98,7 @@ public class BlurUtils {
         GL11.glPushMatrix();
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
-        捉䢶欫哺酭.bindFramebufferTexture();
+        primaryFramebuffer.bindFramebufferTexture();
         ShaderUtil.drawQuads();
         RenderSystem.enableTexture();
         GL11.glPopMatrix();

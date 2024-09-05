@@ -155,6 +155,7 @@ public class ModuleManager {
         registerModule(new ShulkerInfo());
         registerModule(new HUD());
         registerModule(new BrainFreeze());
+        registerModule(new Notifications());
         registerModule(new ItemGlowing());
         registerModule(new KeyBinds());
         registerModule(new StaffActives());

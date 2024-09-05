@@ -2,13 +2,13 @@ package info.sigmaclient.sigma.sigma5.utils;
 
 import org.lwjgl.opengl.GL11;
 
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.醧䈔堍陬䁞娍;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.resetFramebufferDepth;
 
 public class Stencil {
 
     public static void 䢶웎쥦걾醧딨() {
         GL11.glPushMatrix();
-        醧䈔堍陬䁞娍();
+        resetFramebufferDepth();
         GL11.glEnable(2960);
         GL11.glColorMask(false, false, false, false);
         GL11.glDepthMask(false);

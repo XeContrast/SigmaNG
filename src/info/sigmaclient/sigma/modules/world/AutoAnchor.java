@@ -41,7 +41,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
 import static info.sigmaclient.sigma.utils.player.RotationUtils.scaffoldRots;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
 import static net.minecraft.world.Explosion.getBlockDensity;
@@ -405,7 +405,7 @@ public class AutoAnchor extends Module {
             final double y = n2 - camY;
             final double n3 = lastPos.getZ();
             final double z = n3 - camZ;
-            ࡅ揩柿괠竁頉(new AxisAlignedBB(
+            drawOutlinedBox(new AxisAlignedBB(
                     x,y,z,x+1,y+1,z+1
             ), 霥瀳놣㠠釒(-16723258, 0.2f));
             GL11.glEnable(GL_DEPTH_TEST);
@@ -520,7 +520,7 @@ public class AutoAnchor extends Module {
                 double size = sb / msb;
                 GL11.glDisable(GL_DEPTH_TEST);
                 GL11.glDepthMask(false);
-                ࡅ揩柿괠竁頉(new AxisAlignedBB(n + 0.5f - size * 0.5f, n2 + 0.5f - size * 0.5f, n3 + 0.5f - size * 0.5f, n + 0.5f + size * 0.5f, n2 + 0.5f + size * 0.5f, n3 + 0.5f + size * 0.5f), 霥瀳놣㠠釒);
+                drawOutlinedBox(new AxisAlignedBB(n + 0.5f - size * 0.5f, n2 + 0.5f - size * 0.5f, n3 + 0.5f - size * 0.5f, n + 0.5f + size * 0.5f, n2 + 0.5f + size * 0.5f, n3 + 0.5f + size * 0.5f), 霥瀳놣㠠釒);
                 GL11.glEnable(GL_DEPTH_TEST);
                 GL11.glDepthMask(true);
                 GL11.glEnable(2929);

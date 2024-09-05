@@ -2,8 +2,6 @@ package info.sigmaclient.sigma.sigma5.utils;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import info.sigmaclient.sigma.SigmaNG;
-import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.modules.render.ChestESP;
 import info.sigmaclient.sigma.modules.render.ESP;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
@@ -16,14 +14,11 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.BedTileEntity;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.EnderChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import org.lwjgl.opengl.GL11;
 
@@ -31,8 +26,6 @@ import java.awt.*;
 
 import static info.sigmaclient.sigma.minimap.XaeroMinimap.mc;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.preGlHints;
-import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
-import static net.minecraft.client.renderer.texture.TextureManager.RESOURCE_LOCATION_EMPTY;
 import static org.lwjgl.opengl.GL11.*;
 
 // Sigma client (c)
@@ -285,7 +278,7 @@ public class ShadowESP {
                 final double ኞ甐㞈錌ಽ = 鏟蒕釒ᜄ뎫(tileEntity.getPos()).y;
                 final double 酋ꮀ聛眓쬫 = 鏟蒕釒ᜄ뎫(tileEntity.getPos()).z;
 //                System.out.println(tileEntity.getPos());
-                BoxOutlineESP.ࡅ揩柿괠竁頉(tileEntity.getBlockState().getShape(mc.world, tileEntity.getPos()).getBoundingBox().offset(
+                BoxOutlineESP.drawOutlinedBox(tileEntity.getBlockState().getShape(mc.world, tileEntity.getPos()).getBoundingBox().offset(
                         欫缰곻睬괠, ኞ甐㞈錌ಽ, 酋ꮀ聛眓쬫
                 ), -1);
             }

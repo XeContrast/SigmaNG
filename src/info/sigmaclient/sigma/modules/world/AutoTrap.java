@@ -36,7 +36,7 @@ import java.util.List;
 
 import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.modules.world.AutoCrystal.damageFromPos;
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
 
@@ -131,7 +131,7 @@ public BooleanValue invisible = new BooleanValue("Invisible", false),
             double size = sb / msb;
             GL11.glDisable(GL_DEPTH_TEST);
             GL11.glDepthMask(false);
-            ࡅ揩柿괠竁頉(new AxisAlignedBB(n + 0.5f - size * 0.5f, n2 + 0.5f - size * 0.5f, n3 + 0.5f - size * 0.5f, n + 0.5f + size * 0.5f, n2 + 0.5f + size * 0.5f, n3 + 0.5f + size * 0.5f), 霥瀳놣㠠釒);
+            drawOutlinedBox(new AxisAlignedBB(n + 0.5f - size * 0.5f, n2 + 0.5f - size * 0.5f, n3 + 0.5f - size * 0.5f, n + 0.5f + size * 0.5f, n2 + 0.5f + size * 0.5f, n3 + 0.5f + size * 0.5f), 霥瀳놣㠠釒);
             GL11.glEnable(GL_DEPTH_TEST);
             GL11.glDepthMask(true);
             GL11.glEnable(2929);

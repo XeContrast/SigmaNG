@@ -6,7 +6,7 @@ import java.awt.*;
 
 import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 
-public class 酋㔢浦杭嘖 {
+public class Particle {
     private static String[] 늦鶲鏟홵室;
     private float 쇽哺쬷欫卫;
     private float 浦頉㹔쥅韤;
@@ -23,7 +23,7 @@ public class 酋㔢浦杭嘖 {
     public Color 㼜훔뗴筕汌;
     public int 䴂竁啖酋ぶ;
 
-    public 酋㔢浦杭嘖(final float n, final float n2, final float 䬾疂嶗鶲붛) {
+    public Particle(final float n, final float n2, final float 䬾疂嶗鶲붛) {
         this.ᜄࡅ堧嶗蛊 = 1.0f;
         this.掬붃㔢㦖頉 = new 㱙蕃杭ᜄꈍ();
         this.㼜훔뗴筕汌 = new Color(1.0f, 1.0f, 1.0f, 0.5f);
@@ -36,7 +36,7 @@ public class 酋㔢浦杭嘖 {
         this.綋葫훔韤掬();
     }
 
-    public 酋㔢浦杭嘖(final float n, final float n2) {
+    public Particle(final float n, final float n2) {
         this.ᜄࡅ堧嶗蛊 = 1.0f;
         this.掬붃㔢㦖頉 = new 㱙蕃杭ᜄꈍ();
         this.㼜훔뗴筕汌 = new Color(1.0f, 1.0f, 1.0f, 0.5f);

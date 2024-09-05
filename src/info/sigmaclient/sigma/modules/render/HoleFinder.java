@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 
 import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
 
 
 public class HoleFinder extends Module {
@@ -66,7 +66,7 @@ public class HoleFinder extends Module {
                 final double n = currentPos.getX() - r.renderPosX;
                 final double n2 = currentPos.getY() - r.renderPosY;
                 final double n3 = currentPos.getZ() - r.renderPosZ;
-                ࡅ揩柿괠竁頉(new AxisAlignedBB(n, n2, n3, n + 1, n2 + 1f, n3 + 1), 霥瀳놣㠠釒);
+                drawOutlinedBox(new AxisAlignedBB(n, n2, n3, n + 1, n2 + 1f, n3 + 1), 霥瀳놣㠠釒);
                 GL11.glEnable(2929);
                 GL11.glPopMatrix();
             }

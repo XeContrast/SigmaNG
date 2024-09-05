@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
-import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.ࡅ揩柿괠竁頉;
+import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
 
 
 public class CakeEater extends Module {
@@ -58,7 +58,7 @@ public class CakeEater extends Module {
             final double n = currentPos.getPosition().getX() - r.renderPosX;
             final double n2 = currentPos.getPosition().getY() - r.renderPosY;
             final double n3 = currentPos.getPosition().getZ() - r.renderPosZ;
-            ࡅ揩柿괠竁頉(new AxisAlignedBB(n, n2, n3, n + 1, n2 + 1, n3 + 1), 霥瀳놣㠠釒);
+            drawOutlinedBox(new AxisAlignedBB(n, n2, n3, n + 1, n2 + 1, n3 + 1), 霥瀳놣㠠釒);
             GL11.glEnable(2929);
             GL11.glPopMatrix();
         }

@@ -11,16 +11,16 @@ import java.awt.*;
 import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 
 public class ConfigButton extends Button {
-    private static String[] 醧쿨浣ᔎ甐;
-    public Custom5AnimationUtil 㐈뫤뼢嘖竬;
+    private static String[] stringArray;
+    public Custom5AnimationUtil animationUtil;
     public JelloFontRenderer fontRenderer;
     public String str;
-    public ConfigButton(final int n, final int n2, final int n3, final int n4, final String 鼒鄡嘖ꁈ柿, final IPressable 樽塱掬鼒曞竁, JelloFontRenderer f) {
-        super(n, n2, n3, n4, new StringTextComponent(鼒鄡嘖ꁈ柿), 樽塱掬鼒曞竁);
+    public ConfigButton(final int n, final int n2, final int n3, final int n4, final String buttonText, final IPressable onPress, JelloFontRenderer f) {
+        super(n, n2, n3, n4, new StringTextComponent(buttonText), onPress);
         this.fontRenderer = f;
-        this.㐈뫤뼢嘖竬 = new Custom5AnimationUtil((float) (fontRenderer.getStringWidth(鼒鄡嘖ꁈ柿)/2) * 5,0);
+        this.animationUtil = new Custom5AnimationUtil((float) (fontRenderer.getStringWidth(buttonText)/2) * 5,0);
 
-        this.str = 鼒鄡嘖ꁈ柿;
+        this.str = buttonText;
     }
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
@@ -46,34 +46,34 @@ public class ConfigButton extends Button {
         }
     }
     public void myRender(int mouseX, int mouseY, Color c, float alpha) {
-        final int ใ퉧뫤ใ츚属 = c.getRGB();
+        final int colorRGB = c.getRGB();
         final int n2 = x + width / 2;
         final int n3 = y + height / 2;
-        final int 汌蚳洝陬괠ꪕ = (int) fontRenderer.getStringWidth(str);
+        final int stringWidth = (int) fontRenderer.getStringWidth(str);
         final int n4 = 18;
         float n = 1;
-        this.isHovered = mouseX >= n2 - 汌蚳洝陬괠ꪕ / 2 && mouseY >= n3 && mouseX < n2 + 汌蚳洝陬괠ꪕ / 2 && mouseY < n3 + n4;
-        this.㐈뫤뼢嘖竬.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
-        final float n5 = (float) Math.pow(this.㐈뫤뼢嘖竬.getAnim(), 3.0);
-        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
-        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属) * alpha));
+        this.isHovered = mouseX >= n2 - stringWidth / 2 && mouseY >= n3 && mouseX < n2 + stringWidth / 2 && mouseY < n3 + n4;
+        this.animationUtil.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
+        final float n5 = (float) Math.pow(this.animationUtil.getAnim(), 3.0);
+        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - stringWidth / 2, (float) n3 + 5, str, applyColor(colorRGB, n * calculateAlpha(colorRGB) * alpha));
+        RenderUtils.drawRect(n2 - stringWidth / 2 * n5, (float) (n3 + n4), n2 + stringWidth / 2 * n5, (float) (n3 + n4 + 1), applyColor(colorRGB, n * calculateAlpha(colorRGB) * alpha));
 //        super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
 
     }
 
     @Override
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        final int ใ퉧뫤ใ츚属 = -65794;
+        final int colorRGB = -65794;
         final int n2 = x + width / 2;
         final int n3 = y + height / 2;
-        final int 汌蚳洝陬괠ꪕ = (int) fontRenderer.getStringWidth(str);
+        final int stringWidth = (int) fontRenderer.getStringWidth(str);
         final int n4 = 18;
         float n = 1;
-        this.isHovered = mouseX >= n2 - 汌蚳洝陬괠ꪕ / 2 && mouseY >= n3 && mouseX < n2 + 汌蚳洝陬괠ꪕ / 2 && mouseY < n3 + n4;
-        this.㐈뫤뼢嘖竬.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
-        final float n5 = (float) Math.pow(this.㐈뫤뼢嘖竬.getAnim(), 3.0);
-        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - 汌蚳洝陬괠ꪕ / 2, (float) n3 + 5, str, applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
-        RenderUtils.drawRect(n2 - 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4), n2 + 汌蚳洝陬괠ꪕ / 2 * n5, (float) (n3 + n4 + 1), applyColor(ใ퉧뫤ใ츚属, n * 䩜뵯哝䄟픓(ใ퉧뫤ใ츚属)));
+        this.isHovered = mouseX >= n2 - stringWidth / 2 && mouseY >= n3 && mouseX < n2 + stringWidth / 2 && mouseY < n3 + n4;
+        this.animationUtil.animTo(this.isHovered ? Custom5AnimationUtil.AnimState.ANIMING: Custom5AnimationUtil.AnimState.BACKING);
+        final float n5 = (float) Math.pow(this.animationUtil.getAnim(), 3.0);
+        Sigma5DrawText.drawString(this.fontRenderer, (float) n2 - stringWidth / 2, (float) n3 + 5, str, applyColor(colorRGB, n * calculateAlpha(colorRGB)));
+        RenderUtils.drawRect(n2 - stringWidth / 2 * n5, (float) (n3 + n4), n2 + stringWidth / 2 * n5, (float) (n3 + n4 + 1), applyColor(colorRGB, n * calculateAlpha(colorRGB)));
 //        super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
 
     }
@@ -82,12 +82,12 @@ public class ConfigButton extends Button {
     protected boolean clicked(double mouseX, double mouseY) {
         final int n2 = x + width / 2;
         final int n3 = y + height / 2;
-        final int 汌蚳洝陬괠ꪕ = (int) fontRenderer.getStringWidth(str);
+        final int stringWidth = (int) fontRenderer.getStringWidth(str);
         final int n4 = 18;
-        return mouseX >= n2 - 汌蚳洝陬괠ꪕ / 2 && mouseY >= n3 && mouseX < n2 + 汌蚳洝陬괠ꪕ / 2 && mouseY < n3 + n4;
+        return mouseX >= n2 - stringWidth / 2 && mouseY >= n3 && mouseX < n2 + stringWidth / 2 && mouseY < n3 + n4;
     }
 
-    public static float 䩜뵯哝䄟픓(final int n) {
+    public static float calculateAlpha(final int n) {
         return (n >> 24 & 0xFF) / 255.0f;
     }
 }
