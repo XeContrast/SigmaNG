@@ -144,6 +144,27 @@ public class OldHitting extends Module {
 //                rotate(f1 * -35f * percent, 0, 1f, 0f, matrixStack);
 //                scale(1.2f, 1.2f, 1.2f, matrixStack);
                 break;
+            case "MilkLeaked":
+                translate(1.5F, -1.3F, -2F, matrixStack);
+                rotate(50.0F, 0.0F, 1.0F, 0.0F, matrixStack);
+               // 放大
+                translate(-0.1, 0.22, 0, matrixStack);
+                translate(-0.5F, 0.2F, 0.0F, matrixStack);
+                rotate(45f, 0.0F, 1.0F, 0.0F, matrixStack);
+                rotate(-100.0F, 1.0F, 0.0F, 0.0F, matrixStack);
+                rotate(60.0F, 0.0F, 1.0F, 0.0F, matrixStack);
+                rotate(20f, 1.0F, 0f, 0f, matrixStack);
+                rotate(-30f, 0.0F, 1F, 0f, matrixStack);
+
+                rotate(9f, 1, 0, 0f, matrixStack);
+                rotate(-3f, 0, 1f, 0f, matrixStack);
+                // 摆动幅度
+                float percent = 0.8f;
+                rotate(f1 * -30f * percent, 1, 0, 0f, matrixStack);
+                rotate(f1 * 30f * percent, 0, 0, 1f, matrixStack);
+                rotate(f1 * -35f * percent, 0, 1f, 0f, matrixStack);
+                scale(0.7f, 0.7f, 0.7f, matrixStack);
+                break;
             case "Ninja":
                 translate(0.47999998927116394, -0.38999998569488525, -0.7199999690055847, matrixStack);
                 translate(0.0, equippedProgress * -0.6f, 0.0, matrixStack);
@@ -188,12 +209,35 @@ public class OldHitting extends Module {
                 scale(0.7f, 0.7f, 0.7f, matrixStack);
                 break;
             case "Sunny":
-                translate(1.5F, -1.3F, -2F,matrixStack);
-                rotate(-150.0F, 0.0F, 1.0F, 0.0F,matrixStack);
-                rotate(-64F, 0.0F, 1.0F, 0.0F,matrixStack);
-                rotate(getRotateDirection() , 0.7F, 1.0F, 1.0F,matrixStack);
-                rotate(64F, 1.0F, 1.0F, 0.0F,matrixStack);
-                scale(0.8F, 0.8F, 0.8F,matrixStack);
+                translate(1.5F, -1.3F, -2F, matrixStack);
+                rotate(-150.0F, 0.0F, 1.0F, 0.0F, matrixStack);
+                rotate(-64F, 0.0F, 1.0F, 0.0F, matrixStack);
+                rotateDirection += 5;
+                if (rotateDirection > 360) {
+                    rotateDirection = 0;
+                }
+                rotate(rotateDirection, 1.0F, 1.0F, 1.0F, matrixStack);
+                rotate(64F, 1.0F, 1.0F, 0.0F, matrixStack);
+                break;
+            case "NextSpin":
+                translate(1.5F, -1.3F, -2F, matrixStack);
+                translate(0.0, equippedProgress * -0.6f, 0.0, matrixStack);
+                rotateDirection += 10;
+                if (rotateDirection > 360) {
+                    rotateDirection = 0;
+                }
+                rotate(rotateDirection, 0.7f, 1.0f, 0.0f, matrixStack); // 绕Y轴旋转
+                scale(1.7f, 1.7f, 1.7f, matrixStack);
+                break;
+            case "Next":
+                translate(1.5F, -1.3F, -2F, matrixStack);
+                translate(0.0, equippedProgress * -0.6f, 0.0, matrixStack);
+                rotateDirection += 10;
+                if (rotateDirection > 360) {
+                    rotateDirection = 0;
+                }
+                rotate(rotateDirection, 0.0f, 1.0f, 0.0f, matrixStack);
+                scale(1.7f, 1.7f, 1.7f, matrixStack);
                 break;
             case "Custom":
                 float swing = 0f;
@@ -216,6 +260,7 @@ public class OldHitting extends Module {
                 break;
         }
     }
+    public static ModeValue mode = new ModeValue("Mode", "Vanilla", new String[]{"Vanilla", "Tap", "Tap2", "Custom", "Slide", "Slide2", "Sunny", "NextSpin","Next", "Leaked", "MilkLeaked", "scaled", "Ninja", "Tomy", "Slow"});
     public static NumberValue offsetX = new NumberValue("OffsetX", 0, -1, 1, NumberValue.NUMBER_TYPE.FLOAT);
     public static NumberValue offsetY = new NumberValue("OffsetY", 0, -1, 1, NumberValue.NUMBER_TYPE.FLOAT);
     public static NumberValue offsetZ = new NumberValue("OffsetZ", 0, -1, 1, NumberValue.NUMBER_TYPE.FLOAT);
@@ -232,7 +277,6 @@ public class OldHitting extends Module {
     public static BooleanValue always = new BooleanValue("Always Block", false);
     public static BooleanValue block = new BooleanValue("Block Animation", false);
     public static BooleanValue noSheild = new BooleanValue("No Sheild", true);
-    public static ModeValue mode = new ModeValue("Mode", "Vanilla", new String[]{"Vanilla", "Tap", "Tap2", "Custom", "Slide", "Slide2", "Sunny", "Leaked", "scaled", "Ninja", "Tomy", "Slow"});
     public static NumberValue crotateX = new NumberValue("CustomX", 0, -360, 360, NumberValue.NUMBER_TYPE.FLOAT){
         @Override
         public boolean isHidden() {
@@ -271,9 +315,8 @@ public class OldHitting extends Module {
     }
 
     public static int rotateDirection;
-
     public OldHitting() {
-        super("OldHitting", Category.Player, "1.12.2 block?");
+        super("OldHitting", Category.Player, "1-16-4 block?");
      registerValue(offsetX);
      registerValue(offsetY);
      registerValue(offsetZ);
