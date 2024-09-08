@@ -85,6 +85,7 @@ public class ModuleManager {
         registerModule(new Teams());
         registerModule(new SuperKnockBack());
         registerModule(new ProjectileAura());
+        registerModule(new TimerRange());
 
         // movements
         registerModule(new NoSlow());
