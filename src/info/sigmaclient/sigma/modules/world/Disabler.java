@@ -40,6 +40,7 @@ public class Disabler extends Module {
     public TimerUtil timer = new TimerUtil();
     public int testticks = 0;
     private boolean disabled = false, jumps = false;
+    private int flagged = 0;
     public int offGroundTicks = 0;
     @Override
     public void onEnable() {
@@ -96,14 +97,15 @@ public class Disabler extends Module {
                     if (mc.player.onGround && jumps){
                         ChatUtils.sendMessageWithPrefix("Start Disable Motion Checker");
                         this.jumps = false;
+                        flagged = 0;
                         mc.player.jump();
                         this.disabled = true;
-                    }else if(disabled && offGroundTicks >= 10){
-                        if (this.offGroundTicks % 2 == 0) {
-                            mc.getConnection().sendPacket(new CPlayerPacket.PositionPacket(mc.player.getPosX() + 0.095, mc.player.getPosY(), mc.player.getPosZ(), mc.player.onGround));
-                        }else {
-                            mc.getConnection().sendPacket(new CPlayerPacket.PositionPacket(mc.player.getPosX(), mc.player.getPosY(), mc.player.getPosZ(), mc.player.onGround));
+                    }else if(disabled && offGroundTicks >= 9 && flagged < 20){
+                        if (mc.player.ticksExisted % 2 == 0) {
+                            event.x += randomizeDouble(0.09, 0.12);  // 0.095 = ban
                         }
+
+                        mc.player.setMotion(0, 0, 0);
                     }
                 }
 
@@ -111,6 +113,11 @@ public class Disabler extends Module {
         }
        
     }
+
+    private static double randomizeDouble(double min, double max) {
+        return Math.random() * (max - min) + min;
+    }
+
     public float fixedFacing(float face){
         return face > 0 ? 0.5f : (face < 0 ? -0.5f : 0);
     }
@@ -171,6 +178,7 @@ public class Disabler extends Module {
         ChatUtils.sendMessageWithPrefix("World Change Disabler");
         this.disabled = false;
         this.jumps = true;
+        flagged = 0;
 
         timer.reset();
     }
