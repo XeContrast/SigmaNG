@@ -146,7 +146,7 @@ public class ProjectileAura extends Module {
             float bowTrajectory = (float) ((double) ((float) (-Math.toDegrees(this.getLaunchAngle(target, v)))) - 3.8);
             if (trajectoryTheta90 <= 360.0f && bowTrajectory <= 360.0f) {
                 RotationManager.setRotYaw(trajectoryTheta90);
-                RotationManager.setRotYaw(bowTrajectory);
+                RotationManager.setRotPitch(bowTrajectory);
                 StrafeFixManager.StrafeFix = movementFix.getValue();
                 StrafeFixManager.silent = true;
 
