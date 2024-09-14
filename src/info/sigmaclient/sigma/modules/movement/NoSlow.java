@@ -3,10 +3,12 @@ package info.sigmaclient.sigma.modules.movement;
 import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.config.values.BooleanValue;
 import info.sigmaclient.sigma.config.values.ModeValue;
+import info.sigmaclient.sigma.config.values.NumberValue;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.net.PacketEvent;
 import info.sigmaclient.sigma.event.impl.player.ClickEvent;
 import info.sigmaclient.sigma.event.impl.player.MotionEvent;
+import info.sigmaclient.sigma.event.impl.player.SlowDownEvent;
 import info.sigmaclient.sigma.modules.Category;
 import info.sigmaclient.sigma.modules.Module;
 import info.sigmaclient.sigma.modules.combat.Killaura;
@@ -28,6 +30,9 @@ import java.util.Objects;
 
 
 public class NoSlow extends Module {
+    public NumberValue forward = new NumberValue("Forward",1f,0.2f,1.0f, NumberValue.NUMBER_TYPE.FLOAT);
+    public NumberValue strafe = new NumberValue("Strafe",1f,0.2f,1.0f, NumberValue.NUMBER_TYPE.FLOAT);
+    public BooleanValue sprint = new BooleanValue("Sprint",true);
     public static ModeValue mode = new ModeValue("Mode", "Intave", new String[]{
             "GrimAC",
             "Intave",
@@ -72,6 +77,9 @@ public class NoSlow extends Module {
     public NoSlow() {
         super("NoSlow", Category.Movement, "No slow for use items");
         registerValue(mode);
+        registerValue(forward);
+        registerValue(strafe);
+        registerValue(sprint);
         registerValue(hypmode);
         registerValue(grimmode);
         registerValue(sword);
@@ -95,6 +103,7 @@ public class NoSlow extends Module {
                 && (!mode.is("Intave") || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem))
                 && (sword.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem))
                 && (food.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).isFood()))
+                && !Killaura.blocking
                 && (bow.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof BowItem))
                 && (shield.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem || mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem))
                 && (potion.isEnable() || !(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PotionItem));
@@ -110,6 +119,14 @@ public class NoSlow extends Module {
             if (mc.player.isHandActive()) {
                 Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemOnBlockPacket(Hand.MAIN_HAND == mc.player.getActiveHand() ? Hand.OFF_HAND : Hand.MAIN_HAND, new BlockRayTraceResult(new Vector3d(-1, -1, -1), Direction.DOWN, new BlockPos(0, 0, 0), false)));
             }
+        }
+    }
+
+    @EventTarget
+    public void onSlowDown(SlowDownEvent event) {
+        if (isNeedNoslow()) {
+            event.forward = forward.getValue().floatValue();
+            event.strafe = strafe.getValue().floatValue();
         }
     }
 
@@ -340,7 +357,7 @@ public class NoSlow extends Module {
                                 mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
                                 break;
                             case "Mode2":
-                                mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 8 + 1));
+                                Objects.requireNonNull(mc.getConnection()).sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 8 + 1));
                                 mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 7 + 2));
                                 mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
                                 break;

@@ -7,6 +7,9 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import info.sigmaclient.sigma.event.impl.player.AttackEvent;
+import info.sigmaclient.sigma.event.impl.player.SlowDownEvent;
+import info.sigmaclient.sigma.modules.combat.Killaura;
 import info.sigmaclient.sigma.sigma5.jelloportal.florianmichael.vialoadingbase.ViaLoadingBase;
 import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.event.impl.player.MoveEvent;
@@ -858,10 +861,13 @@ public class ClientPlayerEntity extends AbstractClientPlayerEntity
         this.movementInput.tickMovement(this.isForcedDown());
         this.mc.getTutorial().handleMovement(this.movementInput);
 
-        if (this.isHandActive() && !this.isPassenger() && !NoSlow.isNeedNoslow())
+        if ((this.isHandActive() && !this.isPassenger()) || Killaura.blocking)
         {
-            this.movementInput.moveStrafe *= 0.2F;
-            this.movementInput.moveForward *= 0.2F;
+            SlowDownEvent event = new SlowDownEvent(0.2f,0.2f,true);
+            SigmaNG.getSigmaNG().eventManager.call(event);
+            this.movementInput.moveStrafe *= event.strafe;
+            this.movementInput.moveForward *= event.forward;
+            this.setSprinting(event.sprint);
             this.sprintToggleTimer = 0;
         }
 

@@ -14,15 +14,16 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static info.sigmaclient.sigma.utils.render.RenderUtils.createFrameBuffer;
 import static org.lwjgl.opengl.GL11.*;
 
 public class BlurUtils {
     
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
-    private static ResourceLocation blurShader = new ResourceLocation("shaders/post/blur.json");
+    private static final ResourceLocation blurShader = new ResourceLocation("shaders/post/blur.json");
     public static ShaderGroup shaderGroup;
     private static float width, height;
     public static Framebuffer primaryFramebuffer;
@@ -30,7 +31,7 @@ public class BlurUtils {
 
     private static void setValues(float strength) {
         for (int i = 0; i < 2; i++) {
-            shaderGroup.listShaders.get(i).getShaderManager().func_216539_a("Radius").set(strength);
+            Objects.requireNonNull(shaderGroup.listShaders.get(i).getShaderManager().func_216539_a("Radius")).set(strength);
         }
     }
     public static void stopShader(){

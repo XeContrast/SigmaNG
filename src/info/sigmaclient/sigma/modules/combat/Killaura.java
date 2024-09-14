@@ -1,6 +1,8 @@
 package info.sigmaclient.sigma.modules.combat;
 
+import baritone.api.event.events.PlayerUpdateEvent;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import info.sigmaclient.sigma.modules.movement.NoSlow;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
 import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
@@ -43,6 +45,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -185,9 +188,9 @@ public class Killaura extends Module {
         }
     };
     // anims
-    private PartialTicksAnim translate = new PartialTicksAnim(0);
-    private PartialTicksAnim translate2 = new PartialTicksAnim(0);
-    private PartialTicksAnim translate3 = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate2 = new PartialTicksAnim(0);
+    private final PartialTicksAnim translate3 = new PartialTicksAnim(0);
     private ClickHelper clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
     private boolean back = false;
     private int switchTime = 0;
@@ -198,10 +201,11 @@ public class Killaura extends Module {
     private boolean canFallHit = false;
 
     private int groundTime = 0;
-    private static TimerUtil timer = new TimerUtil();
+    private static final TimerUtil timer = new TimerUtil();
 
 
     private static double blockTime;
+    public static boolean blocking;
     public static LivingEntity cacheAttackTarget = null;
     public static LivingEntity attackTarget = null;
 
@@ -246,6 +250,7 @@ public class Killaura extends Module {
     @Native
     @Override
     public void onEnable() {
+        blocking = false;
         index = 0;
         switchTime = 0;
         clickHelper = new ClickHelper(CPS.getValue().intValue(),cpsMode.getValue());
@@ -268,15 +273,16 @@ public class Killaura extends Module {
     @Native
     @Override
     public void onDisable() {
+        if (blocking) {
+            mc.gameSettings.keyBindUseItem.pressed = true;
+            blocking = false;
+        }
         BlinkProcess.stopBlink();
         KeyBinding.setKeyBindState(InputMappings.Type.MOUSE.getOrMakeInput(1),false);
         canFallHit = false;
         cacheAttackTarget = null;
         attackTarget = null;
         reset();
-        if(isABEnable()) {
-            OldHitting.blocking = false;
-        }
         super.onDisable();
     }
 
@@ -313,7 +319,6 @@ public class Killaura extends Module {
         if(targets.isEmpty()){
             clickHelper.reset();
             switchTime = 0;
-            unBlock();
         }
 
         switch (mode.getValue()){
@@ -360,27 +365,12 @@ public class Killaura extends Module {
 
         cacheAttackTarget = attackTarget;
 
-        if(isABEnable()) {
-            OldHitting.blocking = true;
-        }
-
     }
 
 
     @EventTarget
     public void onMotionEvent(MotionEvent event){
         if(!targets.isEmpty()){
-            //取消格挡
-            boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
-                    attackTarget != null && mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue())
-                    && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem;
-
-
-            unBlock();
-
-            if(isABEnable() && canBlock) {
-                priorityBlock(event);
-            }
 
             if(event.isPre()) {
                 //转头
@@ -394,10 +384,6 @@ public class Killaura extends Module {
             }
 
 
-
-            if(isABEnable() && canBlock) {
-                block(event);
-            }
         }else {
             if(event.isPre()) {
                 if(BlinkProcess.isBlinking()){
@@ -406,13 +392,25 @@ public class Killaura extends Module {
 
             }
         }
+        if (blocking) OldHitting.blocking = true;
+        if (!targets.isEmpty()) {
+            block();
+        } else {
+            unBlock();
+        }
+    }
 
+    @EventTarget
+    private void onSlowDown(SlowDownEvent event) {
+        if (blocking && (!autoblockMode.is("None") || !autoblockMode.is("Fake") && SigmaNG.SigmaNG.moduleManager.getModule(NoSlow.class).enabled)) {
+            event.forward = 0.4f;
+            event.strafe = 0.4f;
+        }
     }
 
     private void getTargets(){
         for (Entity entity : mc.world.getLoadedEntityList()){
-            if(!(entity instanceof LivingEntity) || mc.player.getDistanceNearest(entity) > range.getValue().floatValue())continue;
-            LivingEntity e = (LivingEntity) entity;
+            if(!(entity instanceof LivingEntity e) || mc.player.getDistanceNearest(entity) > range.getValue().floatValue())continue;
             if(isTargetEnable(e) && !targets.contains(e)){
                 targets.add(e);
             }
@@ -447,7 +445,6 @@ public class Killaura extends Module {
                 break;
             case "Matrix":
                 if (attackTarget.getBoundingBox().contains(mc.player.getEyePosition(1F))) {
-                    rotations = null;
                 }else {
                     Rotation matrix = NCPRotation.NCPRotation(attackTarget);
                     rotations = new float[]{matrix.getYaw(), matrix.getPitch()};
@@ -489,7 +486,6 @@ public class Killaura extends Module {
                 Rotation calc = null;
                 switch (customRotationMode.getValue()){
                     case "Nearest":
-                        if(rots == null) break;
                         calc = rots;
                         break;
                     case "EyeHeight":
@@ -641,26 +637,15 @@ public class Killaura extends Module {
     public void onPacket(PacketEvent event){
         if(event.cancelable)return;
         IPacket packet = event.packet;
-        boolean canBlock = ((cacheAttackTarget != null && mc.player.getDistance(cacheAttackTarget) <= blockRange.getValue().longValue()) ||
-                attackTarget != null && mc.player.getDistance(attackTarget) <= blockRange.getValue().longValue())
-                && mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem;
 
-        switch (autoblockMode.getValue()) {
-            case "Interact":
-                if(packet instanceof CPlayerDiggingPacket && canBlock){
-                    if(!BlinkProcess.isBlinking()) {
-                        blockTime = 0;
-                        BlinkProcess.startBlink();
-                    }else {
-                        event.setCancelled();
-                    }
+        if (!targets.isEmpty()) {
+            switch (autoblockMode.getValue()) {
+                case "None", "Fake" -> {
                 }
-                break;
-            case "Swap":
-                if(packet instanceof CPlayerDiggingPacket && canBlock){
-                    event.setCancelled();
+                default -> {
+                    if (packet instanceof CPlayerDiggingPacket) event.setCancelled();
                 }
-                break;
+            }
         }
     }
 
@@ -709,6 +694,20 @@ public class Killaura extends Module {
         }
     }
 
+    @EventTarget
+    public void onStrafeEvent(StrafeEvent event) {
+        if (movementFix.is("Vanilla") && attackTarget != null) {
+            event.yaw = lastRotation[0];
+        }
+    }
+
+    @EventTarget
+    public void onJumpEvent(JumpEvent event) {
+        if (movementFix.is("Vanilla") && attackTarget != null) {
+            event.yaw = lastRotation[0];
+        }
+    }
+
 
     @Native
     int getAxeSlot() {
@@ -731,7 +730,7 @@ public class Killaura extends Module {
     }
 
     HashMap<Entity, ESPTarget> espTargets = new HashMap<>();
-    class ESPTarget {
+    static class ESPTarget {
         public Sigma5AnimationUtil anim = new Sigma5AnimationUtil(300, 300);
         public float alpha = 0;
     }
@@ -819,7 +818,7 @@ public class Killaura extends Module {
         if(LivingEntity instanceof AnimalEntity) {
             return animals.isEnable();
         }
-        if(LivingEntity instanceof MonsterEntity) {
+        if(LivingEntity instanceof MonsterEntity || LivingEntity instanceof SlimeEntity) {
             return mobs.isEnable();
         }
         return false;
@@ -832,9 +831,10 @@ public class Killaura extends Module {
         targets.clear();
     }
 
-    @Native
-    public boolean isABEnable(){
-        return !autoblockMode.is("None");
+    public boolean canBlock() {
+        if (!(mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem)) return false;
+        mc.player.getHeldItem(Hand.MAIN_HAND);
+        return true;
     }
 
     public void draw(){
@@ -874,7 +874,6 @@ public class Killaura extends Module {
         GlStateManager.resetColor();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        float a = 0.75f;
         Gradient.applyGradient(-24 * 11, -24 * 11, 48 * 22, 48 * 22,0.8f,
                 ColorUtils.blend(ColorChanger.getColor(0, 10), new Color(255,255,255), 0.8f),
                 ColorUtils.blend(ColorChanger.getColor(50, 10), new Color(255,255,255), 0.8f),
@@ -934,69 +933,36 @@ public class Killaura extends Module {
         }
     }
     @Native
-    public void block(MotionEvent event){
-        switch (autoblockMode.getValue()) {
-            case "Vanilla":
-                blockTime++;
-                mc.getConnection().sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                break;
-            case "Interact":
-
-                if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                    if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
-                        AutoBlockUtil.BlockWithInteract(attackTarget);
-                    }else {
-                        AutoBlockUtil.Block();
+    public void block(){
+        if (!blocking) {
+            switch (autoblockMode.getValue()) {
+                case "None" -> {}
+                case "Fake" -> blocking = true;
+                default -> {
+                    if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem) {
+                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                    } else if (mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem) {
+                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
+                    } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
+                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
                     }
-                    if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                        blockTime++;
-                    }else {
-                        blockTime = 0;
-                    }
+                    blocking = true;
                 }
-                break;
-            case "Swap":
-                if(mc.player.getHeldItemMainhand().getItem() instanceof SwordItem) {
-                    if(BadPacketsProcess.bad(false,false,false,true,false,true,false)) {
-                        AutoBlockUtil.BlockWithInteract(attackTarget);
-                    }else {
-                        AutoBlockUtil.Block();
-                    }
-                    if(mc.player.getHeldItemOffhand().getItem() instanceof ShieldItem){
-                        blockTime++;
-                    }else {
-                        blockTime = 0;
-                    }
-                }
-                break;
+            }
         }
     }
 
     @Native
-    public static void unBlock(){
-        if(blockTime > 0){
+    public void unBlock(){
+        if (blocking) {
             switch (autoblockMode.getValue()) {
-                case "Vanilla":
-                    mc.getConnection().sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.UP));
-                    blockTime = 0;
-                    break;
-                case "Interact":
-                    if(attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
-                        BlinkProcess.stopBlink();
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                        blockTime = 0;
-                    }
-                    break;
-                case "Swap":
-                    if(mc.player.offGroundTicks % 4 == 0 || attackTarget == null || mc.player.getDistance(attackTarget) > blockRange.getValue().floatValue()) {
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem % 9 + 1));
-                        mc.getConnection().sendPacket(new CHeldItemChangePacket(mc.player.inventory.currentItem));
-                        blockTime = 0;
-                    }
-                    break;
+                case "None" -> {}
+                case "Fake" -> blocking = false;
+                default -> {
+                    Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
+                    blocking = false;
+                }
             }
-
         }
     }
 
