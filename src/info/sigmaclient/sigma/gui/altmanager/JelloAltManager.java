@@ -32,7 +32,7 @@ import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouse
 import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouseY;
 import static info.sigmaclient.sigma.modules.Module.mc;
 import static info.sigmaclient.sigma.modules.render.NameTags.blendColors;
-import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
+import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.*;
 
 public class JelloAltManager extends Screen {
@@ -130,7 +130,7 @@ public class JelloAltManager extends Screen {
                 float width2 = (float) Math.floor(sr.getScaledWidth() * 0.34f) + 2;
                 float anim = sr.getScaledWidth() - width2 - 8 - 15 + 20;
                 float scale = alt.animationUtil.getAnim();
-                scale = 欫좯콵甐鶲㥇((float) scale, 0.17, 1.0, 0.51, 1.0);
+                scale = interpolate((float) scale, 0.17, 1.0, 0.51, 1.0);
                 scale *= 1.18f;
                 if (scale > 1.09f) {
                     scale = 1.18f - scale + 1;
@@ -275,7 +275,7 @@ public class JelloAltManager extends Screen {
             prev = alt;
             float anim = sr.getScaledWidth() - width2 - 8 - 15 + 20;
             float scale = alt.animationUtil.getAnim();
-            scale = 欫좯콵甐鶲㥇((float) scale, 0.17, 1.0, 0.51, 1.0);
+            scale = interpolate((float) scale, 0.17, 1.0, 0.51, 1.0);
             scale *= 1.18f;
             if(scale > 1.09f){
                 scale = 1.18f - scale + 1;
@@ -341,7 +341,7 @@ public class JelloAltManager extends Screen {
         float b = addAnimation.getAnim();
         if(b != 0){
             float scale = b;
-            scale = 欫좯콵甐鶲㥇((float) scale, 0.17, 1.0, 0.51, 1.0);
+            scale = interpolate((float) scale, 0.17, 1.0, 0.51, 1.0);
             scale *= 1.18f;
             if(scale > 1.09f){
                 scale = 1.18f - scale + 1;

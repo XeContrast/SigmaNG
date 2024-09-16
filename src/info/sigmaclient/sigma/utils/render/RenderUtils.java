@@ -269,7 +269,7 @@ public class RenderUtils {
     static ArrayList<Double> lastRenderCircleY = new ArrayList<>();
     static TimerUtil lastRender = new TimerUtil();
 
-    public static void 牰蓳躚唟捉璧(final float n, final float n2, final float n3, final int n4) {
+    public static void drawRect(final float n, final float n2, final float n3, final int n4) {
         GlStateManager.color(0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
         final float n5 = (n4 >> 24 & 0xFF) / 255.0f;
@@ -362,7 +362,7 @@ public class RenderUtils {
         GL11.glColor3f(1, 1, 1);
     }
 
-    public static void 汌ꪕ蒕姮Ⱋ樽(final float n, final float n2, final float n3, final float n4, final int n51, final float n6, final float n7) {
+    public static void drawRectangle(final float n, final float n2, final float n3, final float n4, final int n51, final float n6, final float n7) {
         Color n5 = new Color(n51, true);
         final int n8 = 36 / 2;
         final int n9 = 10 / 2;
@@ -387,12 +387,12 @@ public class RenderUtils {
         GL11.glTranslatef((float)(-n - n8 / 2), (float)(-n2 - n4 - n8 / 2), 0.0f);
         drawTextureLocation((float)(n + n9), (float)(n2 + n9 + n4), (float)n8, (float)n8, "jello/floating_corner", n5);
         GL11.glPopMatrix();
-        퉧핇樽웨䈔属(n6 - n8, n7 + n9, n6 - n10 + n8, n7 - n9 + n4);
+        drawStencilRect(n6 - n8, n7 + n9, n6 - n10 + n8, n7 - n9 + n4);
         for (int i = 0; i < n4; i += n8) {
             drawTextureLocation((float)(n - n10), (float)(n2 + n9 + i), (float)n8, (float)n8, "jello/floating_border", n5);
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n6, n7 - n10, n6 + n3 - n9, n7 + n9);
+        resetStencil();
+        drawStencilRect(n6, n7 - n10, n6 + n3 - n9, n7 + n9);
         for (int j = 0; j < n3; j += n8) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n8 / 2), (float)(n2 + n8 / 2), 0.0f);
@@ -401,8 +401,8 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n10), (float)(n2 - n9 - j), (float)n8, (float)n8, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n6 + n3 - n9, n7 - n10, n + n3 + n10, n7 + n4 - n9);
+        resetStencil();
+        drawStencilRect(n6 + n3 - n9, n7 - n10, n + n3 + n10, n7 + n4 - n9);
         for (int k = 0; k < n4; k += n8) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n8 / 2), (float)(n2 + n8 / 2), 0.0f);
@@ -411,8 +411,8 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n3 + n9), (float)(n2 - n9 - k), (float)n8, (float)n8, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n6 - n9, n7 - n10 + n4 - n8, n6 + n3 - n9, n7 + n4 + n9 * 2);
+        resetStencil();
+        drawStencilRect(n6 - n9, n7 - n10 + n4 - n8, n6 + n3 - n9, n7 + n4 + n9 * 2);
         for (int l = 0; l < n3; l += n8) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n8 / 2), (float)(n2 + n8 / 2), 0.0f);
@@ -421,7 +421,7 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n4 + n9), (float)(n2 + n9 + l), (float)n8, (float)n8, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
+        resetStencil();
     }
     public static void drawRoundShadow(final float n, final float n2, final float n3, final float n4, final int n71) {
         final int n6 = 36 / 2;
@@ -429,7 +429,7 @@ public class RenderUtils {
         final int n8 = n6 - n7;
         Color n5 = new Color(n71, true);
         float a = n5.getAlpha() / 255f;
-        㠠Ꮤ曞佉䩜鱀((float)(n + n7), (float)(n2 + n7), (float)(n + n3 - n7), (float)(n2 + n4 - n7), n71);
+        drawFilledRectangle((float)(n + n7), (float)(n2 + n7), (float)(n + n3 - n7), (float)(n2 + n4 - n7), n71);
         drawTextureLocation((float)(n - n8), (float)(n2 - n8), (float)n6, (float)n6, "jello/floating_corner", n5);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)(n + n3 - n6 / 2), (float)(n2 + n6 / 2), 0.0f);
@@ -449,12 +449,12 @@ public class RenderUtils {
         GL11.glTranslatef((float)(-n - n6 / 2), (float)(-n2 - n4 - n6 / 2), 0.0f);
         drawTextureLocation((float)(n + n7), (float)(n2 + n7 + n4), (float)n6, (float)n6, "jello/floating_corner", n5);
         GL11.glPopMatrix();
-        퉧핇樽웨䈔属(n - n6, n2 + n7, n - n8 + n6, n2 - n7 + n4, true, a);
+        drawStencilRect(n - n6, n2 + n7, n - n8 + n6, n2 - n7 + n4, true, a);
         for (int i = 0; i < n4; i += n6) {
             drawTextureLocation((float)(n - n8), n2 + n7 + i - 0.2f, (float)n6, n6 + 0.2f, "jello/floating_border", n5);
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n, n2 - n8, n + n3 - n7, n2 + n7, true, a);
+        resetStencil();
+        drawStencilRect(n, n2 - n8, n + n3 - n7, n2 + n7, true, a);
         for (int j = 0; j < n3; j += n6) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n6 / 2), (float)(n2 + n6 / 2), 0.0f);
@@ -463,8 +463,8 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n8), n2 - n7 - j - 0.2f, (float)n6, n6 + 0.2f, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n + n3 - n7, n2 - n8, n + n3 + n8, n2 + n4 - n7, true, a);
+        resetStencil();
+        drawStencilRect(n + n3 - n7, n2 - n8, n + n3 + n8, n2 + n4 - n7, true, a);
         for (int k = 0; k < n4; k += n6) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n6 / 2), (float)(n2 + n6 / 2), 0.0f);
@@ -473,8 +473,8 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n3 + n7), n2 - n7 - k - 0.2f, (float)n6, n6 + 0.2f, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n - n7, n2 - n8 + n4 - n6, n + n3 - n7, n2 + n4 + n7 * 2, true, a);
+        resetStencil();
+        drawStencilRect(n - n7, n2 - n8 + n4 - n6, n + n3 - n7, n2 + n4 + n7 * 2, true, a);
         for (int l = 0; l < n3; l += n6) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(n + n6 / 2), (float)(n2 + n6 / 2), 0.0f);
@@ -483,7 +483,7 @@ public class RenderUtils {
             drawTextureLocation((float)(n - n4 + n7), n2 + n7 + l - 0.2f, (float)n6, n6 + 0.2f, "jello/floating_border", n5);
             GL11.glPopMatrix();
         }
-        롤婯鷏붛浣弻();
+        resetStencil();
     }
     public static void drawCircle(final BlockPos entity, final Color color) {
         GlStateManager.disableDepth();

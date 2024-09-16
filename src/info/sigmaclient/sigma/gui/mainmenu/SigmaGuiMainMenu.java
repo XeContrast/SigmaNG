@@ -36,7 +36,7 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static info.sigmaclient.sigma.modules.Module.mc;
-import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
+import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
 
 public class SigmaGuiMainMenu extends Screen {
     private static final Random RANDOM = new Random();
@@ -922,7 +922,7 @@ public class SigmaGuiMainMenu extends Screen {
 
 
             float blurAlpha = this.blurAlpha.getAnim();
-            blurAlpha = !isClosing ? 欫좯콵甐鶲㥇(blurAlpha, 0.17, 1.0, 0.51, 1.0) : (1 - 欫좯콵甐鶲㥇(1 - blurAlpha, 0.17, 1.0, 0.51, 1.0));
+            blurAlpha = !isClosing ? interpolate(blurAlpha, 0.17, 1.0, 0.51, 1.0) : (1 - interpolate(1 - blurAlpha, 0.17, 1.0, 0.51, 1.0));
 
             SigmaGuiMainMenu.renderAlpha = 1 - blurAlpha;
             SigmaGuiMainMenu.renderYOffsets = 0;

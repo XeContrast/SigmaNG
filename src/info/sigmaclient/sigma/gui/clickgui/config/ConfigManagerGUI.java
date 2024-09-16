@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static info.sigmaclient.sigma.minimap.minimap.Minimap.mc;
-import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
+import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
 
 
@@ -58,9 +58,9 @@ public class ConfigManagerGUI {
         scale.animTo(show ? Sigma5AnimationUtil.AnimState.ANIMING : Sigma5AnimationUtil.AnimState.SLEEPING);
         addProfile.animTo(showAdd ? Sigma5AnimationUtil.AnimState.ANIMING : Sigma5AnimationUtil.AnimState.SLEEPING);
         float myAlpha = scale.getAnim();
-        float n = 欫좯콵甐鶲㥇(myAlpha, 0.37, 1.48, 0.17, 1);
+        float n = interpolate(myAlpha, 0.37, 1.48, 0.17, 1);
         if (scale.isAnim == Sigma5AnimationUtil.AnimState.SLEEPING) {
-            n = 欫좯콵甐鶲㥇(myAlpha, 0.38, 0.73, 0.0, 1.0);
+            n = interpolate(myAlpha, 0.38, 0.73, 0.0, 1.0);
         }
         ScaledResolution sr = new ScaledResolution(mc);
         float w = sr.getScaledWidth(), h = sr.getScaledHeight();
@@ -92,9 +92,9 @@ public class ConfigManagerGUI {
             RenderUtils.drawRect(sx - 125 + 12.5f, sy - 250 + 30 + 5, sx - 12.5f, sy - 250 + 30 + 5.5f, 霥瀳놣㠠釒(-16711423, 0.05f * myAlpha));
             float cy = sy - 250 + 30 + 5.5f + 5 - scroll;
 
-            float n3 = 0.9f + (1.0f - 欫좯콵甐鶲㥇(addProfile.getAnim(), 0.0, 0.96, 0.69, 0.99)) * 0.1f;
+            float n3 = 0.9f + (1.0f - interpolate(addProfile.getAnim(), 0.0, 0.96, 0.69, 0.99)) * 0.1f;
             if (!addProfile.isAnim.is()) {
-                n3 = 0.9f + (1.0f - 欫좯콵甐鶲㥇(addProfile.getAnim(), 0.61, 0.01, 0.87, 0.16)) * 0.1f;
+                n3 = 0.9f + (1.0f - interpolate(addProfile.getAnim(), 0.61, 0.01, 0.87, 0.16)) * 0.1f;
             }
             if (add != null)
                 add.myRender(x, y, new Color(59, 153, 253), myAlpha);
@@ -122,7 +122,7 @@ public class ConfigManagerGUI {
                     cy += 35;
                     continue;
                 }
-                float n113 = 欫좯콵甐鶲㥇(config.editAnimation.getAnim(), 0.6, 1.1, 0.3, 1);
+                float n113 = interpolate(config.editAnimation.getAnim(), 0.6, 1.1, 0.3, 1);
                 float offsetX = n113 * -100;
                 config.alpha = config.animationUtil.getAnim();
                 float s8 = sx - 12.5f + 7f + offsetX;
@@ -148,7 +148,7 @@ public class ConfigManagerGUI {
             StencilUtil.uninitStencilBuffer();
             GL11.glPopMatrix();
 
-            float addAlpha = 欫좯콵甐鶲㥇(addProfile.getAnim() * alpha * myAlpha, 0.2, 0.4, 0.4, 1.0);
+            float addAlpha = interpolate(addProfile.getAnim() * alpha * myAlpha, 0.2, 0.4, 0.4, 1.0);
             float addAlpha2 = alpha * myAlpha;
             float xx = sy - 250 + 30 + 4 + 100 * Math.min(addAlpha, 1), xx2 = sx - 125;
             if (!ClickUtils.isClickable(sx - 125, sy - 250, sx, sy - 250 + 30 + 4 + 100, x, y)) {

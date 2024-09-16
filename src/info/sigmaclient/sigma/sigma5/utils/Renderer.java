@@ -1,50 +1,53 @@
 package info.sigmaclient.sigma.sigma5.utils;
 
+import lombok.Getter;
+
 public class Renderer {
-    private static String[] 璧Ꮺ岋渺竁;
-    private float 捉杭室쬷陂;
-    private RandomGenerator 弻硙㹔䩜䈔;
-    private ศ酋쿨핇弻 펊㝛藸ศ筕;
-    private long 阢卒待疂Ꮺ;
-    private boolean ኞ筕蒕硙㐖;
-    private float 洝䄟杭䆧埙;
+    private static String[] RENDERER_NAMES;
+    @Getter
+    private float deltaX;
+    private RandomGenerator randomGenerator;
+    private timer timerInstance;
+    private long nextUpdate;
+    private boolean updateRequired;
+    private float targetDeltaX;
 
     public Renderer() {
-        this.弻硙㹔䩜䈔 = new RandomGenerator();
-        this.펊㝛藸ศ筕 = new ศ酋쿨핇弻(this);
-        this.ኞ筕蒕硙㐖 = false;
-        this.洝䄟杭䆧埙 = -1.0f;
-        this.펊㝛藸ศ筕.䄟揩酭湗웨();
-        this.阢卒待疂Ꮺ = this.弻硙㹔䩜䈔.nextInt(8000, 10000);
-        this.捉杭室쬷陂 = this.弻硙㹔䩜䈔.nextFloat();
+        this.randomGenerator = new RandomGenerator();
+        this.timerInstance = new timer(this);
+        this.updateRequired = false;
+        this.targetDeltaX = -1.0f;
+        this.timerInstance.start();
+        this.nextUpdate = this.randomGenerator.nextInt(8000, 10000);
+        this.deltaX = this.randomGenerator.nextFloat();
     }
 
     public void updateor() {
-        if (this.펊㝛藸ศ筕.㥇햖郝阢ᔎ() > this.阢卒待疂Ꮺ) {
-            this.阢卒待疂Ꮺ = this.弻硙㹔䩜䈔.nextInt(8000, 10000);
-            this.ኞ筕蒕硙㐖 = true;
-            this.洝䄟杭䆧埙 = this.弻硙㹔䩜䈔.nextFloat() + 0.75f;
-            if (this.弻硙㹔䩜䈔.nextBoolean()) {
-                this.洝䄟杭䆧埙 *= -1.0f;
+        if (this.timerInstance.getElapsedTime() > this.nextUpdate) {
+            this.nextUpdate = this.randomGenerator.nextInt(8000, 10000);
+            this.updateRequired = true;
+            this.targetDeltaX = this.randomGenerator.nextFloat() + 0.75f;
+            if (this.randomGenerator.nextBoolean()) {
+                this.targetDeltaX *= -1.0f;
             }
-            this.펊㝛藸ศ筕.핇䖼醧걾䢶();
+            this.timerInstance.reset();
         }
-        if (this.ኞ筕蒕硙㐖) {
-            if (this.洝䄟杭䆧埙 != -1.0f) {
-                if (this.펊㝛藸ศ筕.㥇햖郝阢ᔎ() % 10L == 0L) {
-                    if (this.洝䄟杭䆧埙 <= this.捉杭室쬷陂) {
-                        this.捉杭室쬷陂 -= 0.02f;
-                        if (this.洝䄟杭䆧埙 > this.捉杭室쬷陂) {
-                            this.捉杭室쬷陂 = this.洝䄟杭䆧埙;
-                            this.ኞ筕蒕硙㐖 = false;
-                            this.洝䄟杭䆧埙 = -1.0f;
+        if (this.updateRequired) {
+            if (this.targetDeltaX != -1.0f) {
+                if (this.timerInstance.getElapsedTime() % 10L == 0L) {
+                    if (this.targetDeltaX <= this.deltaX) {
+                        this.deltaX -= 0.02f;
+                        if (this.targetDeltaX > this.deltaX) {
+                            this.deltaX = this.targetDeltaX;
+                            this.updateRequired = false;
+                            this.targetDeltaX = -1.0f;
                         }
                     } else {
-                        this.捉杭室쬷陂 += 0.02f;
-                        if (this.洝䄟杭䆧埙 < this.捉杭室쬷陂) {
-                            this.捉杭室쬷陂 = this.洝䄟杭䆧埙;
-                            this.ኞ筕蒕硙㐖 = false;
-                            this.洝䄟杭䆧埙 = -1.0f;
+                        this.deltaX += 0.02f;
+                        if (this.targetDeltaX < this.deltaX) {
+                            this.deltaX = this.targetDeltaX;
+                            this.updateRequired = false;
+                            this.targetDeltaX = -1.0f;
                         }
                     }
                 }
@@ -52,8 +55,4 @@ public class Renderer {
         }
     }
 
-    public float ᢻ㮃亟㦖웎() {
-        return this.捉杭室쬷陂;
-    }
 }
-    

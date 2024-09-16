@@ -16,102 +16,102 @@ public class Sigma5AnimationUtil
             return this == ANIMING;
         }
     }
-    public int ใᏪ묙姮哝;
-    public int 硙㼜陬䕦묙;
+    public int animationDuration;
+    public int sleepDuration;
     public AnimState isAnim;
-    public Date 䈔鶲쿨韤鱀;
-    public Date 핇罡钘硙䎰;
+    public Date animationStartTime;
+    public Date sleepStartTime;
     
     public Sigma5AnimationUtil(final int n, final int n2) {
         this(n, n2, AnimState.ANIMING);
     }
     
-    public Sigma5AnimationUtil(final int time, final int 硙㼜陬䕦묙, final AnimState 蛊퉧쬷湗좯) {
-        this.isAnim = 蛊퉧쬷湗좯.ANIMING;
-        this.ใᏪ묙姮哝 = time;
-        this.硙㼜陬䕦묙 = 硙㼜陬䕦묙;
-        this.䈔鶲쿨韤鱀 = new Date();
-        this.핇罡钘硙䎰 = new Date();
-        this.animTo(蛊퉧쬷湗좯);
+    public Sigma5AnimationUtil(final int time, final int sleepDuration, final AnimState initialState) {
+        this.isAnim = initialState.ANIMING;
+        this.animationDuration = time;
+        this.sleepDuration = sleepDuration;
+        this.animationStartTime = new Date();
+        this.sleepStartTime = new Date();
+        this.animTo(initialState);
     }
     public Sigma5AnimationUtil copy(){
-        Sigma5AnimationUtil util = new Sigma5AnimationUtil(this.ใᏪ묙姮哝, 硙㼜陬䕦묙, isAnim);
-        util.䈔鶲쿨韤鱀 = 䈔鶲쿨韤鱀;
-        util.핇罡钘硙䎰 = 핇罡钘硙䎰;
+        Sigma5AnimationUtil util = new Sigma5AnimationUtil(this.animationDuration, sleepDuration, isAnim);
+        util.animationStartTime = animationStartTime;
+        util.sleepStartTime = sleepStartTime;
         return util;
     }
     
     public int 䩉堍綋殢曞唟() {
-        return this.ใᏪ묙姮哝;
+        return this.animationDuration;
     }
 
     public void animTo(boolean animing) {
-        AnimState 픓鷏㞈㕠㔢 = animing ? AnimState.ANIMING : AnimState.SLEEPING;
-        if (this.isAnim == 픓鷏㞈㕠㔢) {
+        AnimState newState = animing ? AnimState.ANIMING : AnimState.SLEEPING;
+        if (this.isAnim == newState) {
             return;
         }
-        if(픓鷏㞈㕠㔢.is()) {
-            this.䈔鶲쿨韤鱀 = new Date(new Date().getTime() - (long) (this.getAnim() * this.ใᏪ묙姮哝));
+        if(newState.is()) {
+            this.animationStartTime = new Date(new Date().getTime() - (long) (this.getAnim() * this.animationDuration));
         }else {
-            this.핇罡钘硙䎰 = new Date(new Date().getTime() - (long) ((1.0f - this.getAnim()) * this.硙㼜陬䕦묙));
+            this.sleepStartTime = new Date(new Date().getTime() - (long) ((1.0f - this.getAnim()) * this.sleepDuration));
         }
-        this.isAnim = 픓鷏㞈㕠㔢;
+        this.isAnim = newState;
     }
-    public void animTo(AnimState 픓鷏㞈㕠㔢) {
-        if (this.isAnim == 픓鷏㞈㕠㔢) {
+    public void animTo(AnimState newState) {
+        if (this.isAnim == newState) {
             return;
         }
-        if(픓鷏㞈㕠㔢.is()) {
-            this.䈔鶲쿨韤鱀 = new Date(new Date().getTime() - (long) (this.getAnim() * this.ใᏪ묙姮哝));
+        if(newState.is()) {
+            this.animationStartTime = new Date(new Date().getTime() - (long) (this.getAnim() * this.animationDuration));
         }else {
-            this.핇罡钘硙䎰 = new Date(new Date().getTime() - (long) ((1.0f - this.getAnim()) * this.硙㼜陬䕦묙));
+            this.sleepStartTime = new Date(new Date().getTime() - (long) ((1.0f - this.getAnim()) * this.sleepDuration));
         }
-        this.isAnim = 픓鷏㞈㕠㔢;
+        this.isAnim = newState;
     }
     
-    public void 呓셴塱欫罡㞈(final float n, boolean too) {
+    public void adjustAnimation(final float n, boolean too) {
         if(too) {
-            this.䈔鶲쿨韤鱀 = new Date(new Date().getTime() - (long) (n * this.ใᏪ묙姮哝));
+            this.animationStartTime = new Date(new Date().getTime() - (long) (n * this.animationDuration));
         }else {
-            this.핇罡钘硙䎰 = new Date(new Date().getTime() - (long) ((1.0f - n) * this.硙㼜陬䕦묙));
+            this.sleepStartTime = new Date(new Date().getTime() - (long) ((1.0f - n) * this.sleepDuration));
         }
     }
     public void reset(){
-        this.䈔鶲쿨韤鱀 = new Date();
-        this.핇罡钘硙䎰 = new Date();
+        this.animationStartTime = new Date();
+        this.sleepStartTime = new Date();
     }
     public void reset(AnimState animState){
-        this.䈔鶲쿨韤鱀 = new Date();
-        this.핇罡钘硙䎰 = new Date();
+        this.animationStartTime = new Date();
+        this.sleepStartTime = new Date();
         isAnim = animState;
     }
     public float getAnim() {
         // ignore?
         if (this.isAnim != AnimState.ANIMING) {
-            return 1.0f - Math.min(this.硙㼜陬䕦묙, new Date().getTime() - this.핇罡钘硙䎰.getTime()) / (float)this.硙㼜陬䕦묙;
+            return 1.0f - Math.min(this.sleepDuration, new Date().getTime() - this.sleepStartTime.getTime()) / (float)this.sleepDuration;
         }
-        return Math.min(this.ใᏪ묙姮哝, new Date().getTime() - this.䈔鶲쿨韤鱀.getTime()) / (float)this.ใᏪ묙姮哝;
+        return Math.min(this.animationDuration, new Date().getTime() - this.animationStartTime.getTime()) / (float)this.animationDuration;
     }
     
-    public static float 陬玑挐Ꮺ堍Ꮀ(final Date date, final Date date2, final float a, final float a2) {
+    public static float calculateProgress(final Date date, final Date date2, final float a, final float a2) {
         return Math.max(0.0f, Math.min(1.0f, Math.min(a, (float)(new Date().getTime() - ((date != null) ? date.getTime() : new Date().getTime()))) / a * (1.0f - Math.min(a2, (float)(new Date().getTime() - ((date2 != null) ? date2.getTime() : new Date().getTime()))) / a2)));
     }
     
-    public static float 陬玑挐Ꮺ堍Ꮀ(final Date date, final float a) {
+    public static float calculateProgress(final Date date, final float a) {
         return Math.max(0.0f, Math.min(1.0f, Math.min(a, (float)(new Date().getTime() - ((date != null) ? date.getTime() : new Date().getTime()))) / a));
     }
     
-    public static float 陬玑挐Ꮺ堍Ꮀ(final Date date, final Date date2, final float n) {
-        return 陬玑挐Ꮺ堍Ꮀ(date, date2, n, n);
+    public static float calculateProgress(final Date date, final Date date2, final float n) {
+        return calculateProgress(date, date2, n, n);
     }
     
-    public static boolean 㝛ศ陂錌㠠騜(final Date date, final float n) {
+    public static boolean isExpired(final Date date, final float n) {
         return date != null && new Date().getTime() - date.getTime() > n;
     }
     public void setAnim(AnimState anim){
         this.isAnim = anim;
     }
     public float getValue(){
-        return this.getAnim() * this.硙㼜陬䕦묙;
+        return this.getAnim() * this.sleepDuration;
     }
 }

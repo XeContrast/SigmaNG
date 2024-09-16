@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
+import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
 
 public class SelectAddonsGUI extends Screen {
     private final String RECT_BLUR = "sigma/shadowgui.png";
@@ -120,7 +120,7 @@ public class SelectAddonsGUI extends Screen {
 
 
         float blurAlpha = this.blurAlpha.getOutput().floatValue();
-        blurAlpha = !isClosing ? 欫좯콵甐鶲㥇(blurAlpha, 0.17, 1.0, 0.51, 1.0) : (1 - 欫좯콵甐鶲㥇(1 - blurAlpha, 0.17, 1.0, 0.51, 1.0));
+        blurAlpha = !isClosing ? interpolate(blurAlpha, 0.17, 1.0, 0.51, 1.0) : (1 - interpolate(1 - blurAlpha, 0.17, 1.0, 0.51, 1.0));
 
 
         blurAlphaValue = blurAlpha;

@@ -46,7 +46,7 @@ public class NotificationManager {
 				b = true;
 			}
 			noti.alpha.interpolate(!b ? 10 : 0, 5);
-			if (noti.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊() <= noti.getTime()) {
+			if (noti.notiTimer.getElapsedTime() <= noti.getTime()) {
 				continue;
 			}
 			this.notifications.remove(noti);
@@ -56,7 +56,7 @@ public class NotificationManager {
 		return n3 * (n /= n4) * n + n2;
 	}
 	public float Ꮤ殢㹔콵㨳(final Notification renderMode) {
-		final float n = (float)Math.min(renderMode.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), renderMode.getTime());
+		final float n = (float)Math.min(renderMode.notiTimer.getElapsedTime(), renderMode.getTime());
 		if (n < this.塱揩㢸樽竁 * 1.4f) {
 			return 牰䩜躚㢸錌ꈍ(n / (this.塱揩㢸樽竁 * 1.4f), 0.0f, 1.0f, 1.0f);
 		}
@@ -149,7 +149,7 @@ public class NotificationManager {
 				if (!currentRenderMode.equals(notification)) {
 					continue;
 				}
-				currentRenderMode.欫Ꮺ婯挐쇽.鞞콗뎫䖼㼜挐(Math.min(currentRenderMode.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), 塱揩㢸樽竁 + 1));
+				currentRenderMode.notiTimer.setElapsedTime(Math.min(currentRenderMode.notiTimer.getElapsedTime(), 塱揩㢸樽竁 + 1));
 				currentRenderMode.setSecondText(notification.getSecondText());
 				final Notification CurrentRenderMode = currentRenderMode;
 				++CurrentRenderMode.index;

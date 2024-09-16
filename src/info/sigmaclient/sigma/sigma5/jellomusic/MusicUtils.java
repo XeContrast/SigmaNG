@@ -1,13 +1,12 @@
 package info.sigmaclient.sigma.sigma5.jellomusic;
 
 import javax.sound.sampled.*;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class MusicUtils {
     SourceDataLine ꁈ硙ၝ敤䢶;
-    public int 鄡웎䬹卒웨 = 50; // 0 - 100
-    public void 瀧揩뎫㦖婯(final SourceDataLine sourceDataLine, final int n) {
+    public int drawRectangle = 50; // 0 - 100
+    public void volumeLevel(final SourceDataLine sourceDataLine, final int n) {
         try {
             final FloatControl floatControl = (FloatControl)sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
             final BooleanControl booleanControl = (BooleanControl)sourceDataLine.getControl(BooleanControl.Type.MUTE);
@@ -31,7 +30,7 @@ public class MusicUtils {
 //            while (!this.츚픓䬾㦖眓) {
 //                Thread.sleep(300L);
 //                final double[] array2 = new double[0];
-//                this.펊瀳藸鶲픓.clear();
+//                this.drawPoint.clear();
 //                if (Thread.interrupted()) {
 //                    this.ꁈ硙ၝ敤䢶.close();
 //                    return;
@@ -44,9 +43,9 @@ public class MusicUtils {
 //            final float[] array4;
 //            new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
 //            final float[][] array5;
-//            this.펊瀳藸鶲픓.add(㐖䆧쿨콵浦(array5[0], array5[1]));
-//            if (this.펊瀳藸鶲픓.size() > 18) {
-//                this.펊瀳藸鶲픓.remove(0);
+//            this.drawPoint.add(㐖䆧쿨콵浦(array5[0], array5[1]));
+//            if (this.drawPoint.size() > 18) {
+//                this.drawPoint.remove(0);
 //            }
 //            this.瀧揩뎫㦖婯(this.ꁈ硙ၝ敤䢶, this.鄡웎䬹卒웨);
 //            if (!Thread.interrupted()) {

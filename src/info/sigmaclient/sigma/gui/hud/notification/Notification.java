@@ -27,7 +27,7 @@ public class Notification {
 	private boolean isDone;
 	private boolean peaked;
 	public int index = 0;
-	public NotiTimer 欫Ꮺ婯挐쇽;
+	public NotiTimer notiTimer;
 	
 	private float progress;
 	private float lastProgress;
@@ -43,8 +43,8 @@ public class Notification {
 		progress = 0;
 		lastProgress = 0;
 		peaked = false;
-		this.欫Ꮺ婯挐쇽 = new NotiTimer();
-		this.欫Ꮺ婯挐쇽.轐ᢻ佉뫤甐䖼();
+		this.notiTimer = new NotiTimer();
+		this.notiTimer.start();
 	}
 	
 	public Notification(String text, String secondText, int time, TextureImage texture){
@@ -57,8 +57,8 @@ public class Notification {
 		progress = 0;
 		lastProgress = 0;
 		peaked = false;
-		this.欫Ꮺ婯挐쇽 = new NotiTimer();
-		this.欫Ꮺ婯挐쇽.轐ᢻ佉뫤甐䖼();
+		this.notiTimer = new NotiTimer();
+		this.notiTimer.start();
 	}
 
 	public String getText() {

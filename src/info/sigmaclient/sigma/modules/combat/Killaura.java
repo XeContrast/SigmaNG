@@ -1,6 +1,5 @@
 package info.sigmaclient.sigma.modules.combat;
 
-import baritone.api.event.events.PlayerUpdateEvent;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import info.sigmaclient.sigma.modules.movement.NoSlow;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
@@ -54,7 +53,6 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.*;
-import net.minecraft.network.play.server.SConfirmTransactionPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
@@ -64,7 +62,7 @@ import top.fl0wowp4rty.phantomshield.annotations.Native;
 import java.awt.*;
 import java.util.*;
 
-import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
+import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
 
 
 public class Killaura extends Module {
@@ -454,8 +452,8 @@ public class Killaura extends Module {
 //                        }
                     rotations[0] = (rotations[0] + RandomUtil.nextFloat(-1, 2) +( mc.player.ticksExisted % 20) / 20f);
                     rotations[1] = (rotations[1] + RandomUtil.nextFloat(-1, 2) +( mc.player.ticksExisted % 20) / 20f);
-                    float sb = 欫좯콵甐鶲㥇(Math.abs(RotationUtils.getAngleDifference(mc.player.lastReportedYaw, rotations[0])) / 190f, 0.33, 0.456, 0.14, 0.5665775);
-                    float sb2 = 欫좯콵甐鶲㥇(Math.abs(mc.player.lastReportedYaw - rotations[1]) / 45f, 0.33, 0.456, 0.14, 0.5665775);
+                    float sb = interpolate(Math.abs(RotationUtils.getAngleDifference(mc.player.lastReportedYaw, rotations[0])) / 190f, 0.33, 0.456, 0.14, 0.5665775);
+                    float sb2 = interpolate(Math.abs(mc.player.lastReportedYaw - rotations[1]) / 45f, 0.33, 0.456, 0.14, 0.5665775);
                     Rotation limitM = RotationUtils.limitAngleChange(new Rotation(mc.player.lastReportedYaw, mc.player.lastReportedPitch), new Rotation(rotations[0], rotations[1]), sb * 100 + 40, sb2 * 40 + 10);
                     rotations = new float[]{limitM.getYaw(), limitM.getPitch()};
                     rotations = RotationUtils.mouseSens(rotations[0], rotations[1], mc.player.lastReportedYaw, mc.player.lastReportedPitch);

@@ -367,7 +367,7 @@ public class BlockFly extends Module {
         final int n7 = 32 / 2;
         n -= n6 / 2;
         GL11.glPushMatrix();
-        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, applyColor(-15461356, 0.8f * n3));
+        SigmaRenderUtils.drawRectangle(n, n2, n6, n7, applyColor(-15461356, 0.8f * n3));
         Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
         Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
         n += 11 / 2f + n6 / 2;
@@ -394,7 +394,7 @@ public class BlockFly extends Module {
         StencilUtil.readStencilBuffer(1);
 
         GL11.glPushMatrix();
-        SigmaRenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n6, n7, applyColor(new Color(36,36,36).getRGB(), 0.8f * n3));
+        SigmaRenderUtils.drawRectangle(n, n2, n6, n7, applyColor(new Color(36,36,36).getRGB(), 0.8f * n3));
         Sigma5DrawText.drawString(JelloFontUtil.jelloFont18, (float)(n + 10 / 2), (float)(n2 + 5), count + "", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n3));
         Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(n + 10 / 2+ n5), (float)(n2 + 7), "Blocks", applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f * n3));
         GL11.glPopMatrix();

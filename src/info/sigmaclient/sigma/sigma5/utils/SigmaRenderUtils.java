@@ -17,7 +17,7 @@ import java.nio.IntBuffer;
 import java.util.Stack;
 
 public class SigmaRenderUtils {
-    public static void 牰蓳躚唟捉璧(final float n, final float n2, final float n3, final int n4) {
+    public static void drawPoint(final float n, final float n2, final float n3, final int n4) {
         GlStateManager.color4f(0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
         final float n5 = (n4 >> 24 & 0xFF) / 255.0f;
@@ -46,7 +46,7 @@ public class SigmaRenderUtils {
     public static void stopGlScissor() {
         GL11.glDisable(3089);
     }
-    public static void 롤婯鷏붛浣弻() {
+    public static void resetStencil() {
         StencilUtil.uninitStencilBuffer();
 //        final IntBuffer intBuffer2 = BufferUtils.createIntBuffer(16);
 //        GL11.glGetIntegerv(GL_SCISSOR_BOX, intBuffer2);
@@ -60,12 +60,12 @@ public class SigmaRenderUtils {
 //            GL11.glScissor(intBuffer.get(0), intBuffer.get(1), intBuffer.get(2), intBuffer.get(3));
 //        }
     }
-    static Stack<IntBuffer> 嘖랾值Ꮺ敤 = new Stack<IntBuffer>();
+    static Stack<IntBuffer> scissorStack = new Stack<IntBuffer>();
 
-    public static void 汌ꪕ蒕姮Ⱋ樽(final float n, final float n2, final float n3, final float n4, final int n5) {
-        RenderUtils.汌ꪕ蒕姮Ⱋ樽(n, n2, n3, n4, n5, n, n2);
+    public static void drawRectangle(final float n, final float n2, final float n3, final float n4, final int n5) {
+        RenderUtils.drawRectangle(n, n2, n3, n4, n5, n, n2);
     }
-    public static void 㠠Ꮤ曞佉䩜鱀(float n, float n2, float n3, float n4, final int n5) {
+    public static void drawFilledRectangle(float n, float n2, float n3, float n4, final int n5) {
         if (n < n3) {
             final float n6 = (float)n;
             n = n3;
@@ -80,8 +80,8 @@ public class SigmaRenderUtils {
         final float n9 = (n5 >> 16 & 0xFF) / 255.0f;
         final float n10 = (n5 >> 8 & 0xFF) / 255.0f;
         final float n11 = (n5 & 0xFF) / 255.0f;
-        final Tessellator 聛ᜄ甐䡸啖ꪕ = Tessellator.getInstance();
-        final BufferBuilder 轐붛픓딨ꈍ綋 = 聛ᜄ甐䡸啖ꪕ.getBuffer();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder buffer = tessellator.getBuffer();
 //        啖阢轐殢佉.펊眓䄟堍柿湗();
 //        啖阢轐殢佉.ใ陂硙湗待ꦱ();
 //        啖阢轐殢佉.甐ᜄ햠괠硙䈔(卒䕦醧쬷缰.ꦱ罡姮钘픓頉, 펊䂷綋ಽ䄟.蛊딨ศ蕃ぶ붛, 卒䕦醧쬷缰.햠蚳ኞ㥇늦㐖, 펊䂷綋ಽ䄟.阢酭늦쥡쿨螜);
@@ -89,49 +89,49 @@ public class SigmaRenderUtils {
         RenderUtils.startBlend();
         GlStateManager.color4f(0,0,0,0);
         GlStateManager.color4f(n9, n10, n11, n8);
-        轐붛픓딨ꈍ綋.begin(7, DefaultVertexFormats.POSITION);
-        轐붛픓딨ꈍ綋.pos(n, n4, 0.0).endVertex();
-        轐붛픓딨ꈍ綋.pos(n3, n4, 0.0).endVertex();
-        轐붛픓딨ꈍ綋.pos(n3, n2, 0.0).endVertex();
-        轐붛픓딨ꈍ綋.pos(n, n2, 0.0).endVertex();
-        聛ᜄ甐䡸啖ꪕ.draw();
+        buffer.begin(7, DefaultVertexFormats.POSITION);
+        buffer.pos(n, n4, 0.0).endVertex();
+        buffer.pos(n3, n4, 0.0).endVertex();
+        buffer.pos(n3, n2, 0.0).endVertex();
+        buffer.pos(n, n2, 0.0).endVertex();
+        tessellator.draw();
         GlStateManager.enableTexture();
 //        啖阢轐殢佉.钘曞鏟曞䎰쇽();
     }
-    public static void 퉧핇樽웨䈔属S(final float n, final float n2, final float n3, final float n4) {
+    public static void drawStencilRectS(final float n, final float n2, final float n3, final float n4) {
         StencilUtil.initStencilToWrite();
         RenderUtils.drawRect((int)n, (int)n2, (int)n3, (int)n4,-1);
         StencilUtil.readStencilBuffer(1);
 //        퉧핇樽웨䈔属((int)n, (int)n2, (int)n3, (int)n4, true);
     }
-    public static void 퉧핇樽웨䈔属(final float n, final float n2, final float n3, final float n4) {
+    public static void drawStencilRect(final float n, final float n2, final float n3, final float n4) {
         StencilUtil.initStencilToWrite();
         RenderUtils.drawRect((float)n, (float)n2, (float)n3, (float)n4,-1);
         StencilUtil.readStencilBuffer(1);
 //        퉧핇樽웨䈔属((int)n, (int)n2, (int)n3, (int)n4, true);
     }
 
-    public static void ꦱ敤圭瀳䴂甐(final float n, final float n2, final float n3, final float n4) {
-        퉧핇樽웨䈔属((int)n, (int)n2, (int)n + (int)n3, (int)n2 + (int)n4, true);
+    public static void drawScissorRect(final float n, final float n2, final float n3, final float n4) {
+        drawStencilRect((int)n, (int)n2, (int)n + (int)n3, (int)n2 + (int)n4, true);
     }
 
-    public static void 퉧핇樽웨䈔属(final int n, final int n2, final int n3, final int n4) {
-        퉧핇樽웨䈔属(n, n2, n3, n4, false);
+    public static void drawStencilRect(final int n, final int n2, final int n3, final int n4) {
+        drawStencilRect(n, n2, n3, n4, false);
     }
 
-    public static float 䡸웎汌샱䈔뗴() {
+    public static float getGuiScaleFactor() {
         return (float) Minecraft.getInstance().getMainWindow().getGuiScaleFactor();
     }
 
-    public static float[] 좯觯퉧䖼呓䎰(final int n, final int n2) {
+    public static float[] convertCoordinates(final int n, final int n2) {
         final FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(16);
         GL11.glGetFloatv(2982, floatBuffer);
         final float n3 = floatBuffer.get(0) * n + floatBuffer.get(4) * n2 + floatBuffer.get(8) * 0.0f + floatBuffer.get(12);
         final float n4 = floatBuffer.get(1) * n + floatBuffer.get(5) * n2 + floatBuffer.get(9) * 0.0f + floatBuffer.get(13);
         final float n5 = floatBuffer.get(3) * n + floatBuffer.get(7) * n2 + floatBuffer.get(11) * 0.0f + floatBuffer.get(15);
-        return new float[] { (float)Math.round(n3 / n5 * 䡸웎汌샱䈔뗴()), (float)Math.round(n4 / n5 * 䡸웎汌샱䈔뗴()) };
+        return new float[] { (float)Math.round(n3 / n5 * getGuiScaleFactor()), (float)Math.round(n4 / n5 * getGuiScaleFactor()) };
     }
-    public static void 퉧핇樽웨䈔属(float n, float n2, float n3, float n4, final boolean b, float a) {
+    public static void drawStencilRect(float n, float n2, float n3, float n4, final boolean b, float a) {
         if (true) {
             StencilUtil.initStencilToWrite();
             RenderUtils.drawRect((float) n, (float) n2, (float) n3, (float) n4, new Color(1,1,1,a).getRGB());
@@ -139,7 +139,7 @@ public class SigmaRenderUtils {
             return;
         }
     }
-    public static void 퉧핇樽웨䈔属(int n, int n2, int n3, int n4, final boolean b) {
+    public static void drawStencilRect(int n, int n2, int n3, int n4, final boolean b) {
         if(true) {
             StencilUtil.initStencilToWrite();
             RenderUtils.drawRect((float)n, (float)n2, (float)n3, (float)n4,new Color(255,255,255,255).getRGB());
@@ -153,12 +153,12 @@ public class SigmaRenderUtils {
 //            n4 *= (int)SigmaNG.lineWidth;
         }
         else {
-            final float[] 좯觯퉧䖼呓䎰 = 좯觯퉧䖼呓䎰(n, n2);
-            n = (int)좯觯퉧䖼呓䎰[0];
-            n2 = (int)좯觯퉧䖼呓䎰[1];
-            final float[] 좯觯퉧䖼呓䎰2 = 좯觯퉧䖼呓䎰(n3, n4);
-            n3 = (int)좯觯퉧䖼呓䎰2[0];
-            n4 = (int)좯觯퉧䖼呓䎰2[1];
+            final float[] convertedCoords = convertCoordinates(n, n2);
+            n = (int) convertedCoords[0];
+            n2 = (int) convertedCoords[1];
+            final float[] convertedCoords2 = convertCoordinates(n3, n4);
+            n3 = (int)convertedCoords2[0];
+            n4 = (int)convertedCoords2[1];
         }
 //        if (GL11.glIsEnabled(3089)) {
 //            final IntBuffer intBuffer = BufferUtils.createIntBuffer(16);
@@ -197,12 +197,12 @@ public class SigmaRenderUtils {
 //        }
     }
     public static void glScissor(int n, int n2, int n3, int n4) {
-        final float[] 좯觯퉧䖼呓䎰 = 좯觯퉧䖼呓䎰(n, n2);
-        n = (int) 좯觯퉧䖼呓䎰[0];
-        n2 = (int) 좯觯퉧䖼呓䎰[1];
-        final float[] 좯觯퉧䖼呓䎰2 = 좯觯퉧䖼呓䎰(n3, n4);
-        n3 = (int) 좯觯퉧䖼呓䎰2[0];
-        n4 = (int) 좯觯퉧䖼呓䎰2[1];
+        final float[] convertedCoords = convertCoordinates(n, n2);
+        n = (int) convertedCoords[0];
+        n2 = (int) convertedCoords[1];
+        final float[] convertedCoords2 = convertCoordinates(n3, n4);
+        n3 = (int) convertedCoords2[0];
+        n4 = (int) convertedCoords2[1];
         final int n8 = n;
         final int n9 = Minecraft.getInstance().getMainWindow().getHeight() - n4;
         final int n10 = n3 - n;
@@ -213,39 +213,39 @@ public class SigmaRenderUtils {
         }
     }
     public static void drawRoundedRect(final float n, final float n2, final float n3, final float n4, final float n5, final int n6) {
-        㠠Ꮤ曞佉䩜鱀(n + n5 / 2f, n2 + n5, n + n3 - n5 / 2f, n2 + n4 - n5, n6);
-        㠠Ꮤ曞佉䩜鱀(n + n5, n2 + n5 - n5 / 2f, n + n3 - n5, n2 + n5, n6);
-        㠠Ꮤ曞佉䩜鱀(n + n5, n2 + n4 - n5, n + n3 - n5, n2 + n4 - n5 / 2f, n6);
+        drawFilledRectangle(n + n5 / 2f, n2 + n5, n + n3 - n5 / 2f, n2 + n4 - n5, n6);
+        drawFilledRectangle(n + n5, n2 + n5 - n5 / 2f, n + n3 - n5, n2 + n5, n6);
+        drawFilledRectangle(n + n5, n2 + n4 - n5, n + n3 - n5, n2 + n4 - n5 / 2f, n6);
 
-        퉧핇樽웨䈔属(n, n2, n + n5, n2 + n5);
-        牰蓳躚唟捉璧(n + n5, n2 + n5, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n + n3 - n5, n2, n + n3, n2 + n5);
-        牰蓳躚唟捉璧(n - n5 + n3, n2 + n5, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n, n2 + n4 - n5, n + n5, n2 + n4);
-        牰蓳躚唟捉璧(n + n5, n2 - n5 + n4, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属(n + n3 - n5, n2 + n4 - n5, n + n3, n2 + n4);
-        牰蓳躚唟捉璧(n - n5 + n3, n2 - n5 + n4, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
+        drawStencilRect(n, n2, n + n5, n2 + n5);
+        drawPoint(n + n5, n2 + n5, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRect(n + n3 - n5, n2, n + n3, n2 + n5);
+        drawPoint(n - n5 + n3, n2 + n5, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRect(n, n2 + n4 - n5, n + n5, n2 + n4);
+        drawPoint(n + n5, n2 - n5 + n4, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRect(n + n3 - n5, n2 + n4 - n5, n + n3, n2 + n4);
+        drawPoint(n - n5 + n3, n2 - n5 + n4, n5 * 2.0f, n6);
+        resetStencil();
     }
-    public static void 䬹鞞葫Ꮀ待湗(final float n, final float n2, final float n3, final float n4, final float n5, final int n6) {
-        㠠Ꮤ曞佉䩜鱀(n, n2 + n5, n + n3, n2 + n4 - n5, n6);
-        㠠Ꮤ曞佉䩜鱀(n + n5, n2, n + n3 - n5, n2 + n5, n6);
-        㠠Ꮤ曞佉䩜鱀(n + n5, n2 + n4 - n5, n + n3 - n5, n2 + n4, n6);
+    public static void drawRoundedRectWithStencil(final float n, final float n2, final float n3, final float n4, final float n5, final int n6) {
+        drawFilledRectangle(n, n2 + n5, n + n3, n2 + n4 - n5, n6);
+        drawFilledRectangle(n + n5, n2, n + n3 - n5, n2 + n5, n6);
+        drawFilledRectangle(n + n5, n2 + n4 - n5, n + n3 - n5, n2 + n4, n6);
 
-        퉧핇樽웨䈔属S(n, n2, n + n5, n2 + n5);
-        牰蓳躚唟捉璧(n + n5, n2 + n5, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属S(n + n3 - n5, n2, n + n3, n2 + n5);
-        牰蓳躚唟捉璧(n - n5 + n3, n2 + n5, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属S(n, n2 + n4 - n5, n + n5, n2 + n4);
-        牰蓳躚唟捉璧(n + n5, n2 - n5 + n4, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
-        퉧핇樽웨䈔属S(n + n3 - n5, n2 + n4 - n5, n + n3, n2 + n4);
-        牰蓳躚唟捉璧(n - n5 + n3, n2 - n5 + n4, n5 * 2.0f, n6);
-        롤婯鷏붛浣弻();
+        drawStencilRectS(n, n2, n + n5, n2 + n5);
+        drawPoint(n + n5, n2 + n5, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRectS(n + n3 - n5, n2, n + n3, n2 + n5);
+        drawPoint(n - n5 + n3, n2 + n5, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRectS(n, n2 + n4 - n5, n + n5, n2 + n4);
+        drawPoint(n + n5, n2 - n5 + n4, n5 * 2.0f, n6);
+        resetStencil();
+        drawStencilRectS(n + n3 - n5, n2 + n4 - n5, n + n3, n2 + n4);
+        drawPoint(n - n5 + n3, n2 - n5 + n4, n5 * 2.0f, n6);
+        resetStencil();
     }
 }

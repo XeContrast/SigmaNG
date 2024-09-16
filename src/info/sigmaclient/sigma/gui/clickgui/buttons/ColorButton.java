@@ -8,7 +8,7 @@ import info.sigmaclient.sigma.utils.render.RenderUtils;
 
 import java.awt.*;
 
-import static info.sigmaclient.sigma.sigma5.utils.SigmaRenderUtils.牰蓳躚唟捉璧;
+import static info.sigmaclient.sigma.sigma5.utils.SigmaRenderUtils.drawPoint;
 
 
 public class ColorButton extends Button {
@@ -87,8 +87,8 @@ public class ColorButton extends Button {
                 "clickgui/color2",
                 new Color(1,1,1,alpha));
 
-        牰蓳躚唟捉璧(x + 10 + 183 / 2f + offX + 5, y + 1 + 48, 20,ColorUtils.reAlpha(new Color(0.3f, 0.3f, 0.3f), alpha * 0.7f).getRGB());
-        牰蓳躚唟捉璧(x + 10 + 183 / 2f + offX + 5, y + 1 + 48, 19,ColorUtils.reAlpha(value.getValue(), alpha).getRGB());
+        drawPoint(x + 10 + 183 / 2f + offX + 5, y + 1 + 48, 20,ColorUtils.reAlpha(new Color(0.3f, 0.3f, 0.3f), alpha * 0.7f).getRGB());
+        drawPoint(x + 10 + 183 / 2f + offX + 5, y + 1 + 48, 19,ColorUtils.reAlpha(value.getValue(), alpha).getRGB());
         float[] rgbToHsv = rgbToHsv(new int[]{value.getColor().getRed(), value.getColor().getGreen(), value.getColor().getBlue()});
         if(x != 0 && y != 0) {
             if (dragging) {
@@ -113,8 +113,8 @@ public class ColorButton extends Button {
         }
         float cx = rgbToHsv[0] / 360f * (183 / 2f);
         float cy = (1 - rgbToHsv[1]) * (77 / 2f);
-        牰蓳躚唟捉璧(x + 10 + offX + 16 + cx,- y + 1 + cy, 20,ColorUtils.reAlpha(new Color(0.1f, 0.1f, 0.1f), alpha * 0.7f).getRGB());
-        牰蓳躚唟捉璧(x + 10 + offX + 16 + cx, y + 1 + cy, 19,ColorUtils.reAlpha(new Color(0.7f, 0.7f, 0.7f), alpha).getRGB());
+        drawPoint(x + 10 + offX + 16 + cx,- y + 1 + cy, 20,ColorUtils.reAlpha(new Color(0.1f, 0.1f, 0.1f), alpha * 0.7f).getRGB());
+        drawPoint(x + 10 + offX + 16 + cx, y + 1 + cy, 19,ColorUtils.reAlpha(new Color(0.7f, 0.7f, 0.7f), alpha).getRGB());
 
         addY = (int) (183 / 2f) + 1 - 30;
         super.drawButton(x, y, mx, my, pticks, alpha);

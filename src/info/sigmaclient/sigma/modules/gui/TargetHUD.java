@@ -152,7 +152,7 @@ public class TargetHUD extends RenderModule
                 final String s = TargetHUD.animation.getValue();
                 switch (s) {
                     case "Jello": {
-                        scale = SomeAnim.欫좯콵甐鶲㥇((float)scale, 0.17, 1.0, 0.51, 1.0);
+                        scale = SomeAnim.interpolate((float)scale, 0.17, 1.0, 0.51, 1.0);
                         scale *= 1.1799999475479126;
                         if (scale > 1.090000033378601) {
                             scale = 1.18 - scale + 1.0;
@@ -161,7 +161,7 @@ public class TargetHUD extends RenderModule
                         break;
                     }
                     case "Ease": {
-                        scale = SomeAnim.欫좯콵甐鶲㥇((float)scale, 0.17, 1.0, 0.51, 1.0);
+                        scale = SomeAnim.interpolate((float)scale, 0.17, 1.0, 0.51, 1.0);
                         break;
                     }
                 }
