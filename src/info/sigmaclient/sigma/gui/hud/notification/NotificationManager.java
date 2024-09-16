@@ -55,15 +55,15 @@ public class NotificationManager {
 	public static float 콵值敤䴂卒姮(float n, final float n2, final float n3, final float n4) {
 		return n3 * (n /= n4) * n + n2;
 	}
-	public float Ꮤ殢㹔콵㨳(final Notification 콗뎫鷏Ꮺ놣) {
-		final float n = (float)Math.min(콗뎫鷏Ꮺ놣.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), 콗뎫鷏Ꮺ놣.getTime());
+	public float Ꮤ殢㹔콵㨳(final Notification renderMode) {
+		final float n = (float)Math.min(renderMode.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), renderMode.getTime());
 		if (n < this.塱揩㢸樽竁 * 1.4f) {
 			return 牰䩜躚㢸錌ꈍ(n / (this.塱揩㢸樽竁 * 1.4f), 0.0f, 1.0f, 1.0f);
 		}
-		if (n <= 콗뎫鷏Ꮺ놣.getTime() - (float)this.塱揩㢸樽竁) {
+		if (n <= renderMode.getTime() - (float)this.塱揩㢸樽竁) {
 			return 1.0f;
 		}
-		return 콵值敤䴂卒姮((콗뎫鷏Ꮺ놣.getTime() - n) / this.塱揩㢸樽竁, 0.0f, 1.0f, 1.0f);
+		return 콵值敤䴂卒姮((renderMode.getTime() - n) / this.塱揩㢸樽竁, 0.0f, 1.0f, 1.0f);
 	}
 
 	public float ศใ䡸뵯蓳(final int n) {
@@ -85,8 +85,8 @@ public class NotificationManager {
 		曞묙蚳骰䬾 = Math.max(Math.round((float)(n - Minecraft.debugFPS / 10)), 1);
 		if(SigmaNG.gameMode == SigmaNG.GAME_MODE.JELLO){
 			for (int i = 0; i < notifications.size(); ++i) {
-				final Notification 콗뎫鷏Ꮺ놣 = notifications.get(i);
-				final float 殢㹔콵㨳 = Ꮤ殢㹔콵㨳(콗뎫鷏Ꮺ놣);
+				final Notification renderMode = notifications.get(i);
+				final float 殢㹔콵㨳 = Ꮤ殢㹔콵㨳(renderMode);
 				final int n2 = sr.getScaledWidth() - 埙玑蚳葫褕 - (int)(䡸㐖퉧붛韤 * 殢㹔콵㨳 * 殢㹔콵㨳);
 				final int n3 = sr.getScaledHeight() - 쇽뫤쿨曞值 - 睬䬾ใ蓳唟 - i * (int)(쇽뫤쿨曞值 * ศใ䡸뵯蓳(i) + 鶲핇竬躚㐖 * ศใ䡸뵯蓳(i));
 				final float min = Math.min(1.0f, 殢㹔콵㨳);
@@ -107,11 +107,11 @@ public class NotificationManager {
 				GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 				drawModalRectWithCustomSizedTexture((float)(n2 + 鶲핇竬躚㐖 / 2) + ww / 4f, (float)(n3 + 鶲핇竬躚㐖 / 2) + ww / 4f, 0, 0, 29/2f, 29/2f, 29/2f, 29/2f);
 //			퉧핇樽웨䈔属(n2, n3, n2 + 䡸㐖퉧붛韤 - 鶲핇竬躚㐖, n3 + 쇽뫤쿨曞值);
-				JelloFontUtil.jelloFont20.drawString(콗뎫鷏Ꮺ놣.getText(), (float)(n2 + 쇽뫤쿨曞值 + 鶲핇竬躚㐖 - 2), (float)(n3 + 鶲핇竬躚㐖 + 2), rgb3);
-				JelloFontUtil.jelloFont14.drawString(콗뎫鷏Ꮺ놣.getSecondText(), (float)(n2 + 쇽뫤쿨曞值 + 鶲핇竬躚㐖 - 2), (float)(n3 + 鶲핇竬躚㐖 + 2 + JelloFontUtil.jelloFont14.getHeight() + 8), rgb3);
+				JelloFontUtil.jelloFont20.drawString(renderMode.getText(), (float)(n2 + 쇽뫤쿨曞值 + 鶲핇竬躚㐖 - 2), (float)(n3 + 鶲핇竬躚㐖 + 2), rgb3);
+				JelloFontUtil.jelloFont14.drawString(renderMode.getSecondText(), (float)(n2 + 쇽뫤쿨曞值 + 鶲핇竬躚㐖 - 2), (float)(n3 + 鶲핇竬躚㐖 + 2 + JelloFontUtil.jelloFont14.getHeight() + 8), rgb3);
 //			롤婯鷏붛浣弻();
-				if(콗뎫鷏Ꮺ놣.ti != null)
-					콗뎫鷏Ꮺ놣.ti.rectTextureMasked((float)(n2 + 鶲핇竬躚㐖 / 2), (float)(n3 + 鶲핇竬躚㐖 / 2), (float)(쇽뫤쿨曞值 - 鶲핇竬躚㐖), (float)(쇽뫤쿨曞值 - 鶲핇竬躚㐖), 0, 0);
+				if(renderMode.ti != null)
+					renderMode.ti.rectTextureMasked((float)(n2 + 鶲핇竬躚㐖 / 2), (float)(n3 + 鶲핇竬躚㐖 / 2), (float)(쇽뫤쿨曞值 - 鶲핇竬躚㐖), (float)(쇽뫤쿨曞值 - 鶲핇竬躚㐖), 0, 0);
 			}
 		}else{
 			for (int i = 0; i < notifications.size(); ++i) {
@@ -145,15 +145,15 @@ public class NotificationManager {
 	}
 	void add(Notification notification){
 		if(SigmaNG.gameMode == SigmaNG.GAME_MODE.JELLO) {
-			for (final Notification 콗뎫鷏Ꮺ놣2 : notifications) {
-				if (!콗뎫鷏Ꮺ놣2.equals(notification)) {
+			for (final Notification currentRenderMode : notifications) {
+				if (!currentRenderMode.equals(notification)) {
 					continue;
 				}
-				콗뎫鷏Ꮺ놣2.欫Ꮺ婯挐쇽.鞞콗뎫䖼㼜挐(Math.min(콗뎫鷏Ꮺ놣2.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), 塱揩㢸樽竁 + 1));
-				콗뎫鷏Ꮺ놣2.setSecondText(notification.getSecondText());
-				final Notification 콗뎫鷏Ꮺ놣3 = 콗뎫鷏Ꮺ놣2;
-				++콗뎫鷏Ꮺ놣3.index;
-				콗뎫鷏Ꮺ놣2.ti = notification.ti;
+				currentRenderMode.欫Ꮺ婯挐쇽.鞞콗뎫䖼㼜挐(Math.min(currentRenderMode.欫Ꮺ婯挐쇽.㱙㕠郝䡸ꦱ펊(), 塱揩㢸樽竁 + 1));
+				currentRenderMode.setSecondText(notification.getSecondText());
+				final Notification CurrentRenderMode = currentRenderMode;
+				++CurrentRenderMode.index;
+				currentRenderMode.ti = notification.ti;
 				return;
 			}
 			notifications.add(notification);

@@ -113,7 +113,7 @@ public abstract class LivingRenderer<T extends LivingEntity, M extends EntityMod
 
                 f2 = f1 - f;
             }
-//            final 杭捉훔늦杭 杭捉훔늦杭 = new 杭捉훔늦杭(
+//            final RenderEvent RenderEvent = new RenderEvent(
 //                    酋埙鼒呓䡸㐈,
 //                    酋埙鼒呓䡸㐈2,
 //                    n3,
@@ -121,8 +121,8 @@ public abstract class LivingRenderer<T extends LivingEntity, M extends EntityMod
 //                    f,
 //                    柿樽롤揩뫤ᢻ
 //            );
-//            SigmaMain.鼒釒쇽Ꮤ鶊().㮃ᙽ㼜堍롤().蛊㐖鏟觯硙酭(杭捉훔늦杭);
-//            if (杭捉훔늦杭.놣좯瀧놣ꪕ㮃()) {
+//            SigmaMain.鼒釒쇽Ꮤ鶊().㮃ᙽ㼜堍롤().蛊㐖鏟觯硙酭(RenderEvent);
+//            if (RenderEvent.놣좯瀧놣ꪕ㮃()) {
 //                햖䩉待뼢鱀.쥅콗뵯Ⱋ펊驋();
 //                return;
 //            }

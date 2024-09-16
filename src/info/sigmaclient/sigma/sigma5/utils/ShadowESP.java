@@ -153,13 +153,13 @@ public class ShadowESP {
         mc.world.getLoadedEntityList().forEach((entity) -> {
 //            堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.8f);
             if (!(!ESP.isTargetEnable(entity))) {
-                final double 欫缰곻睬괠 = getEntityRenderVector(entity).x;
-                final double ኞ甐㞈錌ಽ = getEntityRenderVector(entity).y;
-                final double 酋ꮀ聛眓쬫 = getEntityRenderVector(entity).z;
+                final double xCoordinate = getEntityRenderVector(entity).x;
+                final double yCoordinate = getEntityRenderVector(entity).y;
+                final double zCoordinate = getEntityRenderVector(entity).z;
                 GL11.glPushMatrix();
                 GL11.glColor4f(1,1,1,0.8f);
                 GL11.glAlphaFunc(519, 0.0f);
-                GL11.glTranslated(欫缰곻睬괠, ኞ甐㞈錌ಽ, 酋ꮀ聛眓쬫);
+                GL11.glTranslated(xCoordinate, yCoordinate, zCoordinate);
                 GL11.glTranslatef(0.0f, entity.getHeight(), 0.0f);
                 GL11.glTranslatef(0.0f, 0.1f, 0.0f);
                 GL11.glRotatef(mc.gameRenderer.getActiveRenderInfo().getYaw(), 0.0f, -1.0f, 0.0f);
@@ -201,12 +201,12 @@ public class ShadowESP {
                 continue;
             }
             GL11.glPushMatrix();
-            final Vector3d 㕠츚鶲霥ಽ뼢 = mc.gameRenderer.getActiveRenderInfo().getProjectedView();
-            final double 鶲웎頉붃䢶蚳 = 㕠츚鶲霥ಽ뼢.x;
-            final double 鞞躚뗴ᔎ娍ꪕ = 㕠츚鶲霥ಽ뼢.y;
-            final double 붛嶗啖ኞ츚弻 = 㕠츚鶲霥ಽ뼢.z;
-            final MatrixStack 햖䩉待뼢鱀 = new MatrixStack();
-            final boolean 펊褕室뗴嶗疂 = mc.gameSettings.entityShadows;
+            final Vector3d projectedView = mc.gameRenderer.getActiveRenderInfo().getProjectedView();
+            final double viewX = projectedView.x;
+            final double viewY = projectedView.y;
+            final double viewZ = projectedView.z;
+            final MatrixStack matrixStack = new MatrixStack();
+            final boolean entityShadows = mc.gameSettings.entityShadows;
             final boolean isVisible = entity.getFlag(5);
             final int oldHu =  entity.hurtResistantTime;
              int oldHurt = 0;
@@ -217,18 +217,18 @@ public class ShadowESP {
             GlStateManager.color4f(n, n2, n3, 0.5f);
             RenderUtils.startBlend();
             mc.gameSettings.entityShadows = false;
-            final int 筕ꦱ붃眓ꁈ웎 = entity.getFireTimer();
-            final boolean 콗햖竁ꈍ酋釒 = entity.getFlag(0);
+            final int fireTimer = entity.getFireTimer();
+            final boolean flag0 = entity.getFlag(0);
             entity.forceFireTicks(0);
             entity.setFlag(0, false);
-            this.renderEntity(entity, 鶲웎頉붃䢶蚳, 鞞躚뗴ᔎ娍ꪕ, 붛嶗啖ኞ츚弻, mc.timer.renderPartialTicks,햖䩉待뼢鱀, this.renderBuffer);
-            entity.forceFireTicks(筕ꦱ붃眓ꁈ웎);
-            entity.setFlag(0, 콗햖竁ꈍ酋釒);
+            this.renderEntity(entity, viewX, viewY, viewZ, mc.timer.renderPartialTicks,matrixStack, this.renderBuffer);
+            entity.forceFireTicks(fireTimer);
+            entity.setFlag(0, flag0);
             entity.setFlag(5, isVisible);
             if(entity instanceof LivingEntity e) {
                 e.hurtTime = oldHurt;
             }
-            mc.gameSettings.entityShadows = 펊褕室뗴嶗疂;
+            mc.gameSettings.entityShadows = entityShadows;
             GL11.glPopMatrix();
         }
         this.renderBuffer.finish(RenderType.getEntitySolid(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
@@ -241,22 +241,22 @@ public class ShadowESP {
             GL11.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             GL11.glDisable(GL_POLYGON_OFFSET_LINE);
         }
-        this.currentRenderMode = RenderMode.泹唟쥦㞈쿨;
+        this.currentRenderMode = RenderMode.render;
         GL11.glDepthFunc(GL_LEQUAL);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.depthMask(false);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.disableDepth();
     }
-    private void updatePosition(final RenderMode 콗뎫鷏Ꮺ놣, Runnable runnable) {
+    private void updatePosition(final RenderMode renderMode, Runnable runnable) {
         GL11.glDepthFunc(GL_ALWAYS);
-        this.currentRenderMode = 콗뎫鷏Ꮺ놣;
-//        콗뎫鷏Ꮺ놣 = 콗뎫鷏Ꮺ놣;
-        final int 侃姮쇽待敤 = ESP.color.getColorInt();
-        final float n = (侃姮쇽待敤 >> 24 & 0xFF) / 255.0f;
-        final float n2 = (侃姮쇽待敤 >> 16 & 0xFF) / 255.0f;
-        final float n3 = (侃姮쇽待敤 >> 8 & 0xFF) / 255.0f;
-        final float n4 = (侃姮쇽待敤 & 0xFF) / 255.0f;
+        this.currentRenderMode = renderMode;
+//        renderMode = renderMode;
+        final int colorInt = ESP.color.getColorInt();
+        final float alpha = (colorInt >> 24 & 0xFF) / 255.0f;
+        final float red = (colorInt >> 16 & 0xFF) / 255.0f;
+        final float green = (colorInt >> 8 & 0xFF) / 255.0f;
+        final float blue = (colorInt & 0xFF) / 255.0f;
 //        GL11.glEnable(GL_LIGHTING);
-        GL11.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { n2, n3, n4, n });
+        GL11.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { red, green, blue, alpha});
         GlStateManager.disableLighting();
 
         if (this.currentRenderMode == RenderMode.setupRender) {
@@ -274,12 +274,12 @@ public class ShadowESP {
                             (ChestESP.enderChest.isEnable() && tileEntity instanceof EnderChestTileEntity) ||
                             (ChestESP.bed.isEnable() && tileEntity instanceof BedTileEntity)
             ){
-                final double 欫缰곻睬괠 = getBlockPosVector(tileEntity.getPos()).x;
-                final double ኞ甐㞈錌ಽ = getBlockPosVector(tileEntity.getPos()).y;
-                final double 酋ꮀ聛眓쬫 = getBlockPosVector(tileEntity.getPos()).z;
+                final double xCoordinate = getBlockPosVector(tileEntity.getPos()).x;
+                final double yCoordinate = getBlockPosVector(tileEntity.getPos()).y;
+                final double zCoordinate = getBlockPosVector(tileEntity.getPos()).z;
 //                System.out.println(tileEntity.getPos());
                 BoxOutlineESP.drawOutlinedBox(tileEntity.getBlockState().getShape(mc.world, tileEntity.getPos()).getBoundingBox().offset(
-                        欫缰곻睬괠, ኞ甐㞈錌ಽ, 酋ꮀ聛眓쬫
+                        xCoordinate, yCoordinate, zCoordinate
                 ), -1);
             }
         }
@@ -287,23 +287,23 @@ public class ShadowESP {
             GL11.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             GL11.glDisable(GL_POLYGON_OFFSET_LINE);
         }
-        this.currentRenderMode = RenderMode.泹唟쥦㞈쿨;
+        this.currentRenderMode = RenderMode.render;
         GL11.glDepthFunc(GL_LEQUAL);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.depthMask(false);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.disableDepth();
     }
 
-    private void updateVelocity(final RenderMode 콗뎫鷏Ꮺ놣) {
+    private void updateVelocity(final RenderMode renderMode) {
         GL11.glDepthFunc(GL_ALWAYS);
-        this.currentRenderMode = 콗뎫鷏Ꮺ놣;
-//        콗뎫鷏Ꮺ놣 = 콗뎫鷏Ꮺ놣;
-        final int 侃姮쇽待敤 = Color.WHITE.getRGB();
-        final float n = (侃姮쇽待敤 >> 24 & 0xFF) / 255.0f;
-        final float n2 = (侃姮쇽待敤 >> 16 & 0xFF) / 255.0f;
-        final float n3 = (侃姮쇽待敤 >> 8 & 0xFF) / 255.0f;
-        final float n4 = (侃姮쇽待敤 & 0xFF) / 255.0f;
+        this.currentRenderMode = renderMode;
+//        renderMode = renderMode;
+        final int colorInt = Color.WHITE.getRGB();
+        final float alpha = (colorInt >> 24 & 0xFF) / 255.0f;
+        final float red = (colorInt >> 16 & 0xFF) / 255.0f;
+        final float green = (colorInt >> 8 & 0xFF) / 255.0f;
+        final float blue = (colorInt & 0xFF) / 255.0f;
 //        GL11.glEnable(GL_LIGHTING);
-        GL11.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { n2, n3, n4, n });
+        GL11.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { red, green, blue, alpha});
         GlStateManager.disableLighting();
 
         if (this.currentRenderMode == RenderMode.setupRender) {
@@ -314,34 +314,34 @@ public class ShadowESP {
 //            GL11.glEnable(GL_ALPHA_TEST);
 //            GL11.glEnable(GL_LIGHTING);
         }
-        for (final Entity 璧室䖼頉啖 : mc.world.getLoadedEntityList()) {
-            if (!(mc.isEntityGlowing2(璧室䖼頉啖))) {
+        for (final Entity entity : mc.world.getLoadedEntityList()) {
+            if (!(mc.isEntityGlowing2(entity))) {
                 continue;
             }
             if(mc.gameSettings.getPointOfView().func_243192_a()){
-                if(璧室䖼頉啖 == mc.player){
+                if(entity == mc.player){
                     continue;
                 }
             }
             GL11.glPushMatrix();
-            final Vector3d 㕠츚鶲霥ಽ뼢 = mc.gameRenderer.getActiveRenderInfo().getProjectedView();
-            final double 鶲웎頉붃䢶蚳 = 㕠츚鶲霥ಽ뼢.x;
-            final double 鞞躚뗴ᔎ娍ꪕ = 㕠츚鶲霥ಽ뼢.y;
-            final double 붛嶗啖ኞ츚弻 = 㕠츚鶲霥ಽ뼢.z;
-            final MatrixStack 햖䩉待뼢鱀 = new MatrixStack();
-            final boolean 펊褕室뗴嶗疂 = mc.gameSettings.entityShadows;
+            final Vector3d projectedView = mc.gameRenderer.getActiveRenderInfo().getProjectedView();
+            final double projectedX = projectedView.x;
+            final double projectedY = projectedView.y;
+            final double projectedZ = projectedView.z;
+            final MatrixStack matrixStack = new MatrixStack();
+            final boolean entityShadows = mc.gameSettings.entityShadows;
             GlStateManager.disableLighting();
-            GlStateManager.color4f(n, n2, n3, 0.5f);
+            GlStateManager.color4f(alpha, red, green, 0.5f);
             RenderUtils.startBlend();
             mc.gameSettings.entityShadows = false;
-            final int 筕ꦱ붃眓ꁈ웎 = 璧室䖼頉啖.getFireTimer();
-            final boolean 콗햖竁ꈍ酋釒 = 璧室䖼頉啖.getFlag(0);
-            璧室䖼頉啖.forceFireTicks(0);
-            璧室䖼頉啖.setFlag(0, false);
-            this.renderEntity(璧室䖼頉啖, 鶲웎頉붃䢶蚳, 鞞躚뗴ᔎ娍ꪕ, 붛嶗啖ኞ츚弻, mc.timer.renderPartialTicks,햖䩉待뼢鱀, this.renderBuffer);
-            璧室䖼頉啖.forceFireTicks(筕ꦱ붃眓ꁈ웎);
-            璧室䖼頉啖.setFlag(0, 콗햖竁ꈍ酋釒);
-            mc.gameSettings.entityShadows = 펊褕室뗴嶗疂;
+            final int fireTimer = entity.getFireTimer();
+            final boolean isOnFire = entity.getFlag(0);
+            entity.forceFireTicks(0);
+            entity.setFlag(0, false);
+            this.renderEntity(entity, projectedX, projectedY, projectedZ, mc.timer.renderPartialTicks,matrixStack, this.renderBuffer);
+            entity.forceFireTicks(fireTimer);
+            entity.setFlag(0, isOnFire);
+            mc.gameSettings.entityShadows = entityShadows;
             GL11.glPopMatrix();
         }
         this.renderBuffer.finish(RenderType.getEntitySolid(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
@@ -354,22 +354,22 @@ public class ShadowESP {
             GL11.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             GL11.glDisable(GL_POLYGON_OFFSET_LINE);
         }
-        this.currentRenderMode = RenderMode.泹唟쥦㞈쿨;
+        this.currentRenderMode = RenderMode.render;
         GL11.glDepthFunc(GL_LEQUAL);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.depthMask(false);
         info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.disableDepth();
     }
 
-    public void renderEntity(final Entity 璧室䖼頉啖, final double n, final double n2, final double n3, final float n4,
-                             final MatrixStack 햖䩉待뼢鱀, final IRenderTypeBuffer 㹔뗴㻣騜瀳) {
-        mc.worldRenderer.renderManager.renderEntityStatic(璧室䖼頉啖,
-                interpolate(n4, 璧室䖼頉啖.lastTickPosX, 璧室䖼頉啖.getPosX()) - n,
-                interpolate(n4, 璧室䖼頉啖.lastTickPosY, 璧室䖼頉啖.getPosY()) - n2,
-                interpolate(n4, 璧室䖼頉啖.lastTickPosZ, 璧室䖼頉啖.getPosZ()) - n3,
-                interpolate(n4, 璧室䖼頉啖.prevRotationYaw, 璧室䖼頉啖.rotationYaw),
-                n4,
-                햖䩉待뼢鱀,
-                㹔뗴㻣騜瀳,
+    public void renderEntity(final Entity entity, final double x, final double y, final double z, final float partialTicks,
+                             final MatrixStack matrixStack, final IRenderTypeBuffer renderBuffer) {
+        mc.worldRenderer.renderManager.renderEntityStatic(entity,
+                interpolate(partialTicks, entity.lastTickPosX, entity.getPosX()) - x,
+                interpolate(partialTicks, entity.lastTickPosY, entity.getPosY()) - y,
+                interpolate(partialTicks, entity.lastTickPosZ, entity.getPosZ()) - z,
+                interpolate(partialTicks, entity.prevRotationYaw, entity.rotationYaw),
+                partialTicks,
+                matrixStack,
+                renderBuffer,
                 238);
     }
 
@@ -380,29 +380,29 @@ public class ShadowESP {
         return n2 + n * (n3 - n2);
     }
 //    @EventTarget
-//    public void 驋펊䩉웨䢿(final 杭捉훔늦杭 杭捉훔늦杭) {
+//    public void 驋펊䩉웨䢿(final RenderEvent RenderEvent) {
 ////        if (this.isModuleEnable()) {
-//            if (콗뎫鷏Ꮺ놣 != RenderMode.泹唟쥦㞈쿨) {
-//                杭捉훔늦杭.웨ꦱ筕쥅哺(false);
+//            if (currentRenderMode != RenderMode.render) {
+//                RenderEvent.setCanceled(false);
 //            }
 ////        }
 //    }
     public static boolean cannotRenderName(){
-        return currentRenderMode != RenderMode.泹唟쥦㞈쿨;
+        return currentRenderMode != RenderMode.render;
     };
 //    @EventTarget
-//    public void 陬㔢藸㦖釒(final 㱙啖햖蚳ぶ 㱙啖햖蚳ぶ) {
+//    public void renderNotifications(final EntityRenderEvent EntityRenderEvent) {
 ////        if (this.isModuleEnable()) {
-//            if (콗뎫鷏Ꮺ놣 != RenderMode.泹唟쥦㞈쿨) {
-//                if (㱙啖햖蚳ぶ.댠甐㼜揩붛() instanceof 䴂훔顸掬펊) {
-//                    㱙啖햖蚳ぶ.鼒鱀哺敤霥堧(true);
+//            if (콗뎫鷏Ꮺ놣 != RenderMode.render) {
+//                if (EntityRenderEvent.getEntity() instanceof SomeEntityClass) {
+//                    EntityRenderEvent.setCanceled(true);
 //                }
 //            }
 ////        }
 //    }
 
     private void setupRender() {
-//        哝鼒ኞ酭낛();
+//        startBlend();
         RenderUtils.startBlend();
 
         GL11.glLineWidth(3.0f);
@@ -427,12 +427,12 @@ public class ShadowESP {
 //        GL11.glEnable(GL_COLOR_MATERIAL);
 //        GlStateManager.multiTexCoord2f(33986, 240.0f, 240.0f);
 //        刃ꦱ筕睬뎫欫.㼜圭좯玑㨳ꦱ();
-        final TextureManager 蒕䴂ᙽ釒卫ꪕ = mc.getTextureManager();
-//        mc.蒕䴂ᙽ釒卫ꪕ();
-//        蒕䴂ᙽ釒卫ꪕ.bindTexture(RESOURCE_LOCATION_EMPTY);
+        final TextureManager textureManager = mc.getTextureManager();
+//        mc.textureManager();
+//        textureManager.bindTexture(RESOURCE_LOCATION_EMPTY);
         mc.gameRenderer.lightmapTexture.enableLightmap();
         GL11.glLightModelfv(2899, new float[] { 0.4f, 0.4f, 0.4f, 1.0f });
-        currentRenderMode = RenderMode.泹唟쥦㞈쿨;
+        currentRenderMode = RenderMode.render;
         GlStateManager.disableLighting();
     }
 
