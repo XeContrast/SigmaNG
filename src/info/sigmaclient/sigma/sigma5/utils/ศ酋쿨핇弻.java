@@ -5,9 +5,9 @@ public class ศ酋쿨핇弻 {
     private long 蕃ศ㞈뫤쇽;
     private long 葫霥蒕嶗䴂;
     private boolean 샱轐釒ࡅ鞞;
-    public final /* synthetic */ 걾㼜䈔㢸鏟 汌醧挐늦댠;
+    public final /* synthetic */ Renderer 汌醧挐늦댠;
 
-    public ศ酋쿨핇弻(final 걾㼜䈔㢸鏟 汌醧挐늦댠) {
+    public ศ酋쿨핇弻(final Renderer 汌醧挐늦댠) {
         this.汌醧挐늦댠 = 汌醧挐늦댠;
         this.蕃ศ㞈뫤쇽 = 0L;
         this.葫霥蒕嶗䴂 = 0L;

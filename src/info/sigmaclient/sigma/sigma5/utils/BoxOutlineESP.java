@@ -56,11 +56,11 @@ public class BoxOutlineESP {
         stencilEnabled = true;
     }
 
-    public static void startStencil(final ࡅ醧콵揩㨳 ࡅ醧콵揩㨳) {
+    public static void startStencil(final StencilOperation StencilOperation) {
         GL11.glColorMask(true, true, true, true);
         GL11.glDepthMask(true);
         GL11.glStencilMask(0);
-        GL11.glStencilFunc((ࡅ醧콵揩㨳 != ࡅ醧콵揩㨳.㔢䬹ꁈ핇呓) ? 517 : 514, 1, 1);
+        GL11.glStencilFunc((StencilOperation != StencilOperation.REPLACE) ? 517 : 514, 1, 1);
     }
 
     public static void endStencil() {
@@ -70,10 +70,10 @@ public class BoxOutlineESP {
         stencilEnabled = false;
     }
 
-    public enum ࡅ醧콵揩㨳 {
+    public enum StencilOperation {
 
-        㔢䬹ꁈ핇呓,
-        ᔎ渺훔䣓䄟;
+        REPLACE,
+        INVERT;
     }
     public void draw() {
         GL11.glEnable(GL_LINE_SMOOTH);
@@ -91,7 +91,7 @@ public class BoxOutlineESP {
         StencilUtil.initStencilToWrite();
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             this.drawBoxes(false);
-//            startStencil(ࡅ醧콵揩㨳.ᔎ渺훔䣓䄟);
+//            startStencil(StencilOperation.ᔎ渺훔䣓䄟);
         StencilUtil.readStencilBuffer(0);
             GL11.glLineWidth(3.0f);
 //            RenderSystem.alphaFunc(518, 0.0f);
@@ -161,22 +161,22 @@ public class BoxOutlineESP {
                 GL11.glPushMatrix();
 //                GL11.glDisable(2929);
 //                GL11.glEnable(3042);
-                final int 侃姮쇽待敤 = ESP.color.getColorInt();
+                final int colorRGB = ESP.color.getColorInt();
             double camX = RenderUtils.getRenderPos().renderPosX;
             double camY = RenderUtils.getRenderPos().renderPosY;
             double camZ = RenderUtils.getRenderPos().renderPosZ;
             info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager.translate(-camX, -camY, -camZ);
-//                final AxisAlignedBB 欫嘖픓뵯㻣藸 = key.getBoundingBox().欫嘖픓뵯㻣藸(0.10000000149011612);
-            final AxisAlignedBB 欫嘖픓뵯㻣藸 = key.getBoundingBox().offset(
+//                final AxisAlignedBB boundingBox = key.getBoundingBox().boundingBox(0.10000000149011612);
+            final AxisAlignedBB boundingBox = key.getBoundingBox().offset(
                     (key.getPosX() - key.lastTickPosX) * mc.timer.renderPartialTicks - (key.getPosX() - key.lastTickPosX),
                     (key.getPosY() - key.lastTickPosY) * mc.timer.renderPartialTicks - (key.getPosY() - key.lastTickPosY),
                     (key.getPosZ() - key.lastTickPosZ) * mc.timer.renderPartialTicks - (key.getPosZ() - key.lastTickPosZ))
-                    .欫嘖픓뵯㻣藸(0.10000000149011612);
+                    .boundingBox(0.10000000149011612);
                 if (b) {
-                    drawFilledBox(欫嘖픓뵯㻣藸, 3.0f, ColorUtils.reAlpha(new Color(侃姮쇽待敤),0.35f).getRGB());
+                    drawFilledBox(boundingBox, 3.0f, ColorUtils.reAlpha(new Color(colorRGB),0.35f).getRGB());
                 }
                 else {
-                    drawOutlinedBox(欫嘖픓뵯㻣藸, new Color(0xFFFFFF).getRGB());
+                    drawOutlinedBox(boundingBox, new Color(0xFFFFFF).getRGB());
                 }
 //                GL11.glDisable(3042);
                 GL11.glPopMatrix();

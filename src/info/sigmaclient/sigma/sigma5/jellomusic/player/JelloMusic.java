@@ -170,7 +170,7 @@ public class JelloMusic {
 //        final float n5 = ((float)(Math.sqrt(this.spectrum.get(index2)) / 12.0) - 5.0f) * (sr.getScaledHeight() / 1080.0f);
 //        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, 핇댠䂷呓贞.white.哺卫콗鱀ಽ);
 //      }
-//      ᙽ붛셴쥦㠠醧(BoxOutlineESP.ࡅ醧콵揩㨳.㔢䬹ꁈ핇呓);
+//      ᙽ붛셴쥦㠠醧(BoxOutlineESP.StencilOperation.㔢䬹ꁈ핇呓);
 //      if (this.W蒕꿩待쇽 != null) {
 //        if (this.붃渺Ꮀ䖼綋 != null) {
 //          㹔펊콵湗贞聛(0.0f, 0.0f, (float)sr.getWidth(), (float)sr.getHeight(), this.붃渺Ꮀ䖼綋, 0.4f);

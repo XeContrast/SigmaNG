@@ -9,18 +9,18 @@ import static info.sigmaclient.sigma.minimap.minimap.Minimap.mc;
 
 public class BrainFreezeParticles {
     private static String[] stringArray;
-    private List<Particle> 鄡釒괠䕦睬;
-    private 걾㼜䈔㢸鏟 洝樽鞞ꦱ셴;
-    public 㱙蕃杭ᜄꈍ 韤竁䣓霥퉧;
+    private List<Particle> particles;
+    private Renderer renderer;
+    public RandomGenerator randomGenerator;
 
     public BrainFreezeParticles(final String s) {
 //        ScaledResolution sr = new ScaledResolution(mc);
 //        final int 䕦ᔎศ埙甐陬 = sr.getScaledWidth();
 //        final int 瀧㠠㹔挐姮㕠 = sr.getScaledHeight();
 //        super(甐쿨Ⱋ샱㼜, s, 0, 0, Minecraft.㝛卫쟗홵嘖蕃().娍Ꮤ婯玑鶊좯.getWidth(), Minecraft.㝛卫쟗홵嘖蕃().娍Ꮤ婯玑鶊좯.getHeight(), false);
-        this.鄡釒괠䕦睬 = new ArrayList<Particle>();
-        this.洝樽鞞ꦱ셴 = new 걾㼜䈔㢸鏟();
-        this.韤竁䣓霥퉧 = new 㱙蕃杭ᜄꈍ();
+        this.particles = new ArrayList<Particle>();
+        this.renderer = new Renderer();
+        this.randomGenerator = new RandomGenerator();
 //        this.뗴葫䎰햖Ꮀ샱(false);
 //        this.䣓웎属훔郝牰(false);
 //        this.콗骰늦ࡅ鱀硙(false);
@@ -29,42 +29,42 @@ public class BrainFreezeParticles {
     }
     public void render(final float n) {
         ScaledResolution sr = new ScaledResolution(mc);
-        final int 䕦ᔎศ埙甐陬 = sr.getScaledWidth() / 2;
-        final int 瀧㠠㹔挐姮㕠 = sr.getScaledHeight() / 2;
-        final int n2 = 䕦ᔎศ埙甐陬;
+        final int scaledWidth = sr.getScaledWidth() / 2;
+        final int scaledHeight = sr.getScaledHeight() / 2;
+        final int n2 = scaledWidth;
         int n3 = 0;
-        while (this.鄡釒괠䕦睬.size() < n2) {
-            this.鄡釒괠䕦睬.add(new Particle((float) this.韤竁䣓霥퉧.nextInt(䕦ᔎศ埙甐陬), (float) this.韤竁䣓霥퉧.nextInt(瀧㠠㹔挐姮㕠)));
+        while (this.particles.size() < n2) {
+            this.particles.add(new Particle((float) this.randomGenerator.nextInt(scaledWidth), (float) this.randomGenerator.nextInt(scaledHeight)));
             n3 = 1;
         }
-        while (this.鄡釒괠䕦睬.size() > n2) {
-            this.鄡釒괠䕦睬.remove(0);
+        while (this.particles.size() > n2) {
+            this.particles.remove(0);
             n3 = 1;
         }
         if (n3 != 0) {
-            for (int i = 0; i < this.鄡釒괠䕦睬.size(); ++i) {
-                this.鄡釒괠䕦睬.get(i).婯㥇㐖待䢿 = (float) this.韤竁䣓霥퉧.nextInt(䕦ᔎศ埙甐陬);
-                this.鄡釒괠䕦睬.get(i).뼢ꦱ롤콗睬 = (float) this.韤竁䣓霥퉧.nextInt(瀧㠠㹔挐姮㕠);
+            for (int i = 0; i < this.particles.size(); ++i) {
+                this.particles.get(i).posX = (float) this.randomGenerator.nextInt(scaledWidth);
+                this.particles.get(i).posY = (float) this.randomGenerator.nextInt(scaledHeight);
             }
         }
-        this.洝樽鞞ꦱ셴.哝쥦㥇㔢哺();
-        for (final Particle Particle : this.鄡釒괠䕦睬) {
-            Particle.㥇鶲샱塱瀧(this.洝樽鞞ꦱ셴);
-            if (Particle.婯㥇㐖待䢿 >= 0.0f) {
-                if (Particle.婯㥇㐖待䢿 > 䕦ᔎศ埙甐陬) {
-                    Particle.婯㥇㐖待䢿 = 0.0f;
+        this.renderer.updateor();
+        for (final Particle Particle : this.particles) {
+            Particle.render(this.renderer);
+            if (Particle.posX >= 0.0f) {
+                if (Particle.posX > scaledWidth) {
+                    Particle.posX = 0.0f;
                 }
             } else {
-                Particle.婯㥇㐖待䢿 = (float) 䕦ᔎศ埙甐陬;
+                Particle.posX = (float) scaledWidth;
             }
-            if (Particle.뼢ꦱ롤콗睬 >= 0.0f) {
-                if (Particle.뼢ꦱ롤콗睬 > 瀧㠠㹔挐姮㕠) {
-                    Particle.뼢ꦱ롤콗睬 = 0.0f;
+            if (Particle.posY >= 0.0f) {
+                if (Particle.posY > scaledHeight) {
+                    Particle.posY = 0.0f;
                 }
             } else {
-                Particle.뼢ꦱ롤콗睬 = (float) 瀧㠠㹔挐姮㕠;
+                Particle.posY = (float) scaledHeight;
             }
-            Particle.汌쬫햠眓뵯(n);
+            Particle.updatePosition(n);
         }
     }
 }

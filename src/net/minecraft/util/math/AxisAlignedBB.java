@@ -296,7 +296,7 @@ public class AxisAlignedBB
     }
 
 
-    public AxisAlignedBB 欫嘖픓뵯㻣藸(final double n) {
+    public AxisAlignedBB boundingBox(final double n) {
         return new AxisAlignedBB(
                 this.minX - n,
                 this.minY - n,
@@ -369,38 +369,38 @@ public class AxisAlignedBB
         return this.intersects(other.minX, other.minY, other.minZ, other.maxX, other.maxY, other.maxZ);
     }
 
-    public AxisAlignedBB 쥡㮃붛竬鏟䬾(final double n, final double n2, final double n3) {
-        double 湗츚Ꮀ弻핇䣓 = this.minX;
-        double ၝ퉧䴂䴂뫤㼜 = this.minY;
-        double 䈔騜亟ᙽ蓳啖 = this.minZ;
-        double 浦瀳꿩Ꮀ붛酋 = this.maxX;
-        double 䬹缰欫䬾핇ኞ = this.maxY;
-        double 贞웨缰퉧랾뫤 = this.maxZ;
+    public AxisAlignedBB expandBoundingBox(final double n, final double n2, final double n3) {
+        double minX = this.minX;
+        double minY = this.minY;
+        double minZ = this.minZ;
+        double maxX = this.maxX;
+        double maxY = this.maxY;
+        double maxZ = this.maxZ;
         if (n >= 0.0) {
             if (n > 0.0) {
-                浦瀳꿩Ꮀ붛酋 += n;
+                maxX += n;
             }
         }
         else {
-            湗츚Ꮀ弻핇䣓 += n;
+            minX += n;
         }
         if (n2 >= 0.0) {
             if (n2 > 0.0) {
-                䬹缰欫䬾핇ኞ += n2;
+                maxY += n2;
             }
         }
         else {
-            ၝ퉧䴂䴂뫤㼜 += n2;
+            minY += n2;
         }
         if (n3 >= 0.0) {
             if (n3 > 0.0) {
-                贞웨缰퉧랾뫤 += n3;
+                maxZ += n3;
             }
         }
         else {
-            䈔騜亟ᙽ蓳啖 += n3;
+            minZ += n3;
         }
-        return new AxisAlignedBB(湗츚Ꮀ弻핇䣓, ၝ퉧䴂䴂뫤㼜, 䈔騜亟ᙽ蓳啖, 浦瀳꿩Ꮀ붛酋, 䬹缰欫䬾핇ኞ, 贞웨缰퉧랾뫤);
+        return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
     }
     public boolean intersects(double x1, double y1, double z1, double x2, double y2, double z2)
     {

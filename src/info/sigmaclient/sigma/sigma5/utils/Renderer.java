@@ -1,16 +1,16 @@
 package info.sigmaclient.sigma.sigma5.utils;
 
-public class 걾㼜䈔㢸鏟 {
+public class Renderer {
     private static String[] 璧Ꮺ岋渺竁;
     private float 捉杭室쬷陂;
-    private 㱙蕃杭ᜄꈍ 弻硙㹔䩜䈔;
+    private RandomGenerator 弻硙㹔䩜䈔;
     private ศ酋쿨핇弻 펊㝛藸ศ筕;
     private long 阢卒待疂Ꮺ;
     private boolean ኞ筕蒕硙㐖;
     private float 洝䄟杭䆧埙;
 
-    public 걾㼜䈔㢸鏟() {
-        this.弻硙㹔䩜䈔 = new 㱙蕃杭ᜄꈍ();
+    public Renderer() {
+        this.弻硙㹔䩜䈔 = new RandomGenerator();
         this.펊㝛藸ศ筕 = new ศ酋쿨핇弻(this);
         this.ኞ筕蒕硙㐖 = false;
         this.洝䄟杭䆧埙 = -1.0f;
@@ -19,7 +19,7 @@ public class 걾㼜䈔㢸鏟 {
         this.捉杭室쬷陂 = this.弻硙㹔䩜䈔.nextFloat();
     }
 
-    public void 哝쥦㥇㔢哺() {
+    public void updateor() {
         if (this.펊㝛藸ศ筕.㥇햖郝阢ᔎ() > this.阢卒待疂Ꮺ) {
             this.阢卒待疂Ꮺ = this.弻硙㹔䩜䈔.nextInt(8000, 10000);
             this.ኞ筕蒕硙㐖 = true;
