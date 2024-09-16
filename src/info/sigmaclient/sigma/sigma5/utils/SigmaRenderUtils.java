@@ -212,7 +212,7 @@ public class SigmaRenderUtils {
             GL11.glScissor(n8, n9, n10, n11);
         }
     }
-    public static void 䬹鞞葫Ꮀ待湗2(final float n, final float n2, final float n3, final float n4, final float n5, final int n6) {
+    public static void drawRoundedRect(final float n, final float n2, final float n3, final float n4, final float n5, final int n6) {
         㠠Ꮤ曞佉䩜鱀(n + n5 / 2f, n2 + n5, n + n3 - n5 / 2f, n2 + n4 - n5, n6);
         㠠Ꮤ曞佉䩜鱀(n + n5, n2 + n5 - n5 / 2f, n + n3 - n5, n2 + n5, n6);
         㠠Ꮤ曞佉䩜鱀(n + n5, n2 + n4 - n5, n + n3 - n5, n2 + n4 - n5 / 2f, n6);

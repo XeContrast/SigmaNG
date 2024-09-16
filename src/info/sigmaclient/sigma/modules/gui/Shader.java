@@ -15,7 +15,7 @@ import net.minecraft.client.shader.Framebuffer;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static info.sigmaclient.sigma.sigma5.utils.JelloSwapBlur.蓳瀧藸䖼錌;
+import static info.sigmaclient.sigma.sigma5.utils.JelloSwapBlur.applyBlurEffect;
 
 
 public class Shader extends Module {
@@ -35,7 +35,7 @@ public class Shader extends Module {
         StencilUtil.initStencilToWrite();
         RenderUtils.drawRect(x, y, x2, y2, -1);
         StencilUtil.readStencilBuffer(1);
-        蓳瀧藸䖼錌();
+        applyBlurEffect();
         StencilUtil.uninitStencilBuffer();
     }
     public static void addBlur(Runnable runnable){

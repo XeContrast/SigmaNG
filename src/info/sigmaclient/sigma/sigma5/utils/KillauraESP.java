@@ -47,7 +47,7 @@ public class KillauraESP {
         final float n4 = b ? (1.0f - n3 * 2.0f % 1.0f) : (n3 * 2.0f);
         GL11.glTranslatef(0.0f, (key.getHeight() + 0.4f) * n4, 0.0f);
         final float n5 = (float)Math.sin(n4 * 3.141592653589793);
-        샱훔騜좯卒(b, 0.45f * n5, 0.6f, 0.35f * n5, anim, cd);
+        drawAuraEffect(b, 0.45f * n5, 0.6f, 0.35f * n5, anim, cd);
         GL11.glPushMatrix();
         GL11.glTranslated(
                 camX,
@@ -61,7 +61,7 @@ public class KillauraESP {
         GL11.glPopMatrix();
     }
 
-    public static void 샱훔騜좯卒(final boolean b, final float n, final float n2, final float n3, final float n4, Color color2) {
+    public static void drawAuraEffect(final boolean b, final float n, final float n2, final float n3, final float n4, Color color2) {
         GL11.glShadeModel(GL_SMOOTH);
         GL11.glDisable(32823);
         GL11.glDisable(2929);

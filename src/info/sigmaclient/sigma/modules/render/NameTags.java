@@ -32,7 +32,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class NameTags extends Module {
     public ModeValue type = new ModeValue("Size", "Big", new String[]{"Big", "Small"});
-    int ꁈ陬Ꮀ啖䄟 = 霥瀳놣㠠釒(贞䩉㥇딨햖(-65794, -16711423, 75.0f), 0.5f);
+    int ꁈ陬Ꮀ啖䄟 = 霥瀳놣㠠釒(blendColors(-65794, -16711423, 75.0f), 0.5f);
     BooleanValue magnify = new BooleanValue("Magnify", true);
     BooleanValue linear = new BooleanValue("Linear", true);
     static BooleanValue player = new BooleanValue("Player", false);
@@ -52,7 +52,7 @@ public class NameTags extends Module {
      registerValue(healthBypass);
     }
 
-    public static int 贞䩉㥇딨햖(final int n, final int n2, final float n3) {
+    public static int blendColors(final int n, final int n2, final float n3) {
         final int n4 = n >> 24 & 0xFF;
         final int n5 = n >> 16 & 0xFF;
         final int n6 = n >> 8 & 0xFF;

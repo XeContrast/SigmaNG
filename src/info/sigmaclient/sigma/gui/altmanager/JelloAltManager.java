@@ -31,7 +31,7 @@ import static info.sigmaclient.sigma.gui.Sigma5LoadProgressGui.applyColor;
 import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouseX;
 import static info.sigmaclient.sigma.gui.mainmenu.SigmaGuiMainMenu.animatedMouseY;
 import static info.sigmaclient.sigma.modules.Module.mc;
-import static info.sigmaclient.sigma.modules.render.NameTags.贞䩉㥇딨햖;
+import static info.sigmaclient.sigma.modules.render.NameTags.blendColors;
 import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.欫좯콵甐鶲㥇;
 import static info.sigmaclient.sigma.utils.render.RenderUtils.*;
 
@@ -282,7 +282,7 @@ public class JelloAltManager extends Screen {
             }
             float 竁藸뎫捉睬 = 15 - anim + anim * scale, 䩉湗鶲娍圭 = startY;
             int 댠哝娍酋瀳 = this.width, 㢸ꪕ䬾硙葫 = this.height;
-            int 쥡娍샱셴ᢻ = 贞䩉㥇딨햖(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 핇댠䂷呓贞.black.哺卫콗鱀ಽ, 2.0f);
+            int 쥡娍샱셴ᢻ = blendColors(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 핇댠䂷呓贞.black.哺卫콗鱀ಽ, 2.0f);
             final int 鶲䩉缰啖錌杭 = scroll;
             final float max = Math.max(0, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭);
             final float max2 = Math.max(0, 㢸ꪕ䬾硙葫 + Math.min(100, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭 - max));

@@ -22,7 +22,7 @@ import static info.sigmaclient.sigma.gui.clickgui.JelloClickGui.䩉罡쟗붃괠�
 import static info.sigmaclient.sigma.gui.clickgui.JelloClickGui.牰䩜躚㢸錌ꈍ;
 import static info.sigmaclient.sigma.gui.font.RenderSystem.drawGradientRect;
 import static info.sigmaclient.sigma.minimap.interfaces.InterfaceHandler.mc;
-import static info.sigmaclient.sigma.modules.render.NameTags.贞䩉㥇딨햖;
+import static info.sigmaclient.sigma.modules.render.NameTags.blendColors;
 
 public class GuiConfigScreen extends Screen {
     public static KeyBindManager keyBindManager = new KeyBindManager();
@@ -79,7 +79,7 @@ public class GuiConfigScreen extends Screen {
             n2 = 0.7f + 牰䩜躚㢸錌ꈍ(꿩螜ᢻ璧呓.getAnim(), 0.0f, 1.0f, 1.0f) * 0.3f;
             杭眓鱀陂ၝ㠠 = 꿩螜ᢻ璧呓.getAnim();
         }
-        drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), 贞䩉㥇딨햖(-1072689136, applyColor(-16711423, 0.1f), 杭眓鱀陂ၝ㠠), 贞䩉㥇딨햖(-804253680, applyColor(-16711423, 0.1f), 杭眓鱀陂ၝ㠠));
+        drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), blendColors(-1072689136, applyColor(-16711423, 0.1f), 杭眓鱀陂ၝ㠠), blendColors(-804253680, applyColor(-16711423, 0.1f), 杭眓鱀陂ၝ㠠));
 //        this.㮃Wಽ待㐖㼜(n2, n2);  \
         if(n2 != 1) {
             GlStateManager.translate(sr.getScaledWidth() / 2.0, sr.getScaledHeight() / 2.0, 0);

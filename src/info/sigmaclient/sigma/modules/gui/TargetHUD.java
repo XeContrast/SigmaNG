@@ -178,7 +178,7 @@ public class TargetHUD extends RenderModule
                     StencilUtil.initStencilToWrite();
                     RenderUtils.drawRect((float)(x - width), (float)y, (float)(x - width) + (float)width * 2.0f, (float)y + height, new Color(255, 255, 255, (int)(255.0 * alpha)).getRGB());
                     StencilUtil.readStencilBuffer(1);
-                    JelloSwapBlur.蓳瀧藸䖼錌();
+                    JelloSwapBlur.applyBlurEffect();
                     StencilUtil.uninitStencilBuffer();
                 }
                 RenderUtils.drawRect((float)(x - width), (float)y, (float)(x - width) + (float)width * 2.0f, (float)y + height, new Color(0, 0, 0, (int)(10.0 * alpha)).getRGB());

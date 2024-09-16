@@ -13,8 +13,7 @@ import java.io.IOException;
 
 public class ImageUtils {
 
-
-    public static BufferedImage 殢딨놣卒웨觯(final BufferedImage bufferedImage, final int n, final int rgb) {
+    public static BufferedImage addBorder(final BufferedImage bufferedImage, final int n, final int rgb) {
         final int width = bufferedImage.getWidth() + n * 2;
         final int height = bufferedImage.getHeight() + n * 2;
         final BufferedImage bufferedImage2 = new BufferedImage(width, height, bufferedImage.getType());
@@ -32,18 +31,18 @@ public class ImageUtils {
         }
         return bufferedImage2;
     }
-    public static BufferedImage 殢딨놣卒웨觯(final BufferedImage bufferedImage, final int n) {
-        final BufferedImage 뼢㼜柿䩜䄟娍 = 뼢㼜柿䩜䄟娍(bufferedImage, (bufferedImage.getWidth() + n * 2) / (float)bufferedImage.getWidth(), (bufferedImage.getHeight() + n * 2) / (float)bufferedImage.getHeight());
+
+    public static BufferedImage addBorder(final BufferedImage bufferedImage, final int n) {
+        final BufferedImage scaledImage = scaleImage(bufferedImage, (bufferedImage.getWidth() + n * 2) / (float)bufferedImage.getWidth(), (bufferedImage.getHeight() + n * 2) / (float)bufferedImage.getHeight());
         for (int i = 0; i < bufferedImage.getWidth(); ++i) {
             for (int j = 0; j < bufferedImage.getHeight(); ++j) {
-                뼢㼜柿䩜䄟娍.setRGB(n + i, n + j, bufferedImage.getRGB(i, j));
+                scaledImage.setRGB(n + i, n + j, bufferedImage.getRGB(i, j));
             }
         }
-        return 뼢㼜柿䩜䄟娍;
+        return scaledImage;
     }
 
-
-    public static BufferedImage 뼢㼜柿䩜䄟娍(final BufferedImage bufferedImage, final double sx, final double sy) {
+    public static BufferedImage scaleImage(final BufferedImage bufferedImage, final double sx, final double sy) {
         BufferedImage bufferedImage2 = null;
         if (bufferedImage != null) {
             bufferedImage2 = new BufferedImage((int)(bufferedImage.getWidth() * sx), (int)(bufferedImage.getHeight() * sy), bufferedImage.getType());
@@ -51,7 +50,8 @@ public class ImageUtils {
         }
         return bufferedImage2;
     }
-    public static BufferedImage 㞈堧㠠鏟䎰韤(final BufferedImage bufferedImage, final float n, final float n2, final float n3) {
+
+    public static BufferedImage adjustHSB(final BufferedImage bufferedImage, final float n, final float n2, final float n3) {
         final int width = bufferedImage.getWidth();
         for (int height = bufferedImage.getHeight(), i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
@@ -62,6 +62,7 @@ public class ImageUtils {
         }
         return bufferedImage;
     }
+
     public static DynamicTexture blurImage(final String str, final float n, final int n2) {
         try {
             final BufferedImage read;
@@ -75,15 +76,14 @@ public class ImageUtils {
             graphics2D.scale(n, n);
             graphics2D.drawImage(read, 0, 0, null);
             graphics2D.dispose();
-            return new DynamicTexture(㞈堧㠠鏟䎰韤(蓳뚔啖쿨醧鄡(殢딨놣卒웨觯(bufferedImage, n2), n2), 0.0f, 1.1f, 0.0f));
+            return new DynamicTexture(adjustHSB(applyGaussianBlur(addBorder(bufferedImage, n2), n2), 0.0f, 1.1f, 0.0f));
         }
         catch (final IOException ex) {
             throw new IllegalStateException("SB");
         }
     }
 
-
-    public static BufferedImage 顸呓ኞ쥦陂䄟(final BufferedImage bufferedImage) {
+    public static BufferedImage rotateImage(final BufferedImage bufferedImage) {
         final int width = bufferedImage.getWidth();
         final int height = bufferedImage.getHeight();
         final BufferedImage bufferedImage2 = new BufferedImage(height, width, bufferedImage.getType());
@@ -95,7 +95,7 @@ public class ImageUtils {
         return bufferedImage2;
     }
 
-    public static Kernel 竁瀧햠顸鶊Ꮀ(final float n) {
+    public static Kernel createGaussianKernel(final float n) {
         final int n2 = (int)Math.ceil(n);
         final int width = n2 * 2 + 1;
         final float[] data = new float[width];
@@ -123,7 +123,8 @@ public class ImageUtils {
         }
         return new Kernel(width, 1, data);
     }
-    public static BufferedImage 蓳뚔啖쿨醧鄡(final BufferedImage bufferedImage, final int n) {
+
+    public static BufferedImage applyGaussianBlur(final BufferedImage bufferedImage, final int n) {
         if (bufferedImage == null) {
             return bufferedImage;
         }
@@ -131,8 +132,8 @@ public class ImageUtils {
             return bufferedImage;
         }
         if (bufferedImage.getHeight() > n + n) {
-            final ConvolveOp convolveOp = new ConvolveOp(竁瀧햠顸鶊Ꮀ((float)n));
-            return 顸呓ኞ쥦陂䄟(convolveOp.filter(顸呓ኞ쥦陂䄟(convolveOp.filter(bufferedImage, null)), null)).getSubimage(n, n, bufferedImage.getWidth() - n - n, bufferedImage.getHeight() - n - n);
+            final ConvolveOp convolveOp = new ConvolveOp(createGaussianKernel((float)n));
+            return rotateImage(convolveOp.filter(rotateImage(convolveOp.filter(bufferedImage, null)), null)).getSubimage(n, n, bufferedImage.getWidth() - n - n, bufferedImage.getHeight() - n - n);
         }
         return bufferedImage;
     }
