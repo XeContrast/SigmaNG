@@ -389,7 +389,7 @@ public class ShadowESP {
 //    }
     public static boolean cannotRenderName(){
         return currentRenderMode != RenderMode.render;
-    };
+    }
 //    @EventTarget
 //    public void renderNotifications(final EntityRenderEvent EntityRenderEvent) {
 ////        if (this.isModuleEnable()) {
