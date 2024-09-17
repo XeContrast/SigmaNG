@@ -1,6 +1,6 @@
 package info.sigmaclient.sigma.sigma5.utils;
 
-public enum 핇댠䂷呓贞 {
+public enum ColorUtils {
     black(-16711423),
     酋䕦츚鱀䄟(-16723258),
     샱呓ぶ鷏붃(-15698006),
@@ -23,7 +23,7 @@ public enum 핇댠䂷呓贞 {
 
     public final int 哺卫콗鱀ಽ;
 
-    private 핇댠䂷呓贞(final int 哺卫콗鱀ಽ) {
+    private ColorUtils(final int 哺卫콗鱀ಽ) {
         this.哺卫콗鱀ಽ = 哺卫콗鱀ಽ;
     }
 }

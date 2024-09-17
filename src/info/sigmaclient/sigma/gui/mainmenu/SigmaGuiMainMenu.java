@@ -10,7 +10,6 @@ import info.sigmaclient.sigma.sigma5.utils.ConfigButton;
 import info.sigmaclient.sigma.sigma5.utils.Sigma5AnimationUtil;
 import info.sigmaclient.sigma.utils.UpdateLogs;
 import info.sigmaclient.sigma.utils.key.ClickUtils;
-import info.sigmaclient.sigma.utils.render.ColorUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager;
 import info.sigmaclient.sigma.utils.render.rendermanagers.ScaledResolution;
@@ -190,7 +189,7 @@ public class SigmaGuiMainMenu extends Screen {
 //                (float)䈔褕Ꮤ䎰ᔎ㢸,
 //                (float)괠꿩罡㢸쥅聛,
 //                뚔弻缰硙柿.竬픓贞곻핇,
-//                堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n)
+//                堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, n)
 //        );
 
         if(renderAlpha != 0) {
@@ -225,7 +224,7 @@ public class SigmaGuiMainMenu extends Screen {
             exitButtonBarWidth.switchToFrom(); // bar to 0
         }
 
-        JelloFontUtil.jelloFont20.drawString("Exit", 125 + offset1, 8 + 6 + 5 + 3 + renderYOffsets, ColorUtils.reAlpha(exitButtonColor.getColor(), exitButtonColor.getColor().getAlpha() / 255f * renderAlpha).getRGB());
+        JelloFontUtil.jelloFont20.drawString("Exit", 125 + offset1, 8 + 6 + 5 + 3 + renderYOffsets, info.sigmaclient.sigma.utils.render.ColorUtils.reAlpha(exitButtonColor.getColor(), exitButtonColor.getColor().getAlpha() / 255f * renderAlpha).getRGB());
 
         // draw bar under exit button
         float barWidth = exitButtonBarWidth.getValue();
@@ -245,7 +244,7 @@ public class SigmaGuiMainMenu extends Screen {
             changelogButtonBarWidth.switchToFrom(); // bar to 0
         }
 
-        JelloFontUtil.jelloFont20.drawString("Changelog", 155 + offset1, 8 + 6 + 5 + 3 + renderYOffsets, ColorUtils.reAlpha(changelogButtonColor.getColor(), changelogButtonColor.getColor().getAlpha() / 255f * renderAlpha).getRGB());
+        JelloFontUtil.jelloFont20.drawString("Changelog", 155 + offset1, 8 + 6 + 5 + 3 + renderYOffsets, info.sigmaclient.sigma.utils.render.ColorUtils.reAlpha(changelogButtonColor.getColor(), changelogButtonColor.getColor().getAlpha() / 255f * renderAlpha).getRGB());
         // draw bar under exit button
         barWidth = changelogButtonBarWidth.getValue();
         RenderUtils.drawRect(

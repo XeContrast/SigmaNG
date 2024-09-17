@@ -7,14 +7,14 @@ public class Renderer {
     @Getter
     private float deltaX;
     private RandomGenerator randomGenerator;
-    private timer timerInstance;
+    private Timer timerInstance;
     private long nextUpdate;
     private boolean updateRequired;
     private float targetDeltaX;
 
     public Renderer() {
         this.randomGenerator = new RandomGenerator();
-        this.timerInstance = new timer(this);
+        this.timerInstance = new Timer(this);
         this.updateRequired = false;
         this.targetDeltaX = -1.0f;
         this.timerInstance.start();

@@ -167,7 +167,7 @@ public class AutoLava extends Module {
             }
             reset();
         }else{
-//            mc.timer.setTimerSpeed(1f);
+//            mc.Timer.setTimerSpeed(1f);
         }
     }
 
@@ -177,7 +177,7 @@ public class AutoLava extends Module {
        
     }
     public static void reset(){
-//        mc.timer.setTimerSpeed(1f);
+//        mc.Timer.setTimerSpeed(1f);
         durationTicks = 0;
         delayTicks = 0;
         isStopping = false;
@@ -186,7 +186,7 @@ public class AutoLava extends Module {
     }
      @Override
     public void onDisable() {
-//        mc.timer.setTimerSpeed(1.0f);
+//        mc.Timer.setTimerSpeed(1.0f);
         super.onDisable();
     }
 

@@ -45,7 +45,7 @@ public class TimerRange extends Module {
 
 
     public TimerRange() {
-        super("TimerRange", Category.Combat, "Use timer help you to beat opponent.");
+        super("TimerRange", Category.Combat, "Use Timer help you to beat opponent.");
         this.registerValue(lagTicks = new NumberValue("Lag ticks", 2, 0, 10, NumberValue.NUMBER_TYPE.INT));
         this.registerValue(timerTicks = new NumberValue("Timer ticks", 2, 0, 10, NumberValue.NUMBER_TYPE.INT));
         this.registerValue(minRange = new NumberValue("Min range", 3.6, 0, 8, NumberValue.NUMBER_TYPE.FLOAT));

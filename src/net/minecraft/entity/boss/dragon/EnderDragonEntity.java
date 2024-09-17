@@ -623,7 +623,7 @@ public class EnderDragonEntity extends MobEntity implements IMob
     }
 
     /**
-     * handles entity death timer, experience orb and particle creation
+     * handles entity death Timer, experience orb and particle creation
      */
     protected void onDeathUpdate()
     {

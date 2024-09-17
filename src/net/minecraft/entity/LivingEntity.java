@@ -565,7 +565,7 @@ public abstract class LivingEntity extends Entity
     }
 
     /**
-     * If Animal, checks if the age timer is negative
+     * If Animal, checks if the age Timer is negative
      */
     public boolean isChild()
     {
@@ -588,7 +588,7 @@ public abstract class LivingEntity extends Entity
     }
 
     /**
-     * handles entity death timer, experience orb and particle creation
+     * handles entity death Timer, experience orb and particle creation
      */
     protected void onDeathUpdate()
     {

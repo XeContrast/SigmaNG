@@ -116,7 +116,7 @@ public class IngameGui extends AbstractGui
     private final PlayerTabOverlayGui overlayPlayerList;
     private final BossOverlayGui overlayBoss;
 
-    /** A timer for the current title and subtitle displayed */
+    /** A Timer for the current title and subtitle displayed */
     private int titlesTimer;
     @Nullable
 

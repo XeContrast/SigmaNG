@@ -32,7 +32,7 @@ public class AutoTimer extends PremiumModule {
     public static NumberValue multi = new NumberValue("Store Ticks", 40, 10, 100, NumberValue.NUMBER_TYPE.FLOAT);
     static BooleanValue killauraOnly = new BooleanValue("Killaura Only", true);
     public AutoTimer() {
-        super("AutoTimer", Category.Combat, "Auto timer (use matrix mode timer!)");
+        super("AutoTimer", Category.Combat, "Auto Timer (use matrix mode Timer!)");
      registerValue(range);
      registerValue(minRange);
      registerValue(delay);

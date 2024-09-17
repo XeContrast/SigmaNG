@@ -3,7 +3,7 @@ package info.sigmaclient.sigma.modules.render;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
 import info.sigmaclient.sigma.event.impl.render.RenderEvent;
 import info.sigmaclient.sigma.modules.Module;
-import info.sigmaclient.sigma.sigma5.utils.랾㔢酭콵䖼竬;
+import info.sigmaclient.sigma.sigma5.utils.Vector2fWrapper;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import info.sigmaclient.sigma.utils.render.rendermanagers.ScaledResolution;
 import net.minecraft.util.math.vector.Vector2f;
@@ -11,73 +11,73 @@ import net.minecraft.util.math.vector.Vector2f;
 import java.awt.*;
 
 import static info.sigmaclient.sigma.modules.Category.Render;
-import static info.sigmaclient.sigma.modules.render.NameTags.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.modules.render.NameTags.getColorFromNameTag;
 
 
 public class DVDSimulator extends Module {
-    private static String[] 묙䖼䖼홵츚;
-    public 랾㔢酭콵䖼竬 室鄡竁ᔎ펊;
-    public float 掬Ꮺ좯쟗髾;
-    public float 曞杭酋阢㦖;
-    public float 瀧硙쥡挐顸;
-    public float 鱀侃ಽ璧娍;
-    public Vector2f 鷏㐖哺퉧펊;
-    public int 婯㥇待曞躚;
+    private static String[] moduleNames;
+    public Vector2fWrapper positionWrapper;
+    public float posX;
+    public float posY;
+    public float velocityX;
+    public float velocityY;
+    public Vector2f dimensions;
+    public int color;
 
     public DVDSimulator() {
-        super(DVDSimulator.묙䖼䖼홵츚[0], Render, DVDSimulator.묙䖼䖼홵츚[1]);
-        this.室鄡竁ᔎ펊 = new 랾㔢酭콵䖼竬(1.0f, 1.0f);
-        this.曞杭酋阢㦖 = 0.0f;
-        this.瀧硙쥡挐顸 = 1.0f;
-        this.鱀侃ಽ璧娍 = 1.0f;
-        this.鷏㐖哺퉧펊 = new Vector2f(201 / 2f, 90 / 2f);
-        this.婯㥇待曞躚 = 0;
-        this.뵯聛ᙽ츚蚳();
+        super(DVDSimulator.moduleNames[0], Render, DVDSimulator.moduleNames[1]);
+        this.positionWrapper = new Vector2fWrapper(1.0f, 1.0f);
+        this.posY = 0.0f;
+        this.velocityX = 1.0f;
+        this.velocityY = 1.0f;
+        this.dimensions = new Vector2f(201 / 2f, 90 / 2f);
+        this.color = 0;
+        this.updateColor();
     }
 
     @Override
     public void onEnable() {
         ScaledResolution sr = new ScaledResolution(mc);
-        this.掬Ꮺ좯쟗髾 = (float) ((sr.getScaledWidth() - this.鷏㐖哺퉧펊.x) * Math.random());
-        this.曞杭酋阢㦖 = (float) ((sr.getScaledHeight() - this.鷏㐖哺퉧펊.y) * Math.random());
+        this.posX = (float) ((sr.getScaledWidth() - this.dimensions.x) * Math.random());
+        this.posY = (float) ((sr.getScaledHeight() - this.dimensions.y) * Math.random());
         super.onEnable();
     }
 
     @EventTarget
     public void onRenderEvent(RenderEvent event) {
         ScaledResolution sr = new ScaledResolution(mc);
-        final int 㥇觯騜Ꮤ嘖堍 = sr.getScaledHeight();
-        final int 䕦ꪕⰛ䁞ᢻ眓 = sr.getScaledWidth();
+        final int screenHeight = sr.getScaledHeight();
+        final int screenWidth = sr.getScaledWidth();
         final int n = 2;
-        if (this.曞杭酋阢㦖 > n) {
-            if (this.曞杭酋阢㦖 + this.鷏㐖哺퉧펊.y > 㥇觯騜Ꮤ嘖堍) {
-                this.鱀侃ಽ璧娍 = -1.0f;
-                this.뵯聛ᙽ츚蚳();
+        if (this.posY > n) {
+            if (this.posY + this.dimensions.y > screenHeight) {
+                this.velocityY = -1.0f;
+                this.updateColor();
             }
         } else {
-            this.鱀侃ಽ璧娍 = 1.0f;
-            this.뵯聛ᙽ츚蚳();
+            this.velocityY = 1.0f;
+            this.updateColor();
         }
-        if (this.掬Ꮺ좯쟗髾 > n) {
-            if (this.掬Ꮺ좯쟗髾 + this.鷏㐖哺퉧펊.x > 䕦ꪕⰛ䁞ᢻ眓) {
-                this.瀧硙쥡挐顸 = -1.0f;
-                this.뵯聛ᙽ츚蚳();
+        if (this.posX > n) {
+            if (this.posX + this.dimensions.x > screenWidth) {
+                this.velocityX = -1.0f;
+                this.updateColor();
             }
         } else {
-            this.瀧硙쥡挐顸 = 1.0f;
-            this.뵯聛ᙽ츚蚳();
+            this.velocityX = 1.0f;
+            this.updateColor();
         }
-        this.掬Ꮺ좯쟗髾 += this.瀧硙쥡挐顸 * n;
-        this.曞杭酋阢㦖 += this.鱀侃ಽ璧娍 * n;
-        RenderUtils.drawTextureLocationZoom(this.掬Ꮺ좯쟗髾, this.曞杭酋阢㦖, (float) this.鷏㐖哺퉧펊.x, (float) this.鷏㐖哺퉧펊.y, "dvd", new Color(霥瀳놣㠠釒(this.婯㥇待曞躚, 0.8f)));
+        this.posX += this.velocityX * n;
+        this.posY += this.velocityY * n;
+        RenderUtils.drawTextureLocationZoom(this.posX, this.posY, (float) this.dimensions.x, (float) this.dimensions.y, "dvd", new Color(getColorFromNameTag(this.color, 0.8f)));
         
     }
 
-    private void 뵯聛ᙽ츚蚳() {
-        this.婯㥇待曞躚 = Color.getHSBColor((float) Math.random(), 0.6f, 1.0f).getRGB();
+    private void updateColor() {
+        this.color = Color.getHSBColor((float) Math.random(), 0.6f, 1.0f).getRGB();
     }
 
     static {
-        DVDSimulator.묙䖼䖼홵츚 = new String[]{"DVD Simulator", "wtf"};
+        DVDSimulator.moduleNames = new String[]{"DVD Simulator", "wtf"};
     }
 }

@@ -6,10 +6,10 @@ import info.sigmaclient.sigma.config.alts.Alt;
 import info.sigmaclient.sigma.config.alts.AltConfig;
 import info.sigmaclient.sigma.gui.JelloTextField;
 import info.sigmaclient.sigma.gui.font.JelloFontUtil;
+import info.sigmaclient.sigma.sigma5.utils.ColorUtils;
 import info.sigmaclient.sigma.sigma5.utils.ConfigButton;
 import info.sigmaclient.sigma.sigma5.utils.Sigma5AnimationUtil;
 import info.sigmaclient.sigma.sigma5.utils.Sigma5BlurUtils;
-import info.sigmaclient.sigma.sigma5.utils.핇댠䂷呓贞;
 import info.sigmaclient.sigma.utils.alt.HCMLJsonParser;
 import info.sigmaclient.sigma.utils.key.ClickUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
@@ -282,7 +282,7 @@ public class JelloAltManager extends Screen {
             }
             float 竁藸뎫捉睬 = 15 - anim + anim * scale, 䩉湗鶲娍圭 = startY;
             int 댠哝娍酋瀳 = this.width, 㢸ꪕ䬾硙葫 = this.height;
-            int 쥡娍샱셴ᢻ = blendColors(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 핇댠䂷呓贞.black.哺卫콗鱀ಽ, 2.0f);
+            int 쥡娍샱셴ᢻ = blendColors(ColorUtils.white.哺卫콗鱀ಽ, ColorUtils.black.哺卫콗鱀ಽ, 2.0f);
             final int 鶲䩉缰啖錌杭 = scroll;
             final float max = Math.max(0, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭);
             final float max2 = Math.max(0, 㢸ꪕ䬾硙葫 + Math.min(100, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭 - max));
@@ -296,7 +296,7 @@ public class JelloAltManager extends Screen {
                 continue;
             }
             RenderUtils.drawRoundShadow(竁藸뎫捉睬, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height,
-                    applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n2));
+                    applyColor(ColorUtils.white.哺卫콗鱀ಽ, n2));
             JelloFontUtil.jelloFont24.drawNoBSString(alt.name, 竁藸뎫捉睬 + 55, n5 + 13, Color.BLACK.getRGB());
                 JelloFontUtil.jelloFont15.drawNoBSString("Username: " + alt.name, 竁藸뎫捉睬 + 55, n5 + 27.5f, -6710887);
                 JelloFontUtil.jelloFont15.drawNoBSString(alt.offline ? "Offline account" :  "Online account", 竁藸뎫捉睬 + 55, n5 + 35, -6710887);
@@ -332,7 +332,7 @@ public class JelloAltManager extends Screen {
 //                drawStat(n2);
 //                if (㝛韤䩜䎰ใ.getAnim() > 0.0f) {
 //                    if (max2 > 55) {
-//                        㕠鄡呓ᢻ낛.drawTextureSigma((float)(竁藸뎫捉睬 + 㦖缰뫤랾퉧()), n5 + 26 * max2 / 100.0f, 18.0f * 㝛韤䩜䎰ใ.getAnim() * max2 / 100.0f, 47 * max2 / 100.0f, 뚔弻缰硙柿.掬㐖햠쬫竬, 쥦嘖酭綋錌瀳() ? 쥡娍샱셴ᢻ : 핇댠䂷呓贞.white.哺卫콗鱀ಽ);
+//                        㕠鄡呓ᢻ낛.drawTextureSigma((float)(竁藸뎫捉睬 + 㦖缰뫤랾퉧()), n5 + 26 * max2 / 100.0f, 18.0f * 㝛韤䩜䎰ใ.getAnim() * max2 / 100.0f, 47 * max2 / 100.0f, 뚔弻缰硙柿.掬㐖햠쬫竬, 쥦嘖酭綋錌瀳() ? 쥡娍샱셴ᢻ : ColorUtils.white.哺卫콗鱀ಽ);
 //                    }
 //                }
             startY += height + 8;

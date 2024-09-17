@@ -167,7 +167,7 @@ public class HoglinEntity extends AnimalEntity implements IMob, IFlinging
     }
 
     /**
-     * This is called when Entity's growing age timer reaches 0 (negative values are considered as a child, positive as
+     * This is called when Entity's growing age Timer reaches 0 (negative values are considered as a child, positive as
      * an adult)
      */
     protected void onGrowingAdult()

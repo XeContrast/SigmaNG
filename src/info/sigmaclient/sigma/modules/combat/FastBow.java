@@ -64,7 +64,7 @@ public class FastBow extends Module {
                     }
                     mc.playerController.onStoppedUsingItem(mc.player);
                     break;
-                case "timer":
+                case "Timer":
                     mc.timer.setTimerSpeed(timer.getValue().floatValue());
                     use = true;
                     if(mc.player.getItemInUseCount() >= 72000){

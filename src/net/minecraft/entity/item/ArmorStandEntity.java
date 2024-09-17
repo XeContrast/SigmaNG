@@ -815,7 +815,7 @@ public class ArmorStandEntity extends LivingEntity
     }
 
     /**
-     * If Animal, checks if the age timer is negative
+     * If Animal, checks if the age Timer is negative
      */
     public boolean isChild()
     {

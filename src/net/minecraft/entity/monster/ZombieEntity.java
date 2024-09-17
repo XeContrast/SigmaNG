@@ -169,7 +169,7 @@ public class ZombieEntity extends MonsterEntity
     }
 
     /**
-     * If Animal, checks if the age timer is negative
+     * If Animal, checks if the age Timer is negative
      */
     public boolean isChild()
     {

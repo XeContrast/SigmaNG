@@ -46,7 +46,7 @@ public class TimerCallbackSerializers<C>
 
         if (serializer == null)
         {
-            LOGGER.error("Failed to deserialize timer callback: " + p_216341_1_);
+            LOGGER.error("Failed to deserialize Timer callback: " + p_216341_1_);
             return null;
         }
         else
@@ -57,7 +57,7 @@ public class TimerCallbackSerializers<C>
             }
             catch (Exception exception)
             {
-                LOGGER.error("Failed to deserialize timer callback: " + p_216341_1_, (Throwable)exception);
+                LOGGER.error("Failed to deserialize Timer callback: " + p_216341_1_, (Throwable)exception);
                 return null;
             }
         }

@@ -32,7 +32,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class NameTags extends Module {
     public ModeValue type = new ModeValue("Size", "Big", new String[]{"Big", "Small"});
-    int ꁈ陬Ꮀ啖䄟 = 霥瀳놣㠠釒(blendColors(-65794, -16711423, 75.0f), 0.5f);
+    int ꁈ陬Ꮀ啖䄟 = getColorFromNameTag(blendColors(-65794, -16711423, 75.0f), 0.5f);
     BooleanValue magnify = new BooleanValue("Magnify", true);
     BooleanValue linear = new BooleanValue("Linear", true);
     static BooleanValue player = new BooleanValue("Player", false);
@@ -84,7 +84,7 @@ public class NameTags extends Module {
         
     }
 
-    public static int 霥瀳놣㠠釒(final int n, final float n2) {
+    public static int getColorFromNameTag(final int n, final float n2) {
         return (int)(n2 * 255.0f) << 24 | (n & 0xFFFFFF);
     }
     public void renderNametags(Entity entity) {
@@ -137,7 +137,7 @@ public class NameTags extends Module {
 
             GL11.glScalef(-0.009f * scale, -0.009f * scale, -0.009f * scale);
                 int n8 = this.ꁈ陬Ꮀ啖䄟;
-                final int 霥瀳놣㠠釒 = 霥瀳놣㠠釒((entity instanceof PlayerEntity) ? new Color(entity.getTeamColor()).getRGB() : -65794, 0.5f);
+                final int 霥瀳놣㠠釒 = getColorFromNameTag((entity instanceof PlayerEntity) ? new Color(entity.getTeamColor()).getRGB() : -65794, 0.5f);
                 final int n9 = (int) (JelloFontUtil.jelloFont25.getStringWidthNoScale(걾掬鞞娍曞) / 2);
 //                if (!阢属酭ᢻ뼢.室螜鷏嘖䎰.containsKey(걾掬鞞娍曞)) {
                     RenderUtils.drawShadowWithAlpha((float)(-n9 - 10), -25.0f, (float)(n9 * 2 + 20), (float)(JelloFontUtil.jelloFont25.getHeightNoScale() + 27), 20.0f, 0.5f);

@@ -262,7 +262,7 @@ public class PiglinEntity extends AbstractPiglinEntity implements ICrossbowUser
     }
 
     /**
-     * If Animal, checks if the age timer is negative
+     * If Animal, checks if the age Timer is negative
      */
     public boolean isChild()
     {

@@ -7,9 +7,8 @@ import info.sigmaclient.sigma.gui.font.JelloFontUtil;
 import info.sigmaclient.sigma.gui.clickgui.musicplayer.MusicPlayer;
 import info.sigmaclient.sigma.sigma5.jellomusic.MusicUtils;
 import info.sigmaclient.sigma.sigma5.jellomusic.Player;
-import info.sigmaclient.sigma.sigma5.utils.핇댠䂷呓贞;
+import info.sigmaclient.sigma.sigma5.utils.ColorUtils;
 import info.sigmaclient.sigma.modules.gui.hide.ClickGUI;
-import info.sigmaclient.sigma.utils.render.ColorUtils;
 import info.sigmaclient.sigma.utils.render.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.sourceforge.jaad.aac.SampleBuffer;
@@ -158,17 +157,17 @@ public class JelloMusic {
       for (int index = 0; index < n; ++index) {
         final float n3 = 1.0f - (index + 1) / n;
         final float n4 = ((float)(Math.sqrt(this.spectrum.get(index)) / 12.0) - 5.0f) * (sr.getScaledHeight() / 1080.0f);
-        Color c = ColorUtils.interpolateColorsBackAndForth(16, index * 20,
+        Color c = info.sigmaclient.sigma.utils.render.ColorUtils.interpolateColorsBackAndForth(16, index * 20,
                 MusicPlayer.firstColor
                 ,MusicPlayer.secondColor
                 , false);
-//        핇댠䂷呓贞.揩ꁈ杭ใ蛊.哺卫콗鱀ಽ
+//        ColorUtils.揩ꁈ杭ใ蛊.哺卫콗鱀ಽ
         RenderUtils.drawRect(index * n2, sr.getScaledHeight() - n4, index * n2 + n2, sr.getScaledHeight(), applyColor(c.getRGB(), 0.7f));
       }
 //      startStencil();
 //      for (int index2 = 0; index2 < n; ++index2) {
 //        final float n5 = ((float)(Math.sqrt(this.spectrum.get(index2)) / 12.0) - 5.0f) * (sr.getScaledHeight() / 1080.0f);
-//        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, 핇댠䂷呓贞.white.哺卫콗鱀ಽ);
+//        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, ColorUtils.white.哺卫콗鱀ಽ);
 //      }
 //      applyStencilOperation(BoxOutlineESP.StencilOperation.drawRectangle);
 //      if (this.W蒕꿩待쇽 != null) {
@@ -208,17 +207,17 @@ public class JelloMusic {
     GL11.glPopMatrix();
 //      final String[] split = this.늦鱀햠㔢埙.split(ࡅ牰Ꮤ䆧卫.哝弻觯뎫霥[5]);
 //      if (split.length <= 1) {
-//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
-//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
+//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.4f));
+//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.5f));
 
-    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
-    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
+    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(ColorUtils.white.哺卫콗鱀ಽ, 0.7f));
+    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(ColorUtils.white.哺卫콗鱀ಽ, 0.6f));
 //      }
 //      else {
-//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
-//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
-//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
-//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
+//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.4f));
+//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.5f));
+//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, 0.7f));
+//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, 0.6f));
 //      }
   }
   /**

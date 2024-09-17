@@ -16,7 +16,7 @@ public class TopLeftParticle extends Particle {
     public void render(ParticleManager p, float alpha) {
         super.render(p, alpha);
 //        setSpeed(getSpeed() * 1.01f);
-//        setAlpha(Math.min(100, getAlpha() + mc.timer.renderPartialTicks * 5));
+//        setAlpha(Math.min(100, getAlpha() + mc.Timer.renderPartialTicks * 5));
         setSpeed(getSpeed() + RandomUtil.nextFloat(-0.05, 0.05));
 
         setPosY(getPosY() + getSpeed() * (2 + RandomUtil.nextFloat(0, 1)));

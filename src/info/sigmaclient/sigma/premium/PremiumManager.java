@@ -283,7 +283,7 @@ public class PremiumManager {
             PacketEvent event = (PacketEvent) e;
             if(event.packet instanceof SPlayerPositionLookPacket && mc.currentScreen == null){
                 mc.timer.setTimerSpeed(3);
-//                mc.timer.setTimerSpeed(1);
+//                mc.Timer.setTimerSpeed(1);
                 event.cancelable = true;
             }
         };
