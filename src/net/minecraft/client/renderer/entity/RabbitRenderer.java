@@ -8,8 +8,8 @@ import net.minecraft.util.text.TextFormatting;
 public class RabbitRenderer extends MobRenderer<RabbitEntity, RabbitModel<RabbitEntity>>
 {
     private static final ResourceLocation BROWN = new ResourceLocation("textures/entity/rabbit/brown.png");
-    private static final ResourceLocation WHITE = new ResourceLocation("textures/entity/rabbit/white.png");
-    private static final ResourceLocation BLACK = new ResourceLocation("textures/entity/rabbit/black.png");
+    private static final ResourceLocation WHITE = new ResourceLocation("textures/entity/rabbit/WHITE.png");
+    private static final ResourceLocation BLACK = new ResourceLocation("textures/entity/rabbit/BLACK.png");
     private static final ResourceLocation GOLD = new ResourceLocation("textures/entity/rabbit/gold.png");
     private static final ResourceLocation SALT = new ResourceLocation("textures/entity/rabbit/salt.png");
     private static final ResourceLocation WHITE_SPLOTCHED = new ResourceLocation("textures/entity/rabbit/white_splotched.png");

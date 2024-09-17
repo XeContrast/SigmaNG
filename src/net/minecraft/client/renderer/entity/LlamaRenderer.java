@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class LlamaRenderer extends MobRenderer<LlamaEntity, LlamaModel<LlamaEntity>>
 {
-    private static final ResourceLocation[] LLAMA_TEXTURES = new ResourceLocation[] {new ResourceLocation("textures/entity/llama/creamy.png"), new ResourceLocation("textures/entity/llama/white.png"), new ResourceLocation("textures/entity/llama/brown.png"), new ResourceLocation("textures/entity/llama/gray.png")};
+    private static final ResourceLocation[] LLAMA_TEXTURES = new ResourceLocation[] {new ResourceLocation("textures/entity/llama/creamy.png"), new ResourceLocation("textures/entity/llama/WHITE.png"), new ResourceLocation("textures/entity/llama/brown.png"), new ResourceLocation("textures/entity/llama/gray.png")};
 
     public LlamaRenderer(EntityRendererManager renderManagerIn)
     {

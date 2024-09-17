@@ -85,7 +85,7 @@ public class BossBarCommand
         })).then(Commands.literal("purple").executes((p_201391_0_) ->
         {
             return setColor(p_201391_0_.getSource(), getBossbar(p_201391_0_), BossInfo.Color.PURPLE);
-        })).then(Commands.literal("white").executes((p_201406_0_) ->
+        })).then(Commands.literal("WHITE").executes((p_201406_0_) ->
         {
             return setColor(p_201406_0_.getSource(), getBossbar(p_201406_0_), BossInfo.Color.WHITE);
         }))).then(Commands.literal("style").then(Commands.literal("progress").executes((p_201399_0_) ->

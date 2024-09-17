@@ -42,7 +42,7 @@ public class JelloAltManager extends Screen {
     boolean adding = false;
     boolean offlineInput = false;
     MicrosoftLoginHelper microsoftLoginHelper = null;
-    ConfigButton 쇼ኞ錌卒酋3;
+    ConfigButton addButton;
     Sigma5AnimationUtil addAnimation = new Sigma5AnimationUtil(400, 400);
     Sigma5AnimationUtil deleteAnimation = new Sigma5AnimationUtil(400, 400);
     JelloTextField jelloTextField;
@@ -78,13 +78,13 @@ public class JelloAltManager extends Screen {
                 select = alt;
             }
         }
-        쇼ኞ錌卒酋3 = new ConfigButton(
+        addButton = new ConfigButton(
                 width - 90 / 2, 11, 70 / 2, 30 / 2, "Add +",(n)->{
             add();
         }, JelloFontUtil.jelloFont25);
         adding = false;
         offlineInput = false;
-//        this.addButton(쇼ኞ錌卒酋3);
+//        this.addButton(addButton);
         super.initGui();
     }
     public void add(){
@@ -135,10 +135,10 @@ public class JelloAltManager extends Screen {
                 if (scale > 1.09f) {
                     scale = 1.18f - scale + 1;
                 }
-                float 竁藸뎫捉睬 = 15 - anim + anim * scale, 䩉湗鶲娍圭 = startY;
-                final int 鶲䩉缰啖錌杭 = scroll;
-                final float n5 = 䩉湗鶲娍圭 + 鶲䩉缰啖錌杭;
-                if(ClickUtils.isClickableWithRect(竁藸뎫捉睬, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height, mouseX, mouseY)){
+                float xPosition = 15 - anim + anim * scale, yPosition = startY;
+                final int scrollOffset = scroll;
+                final float n5 = yPosition + scrollOffset;
+                if(ClickUtils.isClickableWithRect(xPosition, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height, mouseX, mouseY)){
                     if(button == 0) {
                         if (select == alt) {
                             login(alt);
@@ -192,7 +192,7 @@ public class JelloAltManager extends Screen {
                 return true;
             }
         }
-        if(쇼ኞ錌卒酋3.mouseClicked(mouseX, mouseY, button)){
+        if(addButton.mouseClicked(mouseX, mouseY, button)){
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -228,7 +228,7 @@ public class JelloAltManager extends Screen {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         drawTexture(30 * 0.5, 41 * 0.5, 218 * 0.5, 35 * 0.5, "jelloaltmanager", 1);
 //        drawTexture(sr.getScaledWidth() - 67/2f - 22/2f,  50/2f, 67/2f, 19/2f, "add", 1);
-        쇼ኞ錌卒酋3.myRender(mouseX, mouseY, new Color(41, 166, 255), 1);
+        addButton.myRender(mouseX, mouseY, new Color(41, 166, 255), 1);
 
 
         float width = sr.getScaledWidth() / 17f * 10f;
@@ -280,59 +280,59 @@ public class JelloAltManager extends Screen {
             if(scale > 1.09f){
                 scale = 1.18f - scale + 1;
             }
-            float 竁藸뎫捉睬 = 15 - anim + anim * scale, 䩉湗鶲娍圭 = startY;
-            int 댠哝娍酋瀳 = this.width, 㢸ꪕ䬾硙葫 = this.height;
-            int 쥡娍샱셴ᢻ = blendColors(ColorUtils.white.哺卫콗鱀ಽ, ColorUtils.black.哺卫콗鱀ಽ, 2.0f);
-            final int 鶲䩉缰啖錌杭 = scroll;
-            final float max = Math.max(0, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭);
-            final float max2 = Math.max(0, 㢸ꪕ䬾硙葫 + Math.min(100, 䩉湗鶲娍圭 - 鶲䩉缰啖錌杭 - max));
+            float xPosition = 15 - anim + anim * scale, yPosition = startY;
+            int screenWidth = this.width, screenHeight = this.height;
+            int blendedColor = blendColors(ColorUtils.WHITE.ColorCode, ColorUtils.BLACK.ColorCode, 2.0f);
+            final int scrollOffset = scroll;
+            final float max = Math.max(0, yPosition - scrollOffset);
+            final float max2 = Math.max(0, screenHeight + Math.min(100, yPosition - scrollOffset - max));
             final float n2 = Math.min(50, max2) / 50.0f;
 
-            final float n5 = 䩉湗鶲娍圭 + 鶲䩉缰啖錌杭;
+            final float n5 = yPosition + scrollOffset;
             if(n5 < -sr.getScaledHeight() - 10) {startY += height + 8;
                 continue;
             }
             if(n5 > sr.getScaledHeight() + 10) {startY += height + 8;
                 continue;
             }
-            RenderUtils.drawRoundShadow(竁藸뎫捉睬, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height,
-                    applyColor(ColorUtils.white.哺卫콗鱀ಽ, n2));
-            JelloFontUtil.jelloFont24.drawNoBSString(alt.name, 竁藸뎫捉睬 + 55, n5 + 13, Color.BLACK.getRGB());
-                JelloFontUtil.jelloFont15.drawNoBSString("Username: " + alt.name, 竁藸뎫捉睬 + 55, n5 + 27.5f, -6710887);
-                JelloFontUtil.jelloFont15.drawNoBSString(alt.offline ? "Offline account" :  "Online account", 竁藸뎫捉睬 + 55, n5 + 35, -6710887);
-//            RenderUtils.牰蓳躚唟捉璧(竁藸뎫捉睬 + 6.5f + 37.5f / 2f,
+            RenderUtils.drawRoundShadow(xPosition, n5, sr.getScaledWidth() - width2 - 8 - 15 - 15, height,
+                    applyColor(ColorUtils.WHITE.ColorCode, n2));
+            JelloFontUtil.jelloFont24.drawNoBSString(alt.name, xPosition + 55, n5 + 13, Color.BLACK.getRGB());
+                JelloFontUtil.jelloFont15.drawNoBSString("Username: " + alt.name, xPosition + 55, n5 + 27.5f, -6710887);
+                JelloFontUtil.jelloFont15.drawNoBSString(alt.offline ? "Offline account" :  "Online account", xPosition + 55, n5 + 35, -6710887);
+//            RenderUtils.牰蓳躚唟捉璧(xPosition + 6.5f + 37.5f / 2f,
 //                    n5 + 6.5f + 37.5f / 2f,
 //                    76, new Color(150, 150, 150).getRGB());
 //            StencilUtil.initStencilToWrite();
-//            RenderUtils.牰蓳躚唟捉璧(竁藸뎫捉睬 + 6.5f + 37.5f / 2f,
+//            RenderUtils.牰蓳躚唟捉璧(xPosition + 6.5f + 37.5f / 2f,
 //                    n5 + 6.5f + 37.5f / 2f,
 //                    74, -1);
 //            StencilUtil.readStencilBuffer(1);
-            drawTextureLocationZoom(竁藸뎫捉睬 + 6.5f,
+            drawTextureLocationZoom(xPosition + 6.5f,
                     n5 + 6.5f,
                     37.5f,
                     37.5f, "alt/skin", -1); // 920 x 684
-            drawTextureLocationZoom(竁藸뎫捉睬 + 0.5f,
+            drawTextureLocationZoom(xPosition + 0.5f,
                     n5,
                     50,
                     50, "alt/cercle", -1); // 920 x 684
             alt.select.animTo((alt == select) ? Sigma5AnimationUtil.AnimState.ANIMING : Sigma5AnimationUtil.AnimState.SLEEPING);
             float a = alt.select.getAnim();
             if(a != 0)
-            drawTextureLocation(sr.getScaledWidth() - width2 - 8 - 15,
+                drawTextureLocation(sr.getScaledWidth() - width2 - 8 - 15,
                     n5 + 13f,
                     9 * Math.floor(a * 10) / 10,
                     46 / 2f, "alt/select", new Color(-1)); // 920 x 684
 
 //            StencilUtil.uninitStencilBuffer();
-//            㕠鄡呓ᢻ낛.퉧핇樽웨䈔属(竁藸뎫捉睬, n5, 竁藸뎫捉睬 + 댠哝娍酋瀳 + 20, n5 + max2, true);
+//            㕠鄡呓ᢻ낛.퉧핇樽웨䈔属(xPosition, n5, xPosition + screenWidth + 20, n5 + max2, true);
 //            if (值埙霥浣浦 != null) {
 //                drawHead();
 //                drawName();
 //                drawStat(n2);
 //                if (㝛韤䩜䎰ใ.getAnim() > 0.0f) {
 //                    if (max2 > 55) {
-//                        㕠鄡呓ᢻ낛.drawTextureSigma((float)(竁藸뎫捉睬 + 㦖缰뫤랾퉧()), n5 + 26 * max2 / 100.0f, 18.0f * 㝛韤䩜䎰ใ.getAnim() * max2 / 100.0f, 47 * max2 / 100.0f, 뚔弻缰硙柿.掬㐖햠쬫竬, 쥦嘖酭綋錌瀳() ? 쥡娍샱셴ᢻ : ColorUtils.white.哺卫콗鱀ಽ);
+//                        㕠鄡呓ᢻ낛.drawTextureSigma((float)(xPosition + 㦖缰뫤랾퉧()), n5 + 26 * max2 / 100.0f, 18.0f * 㝛韤䩜䎰ใ.getAnim() * max2 / 100.0f, 47 * max2 / 100.0f, 뚔弻缰硙柿.掬㐖햠쬫竬, 쥦嘖酭綋錌瀳() ? blendedColor : ColorUtils.WHITE.ColorCode);
 //                    }
 //                }
             startY += height + 8;

@@ -161,13 +161,13 @@ public class JelloMusic {
                 MusicPlayer.firstColor
                 ,MusicPlayer.secondColor
                 , false);
-//        ColorUtils.揩ꁈ杭ใ蛊.哺卫콗鱀ಽ
+//        ColorUtils.BLUE.ColorCode
         RenderUtils.drawRect(index * n2, sr.getScaledHeight() - n4, index * n2 + n2, sr.getScaledHeight(), applyColor(c.getRGB(), 0.7f));
       }
 //      startStencil();
 //      for (int index2 = 0; index2 < n; ++index2) {
 //        final float n5 = ((float)(Math.sqrt(this.spectrum.get(index2)) / 12.0) - 5.0f) * (sr.getScaledHeight() / 1080.0f);
-//        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, ColorUtils.white.哺卫콗鱀ಽ);
+//        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, ColorUtils.WHITE.ColorCode);
 //      }
 //      applyStencilOperation(BoxOutlineESP.StencilOperation.drawRectangle);
 //      if (this.W蒕꿩待쇽 != null) {
@@ -207,17 +207,17 @@ public class JelloMusic {
     GL11.glPopMatrix();
 //      final String[] split = this.늦鱀햠㔢埙.split(ࡅ牰Ꮤ䆧卫.哝弻觯뎫霥[5]);
 //      if (split.length <= 1) {
-//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.4f));
-//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.5f));
+//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyAlpha(ColorUtils.BLACK.ColorCode, 0.4f));
+//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyAlpha(ColorUtils.BLACK.ColorCode, 0.5f));
 
-    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(ColorUtils.white.哺卫콗鱀ಽ, 0.7f));
-    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(ColorUtils.white.哺卫콗鱀ಽ, 0.6f));
+    drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(ColorUtils.WHITE.ColorCode, 0.7f));
+    drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(ColorUtils.WHITE.ColorCode, 0.6f));
 //      }
 //      else {
-//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.4f));
-//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.black.哺卫콗鱀ಽ, 0.5f));
-//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, 0.7f));
-//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, 0.6f));
+//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.BLACK.ColorCode, 0.4f));
+//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.BLACK.ColorCode, 0.5f));
+//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.WHITE.ColorCode, 0.7f));
+//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.WHITE.ColorCode, 0.6f));
 //      }
   }
   /**
@@ -341,12 +341,12 @@ public class JelloMusic {
               final byte[] array3 = sampleBuffer.getData();
 //              System.out.println("Write buffer");
               playingSource.write(array3, 0, array3.length);
-              final float[] array4 = MusicUtils.䣓랾啖鄡䈔(sampleBuffer.getData(), format);
+              final float[] array4 = MusicUtils.convertBytesToFloatArray(sampleBuffer.getData(), format);
 //              for(float fa : array4) {
 //                System.out.println(array4.length);
 //              }
               final float[][] array5 = new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
-              spectrumData.add(musicUtils.㐖䆧쿨콵浦(array5[0], array5[1]));
+              spectrumData.add(musicUtils.calculatePoints(array5[0], array5[1]));
               if (spectrumData.size() > 18) {
                 spectrumData.remove(0);
               }

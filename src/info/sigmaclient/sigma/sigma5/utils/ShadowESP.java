@@ -151,7 +151,7 @@ public class ShadowESP {
     private void drawShadow() {
         preGlHints();
         mc.world.getLoadedEntityList().forEach((entity) -> {
-//            堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, 0.8f);
+//            堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.WHITE.ColorCode, 0.8f);
             if (!(!ESP.isTargetEnable(entity))) {
                 final double xCoordinate = getEntityRenderVector(entity).x;
                 final double yCoordinate = getEntityRenderVector(entity).y;

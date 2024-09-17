@@ -10,7 +10,7 @@ import net.minecraft.util.IStringSerializable;
 
 public enum DyeColor implements IStringSerializable
 {
-    WHITE(0, "white", 16383998, MaterialColor.SNOW, 15790320, 16777215),
+    WHITE(0, "WHITE", 16383998, MaterialColor.SNOW, 15790320, 16777215),
     ORANGE(1, "orange", 16351261, MaterialColor.ADOBE, 15435844, 16738335),
     MAGENTA(2, "magenta", 13061821, MaterialColor.MAGENTA, 12801229, 16711935),
     LIGHT_BLUE(3, "light_blue", 3847130, MaterialColor.LIGHT_BLUE, 6719955, 10141901),
@@ -25,7 +25,7 @@ public enum DyeColor implements IStringSerializable
     BROWN(12, "brown", 8606770, MaterialColor.BROWN, 5320730, 9127187),
     GREEN(13, "green", 6192150, MaterialColor.GREEN, 3887386, 65280),
     RED(14, "red", 11546150, MaterialColor.RED, 11743532, 16711680),
-    BLACK(15, "black", 1908001, MaterialColor.BLACK, 1973019, 0);
+    BLACK(15, "BLACK", 1908001, MaterialColor.BLACK, 1973019, 0);
 
     private static final DyeColor[] VALUES = Arrays.stream(values()).sorted(Comparator.comparingInt(DyeColor::getId)).toArray((p_199795_0_) -> {
         return new DyeColor[p_199795_0_];

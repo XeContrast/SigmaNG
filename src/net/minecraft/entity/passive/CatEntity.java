@@ -76,14 +76,14 @@ public class CatEntity extends TameableEntity
     public static final Map<Integer, ResourceLocation> TEXTURE_BY_ID = Util.make(Maps.newHashMap(), (p_213410_0_) ->
     {
         p_213410_0_.put(0, new ResourceLocation("textures/entity/cat/tabby.png"));
-        p_213410_0_.put(1, new ResourceLocation("textures/entity/cat/black.png"));
+        p_213410_0_.put(1, new ResourceLocation("textures/entity/cat/BLACK.png"));
         p_213410_0_.put(2, new ResourceLocation("textures/entity/cat/red.png"));
         p_213410_0_.put(3, new ResourceLocation("textures/entity/cat/siamese.png"));
         p_213410_0_.put(4, new ResourceLocation("textures/entity/cat/british_shorthair.png"));
         p_213410_0_.put(5, new ResourceLocation("textures/entity/cat/calico.png"));
         p_213410_0_.put(6, new ResourceLocation("textures/entity/cat/persian.png"));
         p_213410_0_.put(7, new ResourceLocation("textures/entity/cat/ragdoll.png"));
-        p_213410_0_.put(8, new ResourceLocation("textures/entity/cat/white.png"));
+        p_213410_0_.put(8, new ResourceLocation("textures/entity/cat/WHITE.png"));
         p_213410_0_.put(9, new ResourceLocation("textures/entity/cat/jellie.png"));
         p_213410_0_.put(10, new ResourceLocation("textures/entity/cat/all_black.png"));
     });

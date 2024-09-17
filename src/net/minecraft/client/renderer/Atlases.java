@@ -39,7 +39,7 @@ public class Atlases
     private static final RenderType ITEM_ENTITY_TRANSLUCENT_CULL_BLOCK_TYPE = RenderType.getItemEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
     private static final RenderType TRANSLUCENT_CULL_BLOCK_TYPE = RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
     public static final RenderMaterial DEFAULT_SHULKER_TEXTURE = new RenderMaterial(SHULKER_BOX_ATLAS, new ResourceLocation("entity/shulker/shulker"));
-    public static final List<RenderMaterial> SHULKER_TEXTURES = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black").map((shulkerColor) ->
+    public static final List<RenderMaterial> SHULKER_TEXTURES = Stream.of("WHITE", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "BLACK").map((shulkerColor) ->
     {
         return new RenderMaterial(SHULKER_BOX_ATLAS, new ResourceLocation("entity/shulker/shulker_" + shulkerColor));
     }).collect(ImmutableList.toImmutableList());

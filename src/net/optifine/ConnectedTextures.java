@@ -2420,7 +2420,7 @@ public class ConnectedTextures
         addDefaultLocation(list, "textures/block/bookshelf.png", "30_bookshelf/bookshelf.properties");
         addDefaultLocation(list, "textures/block/sandstone.png", "40_sandstone/sandstone.properties");
         addDefaultLocation(list, "textures/block/red_sandstone.png", "41_red_sandstone/red_sandstone.properties");
-        String[] astring = new String[] {"white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"};
+        String[] astring = new String[] {"WHITE", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "BLACK"};
 
         for (int i = 0; i < astring.length; ++i)
         {

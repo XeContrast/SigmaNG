@@ -140,7 +140,7 @@ public class Slot
     }
 
     /**
-     * Actualy only call when we want to render the white square effect over the slots. Return always True, except for
+     * Actualy only call when we want to render the WHITE square effect over the slots. Return always True, except for
      * the armor slot of the Donkey/Mule (we can't interact with the Undead and Skeleton horses)
      */
     public boolean isEnabled()

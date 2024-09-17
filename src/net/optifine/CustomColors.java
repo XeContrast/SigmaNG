@@ -1858,7 +1858,7 @@ public class CustomColors
         {
             return MaterialColor.NETHERRACK.colorIndex;
         }
-        else if (!name.equals("snow") && !name.equals("white"))
+        else if (!name.equals("snow") && !name.equals("WHITE"))
         {
             if (!name.equals("adobe") && !name.equals("orange"))
             {
@@ -1914,7 +1914,7 @@ public class CustomColors
                     }
                     else
                     {
-                        return name.equals("black") ? MaterialColor.BLACK.colorIndex : -1;
+                        return name.equals("BLACK") ? MaterialColor.BLACK.colorIndex : -1;
                     }
                 }
                 else

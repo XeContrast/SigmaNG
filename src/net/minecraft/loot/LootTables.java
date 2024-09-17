@@ -51,7 +51,7 @@ public class LootTables
     public static final ResourceLocation BASTION_BRIDGE = register("chests/bastion_bridge");
     public static final ResourceLocation BASTION_HOGLIN_STABLE = register("chests/bastion_hoglin_stable");
     public static final ResourceLocation RUINED_PORTAL = register("chests/ruined_portal");
-    public static final ResourceLocation ENTITIES_SHEEP_WHITE = register("entities/sheep/white");
+    public static final ResourceLocation ENTITIES_SHEEP_WHITE = register("entities/sheep/WHITE");
     public static final ResourceLocation ENTITIES_SHEEP_ORANGE = register("entities/sheep/orange");
     public static final ResourceLocation ENTITIES_SHEEP_MAGENTA = register("entities/sheep/magenta");
     public static final ResourceLocation ENTITIES_SHEEP_LIGHT_BLUE = register("entities/sheep/light_blue");
@@ -66,7 +66,7 @@ public class LootTables
     public static final ResourceLocation ENTITIES_SHEEP_BROWN = register("entities/sheep/brown");
     public static final ResourceLocation ENTITIES_SHEEP_GREEN = register("entities/sheep/green");
     public static final ResourceLocation ENTITIES_SHEEP_RED = register("entities/sheep/red");
-    public static final ResourceLocation ENTITIES_SHEEP_BLACK = register("entities/sheep/black");
+    public static final ResourceLocation ENTITIES_SHEEP_BLACK = register("entities/sheep/BLACK");
     public static final ResourceLocation GAMEPLAY_FISHING = register("gameplay/fishing");
     public static final ResourceLocation GAMEPLAY_FISHING_JUNK = register("gameplay/fishing/junk");
     public static final ResourceLocation GAMEPLAY_FISHING_TREASURE = register("gameplay/fishing/treasure");

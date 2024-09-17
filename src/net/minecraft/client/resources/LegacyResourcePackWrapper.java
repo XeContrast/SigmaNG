@@ -519,7 +519,7 @@ public class LegacyResourcePackWrapper implements IResourcePack
         biconsumer.accept("textures/entity/end_crystal/end_crystal_beam.png", "textures/entity/endercrystal/endercrystal_beam.png");
         biconsumer.accept("textures/entity/illager/evoker_fangs.png", "textures/entity/illager/fangs.png");
         biconsumer.accept("textures/entity/illager/illusioner.png", "textures/entity/illager/illusionist.png");
-        biconsumer.accept("textures/entity/llama/decor/black.png", "textures/entity/llama/decor/decor_black.png");
+        biconsumer.accept("textures/entity/llama/decor/BLACK.png", "textures/entity/llama/decor/decor_black.png");
         biconsumer.accept("textures/entity/llama/decor/blue.png", "textures/entity/llama/decor/decor_blue.png");
         biconsumer.accept("textures/entity/llama/decor/brown.png", "textures/entity/llama/decor/decor_brown.png");
         biconsumer.accept("textures/entity/llama/decor/cyan.png", "textures/entity/llama/decor/decor_cyan.png");
@@ -533,12 +533,12 @@ public class LegacyResourcePackWrapper implements IResourcePack
         biconsumer.accept("textures/entity/llama/decor/purple.png", "textures/entity/llama/decor/decor_purple.png");
         biconsumer.accept("textures/entity/llama/decor/red.png", "textures/entity/llama/decor/decor_red.png");
         biconsumer.accept("textures/entity/llama/decor/light_gray.png", "textures/entity/llama/decor/decor_silver.png");
-        biconsumer.accept("textures/entity/llama/decor/white.png", "textures/entity/llama/decor/decor_white.png");
+        biconsumer.accept("textures/entity/llama/decor/WHITE.png", "textures/entity/llama/decor/decor_white.png");
         biconsumer.accept("textures/entity/llama/decor/yellow.png", "textures/entity/llama/decor/decor_yellow.png");
         biconsumer.accept("textures/entity/llama/brown.png", "textures/entity/llama/llama_brown.png");
         biconsumer.accept("textures/entity/llama/creamy.png", "textures/entity/llama/llama_creamy.png");
         biconsumer.accept("textures/entity/llama/gray.png", "textures/entity/llama/llama_gray.png");
-        biconsumer.accept("textures/entity/llama/white.png", "textures/entity/llama/llama_white.png");
+        biconsumer.accept("textures/entity/llama/WHITE.png", "textures/entity/llama/llama_white.png");
         biconsumer.accept("textures/entity/shulker/shulker.png", "textures/entity/shulker/shulker_purple.png");
         biconsumer.accept("textures/entity/shulker/shulker_light_gray.png", "textures/entity/shulker/shulker_silver.png");
         biconsumer.accept("textures/entity/snow_golem.png", "textures/entity/snowman.png");

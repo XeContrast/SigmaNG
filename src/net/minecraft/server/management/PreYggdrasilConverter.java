@@ -32,7 +32,7 @@ public class PreYggdrasilConverter
     public static final File OLD_IPBAN_FILE = new File("banned-ips.txt");
     public static final File OLD_PLAYERBAN_FILE = new File("banned-players.txt");
     public static final File OLD_OPS_FILE = new File("ops.txt");
-    public static final File OLD_WHITELIST_FILE = new File("white-list.txt");
+    public static final File OLD_WHITELIST_FILE = new File("WHITE-list.txt");
 
     static List<String> readFile(File inFile, Map<String, String[]> read) throws IOException
     {

@@ -189,7 +189,7 @@ public class SigmaGuiMainMenu extends Screen {
 //                (float)䈔褕Ꮤ䎰ᔎ㢸,
 //                (float)괠꿩罡㢸쥅聛,
 //                뚔弻缰硙柿.竬픓贞곻핇,
-//                堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.white.哺卫콗鱀ಽ, n)
+//                堧鏟ᔎ㕠釒.applyAlpha(ColorUtils.WHITE.ColorCode, n)
 //        );
 
         if(renderAlpha != 0) {
@@ -217,7 +217,7 @@ public class SigmaGuiMainMenu extends Screen {
         }
 
         if (isMouseHoveringRect1(125F + offset1, (float) (8 + 6 + 5 + 3), (float) JelloFontUtil.jelloFont20.getStringWidth("Exit"), JelloFontUtil.jelloFont20.getHeight(), mouseX, mouseY)) {
-            exitButtonColor.switchToTo(); // color to white
+            exitButtonColor.switchToTo(); // color to WHITE
             exitButtonBarWidth.switchToTo(); // bar to full
         } else {
             exitButtonColor.switchToFrom(); // color to grayed
@@ -237,7 +237,7 @@ public class SigmaGuiMainMenu extends Screen {
         );
 
         if (isMouseHoveringRect1(155F + offset1, (float) (8 + 6 + 5 + 3), (float) JelloFontUtil.jelloFont20.getStringWidth("Changelog"), JelloFontUtil.jelloFont20.getHeight(), mouseX, mouseY)) {
-            changelogButtonColor.switchToTo(); // color to white
+            changelogButtonColor.switchToTo(); // color to WHITE
             changelogButtonBarWidth.switchToTo(); // bar to full
         } else {
             changelogButtonColor.switchToFrom(); // color to grayed

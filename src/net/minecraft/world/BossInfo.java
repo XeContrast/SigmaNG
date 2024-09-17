@@ -110,7 +110,7 @@ public abstract class BossInfo
         GREEN("green", TextFormatting.GREEN),
         YELLOW("yellow", TextFormatting.YELLOW),
         PURPLE("purple", TextFormatting.DARK_BLUE),
-        WHITE("white", TextFormatting.WHITE);
+        WHITE("WHITE", TextFormatting.WHITE);
 
         private final String name;
         private final TextFormatting formatting;

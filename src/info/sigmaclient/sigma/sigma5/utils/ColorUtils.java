@@ -1,30 +1,30 @@
 package info.sigmaclient.sigma.sigma5.utils;
 
 public enum ColorUtils {
-    black(-16711423),
-    酋䕦츚鱀䄟(-16723258),
-    샱呓ぶ鷏붃(-15698006),
-    콗敤唟곻玑(-9581017),
-    䴂殢阢柿ᔎ(-11231458),
-    white(-65794),
-    敤䕦嘖璧㱙(-14163205),
-    綋ᔎ鷏璧핇(-16548724),
-    揩ꁈ杭ใ蛊(-6710887),
-    䎰ၝ眓W啖(-12303292),
-    걾㐈敤뎫罡(-43691),
-    硙샱좯欫ᙽ(-7864320),
-    洝阢鶲竁뵯(-21931),
-    䕦疂頉쿨硙(-7846912),
-    ใ樽㻣哺璧(-171),
-    岋骰牰늦䩉(-7829504),
-    韤뫤敤塱哝(-43521),
-    㠠捉䖼䩜퉧(-7864184),
-    㹔骰啖韤鼒(-16724271);
+    BLACK(-16711423),
+    DARK_BLUE(-16723258),
+    DARK_GREEN(-15698006),
+    DARK_AQUA(-9581017),
+    DARK_RED(-11231458),
+    WHITE(-65794),
+    GRAY(-14163205),
+    DARK_GRAY(-16548724),
+    BLUE(-6710887),
+    GREEN(-12303292),
+    AQUA(-43691),
+    RED(-7864320),
+    LIGHT_PURPLE(-21931),
+    YELLOW(-7846912),
+    LIGHT_BLUE(-171),
+    LIGHT_GREEN(-7829504),
+    LIGHT_AQUA(-43521),
+    LIGHT_RED(-7864184),
+    LIGHT_GRAY(-16724271);
 
-    public final int 哺卫콗鱀ಽ;
+    public final int ColorCode;
 
-    private ColorUtils(final int 哺卫콗鱀ಽ) {
-        this.哺卫콗鱀ಽ = 哺卫콗鱀ಽ;
+    private ColorUtils(final int ColorCode) {
+        this.ColorCode = ColorCode;
     }
 }
     

@@ -36,8 +36,8 @@ public class GuiConfigScreen extends Screen {
         꿩螜ᢻ璧呓 = new Sigma5AnimationUtil(300, 100);
         final int max = Math.max((int)(this.height * 0.8f), 420);
         final int n2 = (int)(this.width * 0.9f);
-        竁藸뎫捉睬 = 0;
-        䩉湗鶲娍圭 = this.height - max;
+        xPosition = 0;
+        yPosition = this.height - max;
         int n4 = width;
         int n5 = max;
 //        鼒鄡嘖ꁈ柿 鼒鄡嘖ꁈ柿2 = 鼒鄡嘖ꁈ柿.待曞缰粤퉧.ಽ㢸ኞ韤햠鱀();
@@ -67,8 +67,8 @@ public class GuiConfigScreen extends Screen {
         this.addButton(蚳㝛卒顸埙3);
         super.init();
     }
-    int 䩉湗鶲娍圭 = 0;
-    int 竁藸뎫捉睬 = 0;
+    int yPosition = 0;
+    int xPosition = 0;
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();
@@ -87,19 +87,19 @@ public class GuiConfigScreen extends Screen {
             GlStateManager.translate(-sr.getScaledWidth() / 2.0, -sr.getScaledHeight() / 2.0, 0);
         }
         float n = 1;
-        this.卫ꪕ岋㹔卒((width - 202) / 2, this.䩉湗鶲娍圭 + 20, n);
+        this.卫ꪕ岋㹔卒((width - 202) / 2, this.yPosition + 20, n);
         final StringBuilder append = new StringBuilder().append("You're currently using Sigma ");
 //        SigmaMain.鼒釒쇽Ꮤ鶊();
         final String string = append.append(SigmaNG.getClientVersion()).toString();
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(this.竁藸뎫捉睬 + (width - JelloFontUtil.jelloFont20.getStringWidth(string)) / 2), (float)(this.䩉湗鶲娍圭 + 56), string, applyColor(-65794, 0.4f * n));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(this.xPosition + (width - JelloFontUtil.jelloFont20.getStringWidth(string)) / 2), (float)(this.yPosition + 56), string, applyColor(-65794, 0.4f * n));
         final String string2 = "Click GUI is currently bound to: " + InputMappings.getInputByCode(SigmaNG.getSigmaNG().moduleManager.getModule(ClickGUI.class).key).replace("key.keyboard.", "").toUpperCase() + " Key";
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(竁藸뎫捉睬 + (width - JelloFontUtil.jelloFont20.getStringWidth(string2)) / 2), (float)(height - 187), string2, applyColor(-65794, 0.6f * n));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(xPosition + (width - JelloFontUtil.jelloFont20.getStringWidth(string2)) / 2), (float)(height - 187), string2, applyColor(-65794, 0.6f * n));
         final String s = "Configure all your keybinds in the keybind manager!";
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(竁藸뎫捉睬 + (width - JelloFontUtil.jelloFont14.getStringWidth(s)) / 2), (float)(height - 187 + 15), s, applyColor(-65794, 0.4f * n));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont14, (float)(xPosition + (width - JelloFontUtil.jelloFont14.getStringWidth(s)) / 2), (float)(height - 187 + 15), s, applyColor(-65794, 0.4f * n));
         final String s2 = "GUI Blur: ";
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(竁藸뎫捉睬 + (width - JelloFontUtil.jelloFont20.getStringWidth(s2)) / 2 - 114)+55, (float)(height - 221 + 13), s2, applyColor(-65794, 0.5f * n));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(xPosition + (width - JelloFontUtil.jelloFont20.getStringWidth(s2)) / 2 - 114)+55, (float)(height - 221 + 13), s2, applyColor(-65794, 0.5f * n));
         final String s3 = "GPU Accelerated: ";
-        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(竁藸뎫捉睬 + (width - JelloFontUtil.jelloFont20.getStringWidth(s3)) / 2 + 52)-23, (float)(height - 221 + 13), s3, applyColor(-65794, 0.5f * n));
+        Sigma5DrawText.drawString(JelloFontUtil.jelloFont20, (float)(xPosition + (width - JelloFontUtil.jelloFont20.getStringWidth(s3)) / 2 + 52)-23, (float)(height - 221 + 13), s3, applyColor(-65794, 0.5f * n));
 
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         GL11.glPopMatrix();

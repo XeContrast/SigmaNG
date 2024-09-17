@@ -135,7 +135,7 @@ public class DedicatedPlayerList extends PlayerList
         }
         catch (Exception exception)
         {
-            LOGGER.warn("Failed to load white-list: ", (Throwable)exception);
+            LOGGER.warn("Failed to load WHITE-list: ", (Throwable)exception);
         }
     }
 
@@ -147,7 +147,7 @@ public class DedicatedPlayerList extends PlayerList
         }
         catch (Exception exception)
         {
-            LOGGER.warn("Failed to save white-list: ", (Throwable)exception);
+            LOGGER.warn("Failed to save WHITE-list: ", (Throwable)exception);
         }
     }
 

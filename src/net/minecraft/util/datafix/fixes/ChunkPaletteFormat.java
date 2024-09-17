@@ -99,7 +99,7 @@ public class ChunkPaletteFormat extends DataFix
     });
     private static final Int2ObjectMap<String> DYE_COLOR_MAP = DataFixUtils.make(new Int2ObjectOpenHashMap<>(), (p_209296_0_) ->
     {
-        p_209296_0_.put(0, "white");
+        p_209296_0_.put(0, "WHITE");
         p_209296_0_.put(1, "orange");
         p_209296_0_.put(2, "magenta");
         p_209296_0_.put(3, "light_blue");
@@ -114,7 +114,7 @@ public class ChunkPaletteFormat extends DataFix
         p_209296_0_.put(12, "brown");
         p_209296_0_.put(13, "green");
         p_209296_0_.put(14, "red");
-        p_209296_0_.put(15, "black");
+        p_209296_0_.put(15, "BLACK");
     });
     private static final Map < String, Dynamic<? >> BED_BLOCK_MAP = DataFixUtils.make(Maps.newHashMap(), (p_209304_0_) ->
     {
@@ -130,7 +130,7 @@ public class ChunkPaletteFormat extends DataFix
     {
         for (Entry<String> entry : DYE_COLOR_MAP.int2ObjectEntrySet())
         {
-            if (!Objects.equals(entry.getValue(), "white"))
+            if (!Objects.equals(entry.getValue(), "WHITE"))
             {
                 addBanners(p_209299_0_, 15 - entry.getIntKey(), entry.getValue());
             }

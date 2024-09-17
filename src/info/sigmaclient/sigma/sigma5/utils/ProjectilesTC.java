@@ -1,7 +1,6 @@
 package info.sigmaclient.sigma.sigma5.utils;
 
-//ProjectilesTC——————>Projectile Trajectory Calculation
-
+// ProjectilesTC——————>Projectile Trajectory Calculation
 public class ProjectilesTC {
     private static String[] trajectoryData;
     public float velocityX;
