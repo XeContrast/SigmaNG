@@ -316,7 +316,7 @@ public class ClientPlayNetHandler implements IClientPlayNetHandler
      * The NetworkManager instance used to communicate with the server, used to respond to various packets (primarilly
      * movement and plugin channel related ones) and check the status of the network connection externally
      */
-    private final NetworkManager netManager;
+    public final NetworkManager netManager;
     private final GameProfile profile;
 
     /**

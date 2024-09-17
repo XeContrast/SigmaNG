@@ -272,6 +272,7 @@ public class Killaura extends Module {
     @Override
     public void onDisable() {
         if (blocking) {
+            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
             mc.gameSettings.keyBindUseItem.pressed = true;
             blocking = false;
         }
@@ -400,9 +401,14 @@ public class Killaura extends Module {
 
     @EventTarget
     private void onSlowDown(SlowDownEvent event) {
-        if (blocking && (!autoblockMode.is("None") || !autoblockMode.is("Fake") && SigmaNG.SigmaNG.moduleManager.getModule(NoSlow.class).enabled)) {
-            event.forward = 0.4f;
-            event.strafe = 0.4f;
+        if (blocking && (!autoblockMode.is("None") || !autoblockMode.is("Fake") && canBlock())) {
+            if (SigmaNG.SigmaNG.moduleManager.getModule(NoSlow.class).enabled) {
+                event.forward = NoSlow.forward.getValue().floatValue();
+                event.strafe = NoSlow.strafe.getValue().floatValue();
+            } else {
+                event.forward = 0.2f;
+                event.strafe = 0.2f;
+            }
         }
     }
 
@@ -638,10 +644,11 @@ public class Killaura extends Module {
 
         if (!targets.isEmpty()) {
             switch (autoblockMode.getValue()) {
-                case "None", "Fake" -> {
-                }
+                case "None","Fake" -> {}
                 default -> {
-                    if (packet instanceof CPlayerDiggingPacket) event.setCancelled();
+                    if (blockTime < 5 && blockTime > 0) {
+                        if (packet instanceof CPlayerDiggingPacket) event.setCancelled();
+                    }
                 }
             }
         }
@@ -932,19 +939,23 @@ public class Killaura extends Module {
     }
     @Native
     public void block(){
-        if (!blocking) {
-            switch (autoblockMode.getValue()) {
-                case "None" -> {}
-                case "Fake" -> blocking = true;
-                default -> {
-                    if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem) {
-                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
-                    } else if (mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem) {
-                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
-                    } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
-                        Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+        if (canBlock()) {
+            if (!blocking) {
+                switch (autoblockMode.getValue()) {
+                    case "None" -> {
                     }
-                    blocking = true;
+                    case "Fake" -> blocking = true;
+                    default -> {
+                        if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShieldItem) {
+                            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                        } else if (mc.player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ShieldItem) {
+                            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.OFF_HAND));
+                        } else if (mc.player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof SwordItem) {
+                            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerTryUseItemPacket(Hand.MAIN_HAND));
+                        }
+                        blockTime++;
+                        blocking = true;
+                    }
                 }
             }
         }
@@ -959,6 +970,7 @@ public class Killaura extends Module {
                 default -> {
                     Objects.requireNonNull(mc.getConnection()).sendPacket(new CPlayerDiggingPacket(CPlayerDiggingPacket.Action.RELEASE_USE_ITEM, BlockPos.ZERO, Direction.DOWN));
                     blocking = false;
+                    blockTime = 0;
                 }
             }
         }
