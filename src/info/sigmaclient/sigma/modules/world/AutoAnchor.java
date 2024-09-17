@@ -43,7 +43,7 @@ import java.util.*;
 
 import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.drawOutlinedBox;
 import static info.sigmaclient.sigma.utils.player.RotationUtils.scaffoldRots;
-import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.utils.render.RenderUtils.applyAlpha;
 import static net.minecraft.world.Explosion.getBlockDensity;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
@@ -407,7 +407,7 @@ public class AutoAnchor extends Module {
             final double z = n3 - camZ;
             drawOutlinedBox(new AxisAlignedBB(
                     x,y,z,x+1,y+1,z+1
-            ), 霥瀳놣㠠釒(-16723258, 0.2f));
+            ), applyAlpha(-16723258, 0.2f));
             GL11.glEnable(GL_DEPTH_TEST);
             GL11.glDepthMask(true);
 //            RenderUtils.drawCircle(lastPos, new Color(-1));

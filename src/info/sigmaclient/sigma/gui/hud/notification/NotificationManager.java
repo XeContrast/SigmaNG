@@ -93,7 +93,7 @@ public class NotificationManager {
 				final int rgb = new Color(0.14f, 0.14f, 0.14f, min * 0.93f).getRGB();
 				final int rgb2 = new Color(0.0f, 0.0f, 0.0f, Math.min(殢㹔콵㨳 * 0.075f, 1.0f)).getRGB();
 				final int rgb3 = new Color(1.0f, 1.0f, 1.0f, min).getRGB();
-				RenderUtils.sigma_drawShadow((float)n2, (float)n3, (float)䡸㐖퉧붛韤, (float)쇽뫤쿨曞值, 10.0f, min);
+				RenderUtils.drawShadowWithAlpha((float)n2, (float)n3, (float)䡸㐖퉧붛韤, (float)쇽뫤쿨曞值, 10.0f, min);
 				RenderUtils.drawRect((float)n2, (float)n3, (float)(n2 + 䡸㐖퉧붛韤), (float)(n3 + 쇽뫤쿨曞值), rgb);
 				RenderUtils.drawRect((float)n2, (float)n3, (float)(n2 + 䡸㐖퉧붛韤), (float)(n3 + 1), rgb2);
 				RenderUtils.drawRect((float)n2, (float)(n3 + 쇽뫤쿨曞值 - 1), (float)(n2 + 䡸㐖퉧붛韤), (float)(n3 + 쇽뫤쿨曞值), rgb2);

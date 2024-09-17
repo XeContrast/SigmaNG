@@ -140,11 +140,11 @@ public class NameTags extends Module {
                 final int 霥瀳놣㠠釒 = 霥瀳놣㠠釒((entity instanceof PlayerEntity) ? new Color(entity.getTeamColor()).getRGB() : -65794, 0.5f);
                 final int n9 = (int) (JelloFontUtil.jelloFont25.getStringWidthNoScale(걾掬鞞娍曞) / 2);
 //                if (!阢属酭ᢻ뼢.室螜鷏嘖䎰.containsKey(걾掬鞞娍曞)) {
-                    RenderUtils.sigma_drawShadow((float)(-n9 - 10), -25.0f, (float)(n9 * 2 + 20), (float)(JelloFontUtil.jelloFont25.getHeightNoScale() + 27), 20.0f, 0.5f);
+                    RenderUtils.drawShadowWithAlpha((float)(-n9 - 10), -25.0f, (float)(n9 * 2 + 20), (float)(JelloFontUtil.jelloFont25.getHeightNoScale() + 27), 20.0f, 0.5f);
 //                }
 //                else {
-//                    㕠鄡呓ᢻ낛.㹔펊콵湗贞聛((float)(-n9 - 10 - 31), -25.0f, (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), 阢属酭ᢻ뼢.室螜鷏嘖䎰.get(걾掬鞞娍曞), 霥瀳놣㠠釒(Color.getHSBColor(System.currentTimeMillis() % 10000L / 10000.0f, 0.5f, 1.0f).getRGB(), 0.7f));
-//                    㕠鄡呓ᢻ낛.㹔펊콵湗贞聛((float)(-n9 - 10 - 31 + JelloFontUtil.jelloFont25.getHeightSigma5() + 27), -25.0f, 14.0f, (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), 뚔弻缰硙柿.室唟钘觯곻, 霥瀳놣㠠釒(-65794, 0.6f));
+//                    㕠鄡呓ᢻ낛.㹔펊콵湗贞聛((float)(-n9 - 10 - 31), -25.0f, (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), 阢属酭ᢻ뼢.室螜鷏嘖䎰.get(걾掬鞞娍曞), applyAlpha(Color.getHSBColor(System.currentTimeMillis() % 10000L / 10000.0f, 0.5f, 1.0f).getRGB(), 0.7f));
+//                    㕠鄡呓ᢻ낛.㹔펊콵湗贞聛((float)(-n9 - 10 - 31 + JelloFontUtil.jelloFont25.getHeightSigma5() + 27), -25.0f, 14.0f, (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), 뚔弻缰硙柿.室唟钘觯곻, applyAlpha(-65794, 0.6f));
 //                    㕠鄡呓ᢻ낛.drawShadow1((float)(-n9 - 10 - 31), -25.0f, (float)(n9 * 2 + 20 + 31 + 27), (float)(JelloFontUtil.jelloFont25.getHeightSigma5() + 27), 20.0f, 0.5f);
 //                    GL11.glTranslatef(27.0f, 0.0f, 0.0f);
 //                }

@@ -76,7 +76,7 @@ public class ModeButton extends Button {
         int size = value.values.length;
         float width = 14;
         if(downAnim.getValue() != 0) {
-            RenderUtils.sigma_drawShadow(endX - 10 - 2 - 40 - 6 - 3,
+            RenderUtils.drawShadowWithAlpha(endX - 10 - 2 - 40 - 6 - 3,
                     y + 2 - 1,
                     endX - 10 - 2 + 7 + 3 - (endX - 10 - 2 - 40 - 6 - 3),
                     y + 14 + perc * (size) * width + 1 - (y + 2 - 1),5

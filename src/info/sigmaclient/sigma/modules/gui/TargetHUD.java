@@ -173,7 +173,7 @@ public class TargetHUD extends RenderModule
                 GlStateManager.translate(x, y + height / 2.0, 0.0);
                 GlStateManager.scale(scale, scale, 1.0);
                 GlStateManager.translate(-x, -(y + height / 2.0), 0.0);
-                RenderUtils.sigma_drawShadow((float)(x - width), (float)y, (float)(width * 2.0), (float)height, 7.0f, 0.5f);
+                RenderUtils.drawShadowWithAlpha((float)(x - width), (float)y, (float)(width * 2.0), (float)height, 7.0f, 0.5f);
                 if (Shader.isEnable()) {
                     StencilUtil.initStencilToWrite();
                     RenderUtils.drawRect((float)(x - width), (float)y, (float)(x - width) + (float)width * 2.0f, (float)y + height, new Color(255, 255, 255, (int)(255.0 * alpha)).getRGB());

@@ -93,7 +93,7 @@ public class TabGUI extends Module {
         }else{
             drawGradientRect(5.0, 45 + 5 - 0.5f, 5 + 75, 45 + 77 + 5,(new Color(tR, tG, tB, 255)).getRGB(), (new Color(bR, bG, bB, 255)).getRGB());
         }
-        RenderUtils.sigma_drawShadow(5F, 45F + 5 - 0.5f, 75f, 77, 4f, 1f);
+        RenderUtils.drawShadowWithAlpha(5F, 45F + 5 - 0.5f, 75f, 77, 4f, 1f);
         onRender(enableBlur);
     }
     public static float smoothTrans(double current, double last){

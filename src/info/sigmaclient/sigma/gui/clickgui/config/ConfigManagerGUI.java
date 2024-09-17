@@ -21,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static info.sigmaclient.sigma.minimap.minimap.Minimap.mc;
 import static info.sigmaclient.sigma.sigma5.utils.SomeAnim.interpolate;
-import static info.sigmaclient.sigma.utils.render.RenderUtils.霥瀳놣㠠釒;
+import static info.sigmaclient.sigma.utils.render.RenderUtils.applyAlpha;
 
 
 public class ConfigManagerGUI {
@@ -88,8 +88,8 @@ public class ConfigManagerGUI {
                 GlStateManager.translate(-sr.getScaledWidth(), -sr.getScaledHeight(), 0);
             }
             RenderUtils.drawRoundShadow(sx - 125, sy - 250, 125, 250, new Color(244, 244, 244, (int) (myAlpha * 255)).getRGB());
-            JelloFontUtil.jelloFont25.drawNoBSString("Profiles", sx - 125 + 12.5f, sy - 250 + 12.5f, 霥瀳놣㠠釒(-16711423, 0.8f * myAlpha));
-            RenderUtils.drawRect(sx - 125 + 12.5f, sy - 250 + 30 + 5, sx - 12.5f, sy - 250 + 30 + 5.5f, 霥瀳놣㠠釒(-16711423, 0.05f * myAlpha));
+            JelloFontUtil.jelloFont25.drawNoBSString("Profiles", sx - 125 + 12.5f, sy - 250 + 12.5f, applyAlpha(-16711423, 0.8f * myAlpha));
+            RenderUtils.drawRect(sx - 125 + 12.5f, sy - 250 + 30 + 5, sx - 12.5f, sy - 250 + 30 + 5.5f, applyAlpha(-16711423, 0.05f * myAlpha));
             float cy = sy - 250 + 30 + 5.5f + 5 - scroll;
 
             float n3 = 0.9f + (1.0f - interpolate(addProfile.getAnim(), 0.0, 0.96, 0.69, 0.99)) * 0.1f;
@@ -128,19 +128,19 @@ public class ConfigManagerGUI {
                 float s8 = sx - 12.5f + 7f + offsetX;
                 boolean hh2 = ClickUtils.isClickable(s8, cy, s8 + 50, cy + 35, x, y);
                 boolean hh3 = ClickUtils.isClickable(s8 + 50, cy, s8 + 100, cy + 35, x, y);
-                RenderUtils.drawRect(s8, cy, s8 + 50, cy + 35, 霥瀳놣㠠釒(hh2 ? new Color(71,108,181).getRGB() : new Color(82,125,212).getRGB(), myAlpha));
-                RenderUtils.drawRect(s8 + 50, cy, s8 + 100, cy + 35, 霥瀳놣㠠釒(hh3 ? new Color(184,69,69).getRGB() : new Color(206,85,85).getRGB(), myAlpha));
+                RenderUtils.drawRect(s8, cy, s8 + 50, cy + 35, applyAlpha(hh2 ? new Color(71,108,181).getRGB() : new Color(82,125,212).getRGB(), myAlpha));
+                RenderUtils.drawRect(s8 + 50, cy, s8 + 100, cy + 35, applyAlpha(hh3 ? new Color(184,69,69).getRGB() : new Color(206,85,85).getRGB(), myAlpha));
                 JelloFontUtil.jelloFont20.drawNoBSString("Rename", s8 + 7, cy + 14, -1);
                 JelloFontUtil.jelloFont20.drawNoBSString("Delete", s8 + 10 + 50, cy + 14, -1);
-                RenderUtils.drawRect(sx - 125 + 12.5f - 7f + offsetX, cy, sx - 12.5f + 7f + offsetX, cy + 35, 霥瀳놣㠠釒(-16711423, 0.03f * config.alpha * myAlpha));
+                RenderUtils.drawRect(sx - 125 + 12.5f - 7f + offsetX, cy, sx - 12.5f + 7f + offsetX, cy + 35, applyAlpha(-16711423, 0.03f * config.alpha * myAlpha));
                 if (n3 == 1) {
-                    JelloFontUtil.jelloFont24.drawNoBSString(config.name, sx - 125 + 12.5f - 3f + 6 + offsetX, cy + 12, 霥瀳놣㠠釒(-16711423, 0.8f * myAlpha));
+                    JelloFontUtil.jelloFont24.drawNoBSString(config.name, sx - 125 + 12.5f - 3f + 6 + offsetX, cy + 12, applyAlpha(-16711423, 0.8f * myAlpha));
                 } else {
-                    JelloFontUtil.jelloFont24.drawSmoothString(config.name, sx - 125 + 12.5f - 3f + 6 + offsetX, cy + 12, 霥瀳놣㠠釒(-16711423, 0.8f * myAlpha));
+                    JelloFontUtil.jelloFont24.drawSmoothString(config.name, sx - 125 + 12.5f - 3f + 6 + offsetX, cy + 12, applyAlpha(-16711423, 0.8f * myAlpha));
                 }
 
                 if (ConfigManager.currentProfile.equals(config.name)) {
-                    RenderUtils.drawTextureLocationZoom(sx - 20 - 2 + offsetX, cy + 17.5f - 13 / 2f * 0.5f - 1, 17f * 0.5f, 13f * 0.5f, "alt/active", new Color(霥瀳놣㠠釒(-65794, myAlpha * n), true));
+                    RenderUtils.drawTextureLocationZoom(sx - 20 - 2 + offsetX, cy + 17.5f - 13 / 2f * 0.5f - 1, 17f * 0.5f, 13f * 0.5f, "alt/active", new Color(applyAlpha(-65794, myAlpha * n), true));
                 }
 //                RenderUtils.drawRect(sx - 125 + 12.5f - 3f, sy - 250 + 30 + 5 + 3f, sx - 12.5f + 3f, sy, -1);
                 cy += 35;
@@ -154,7 +154,7 @@ public class ConfigManagerGUI {
             if (!ClickUtils.isClickable(sx - 125, sy - 250, sx, sy - 250 + 30 + 4 + 100, x, y)) {
                 showAdd = false;
             }
-            RenderUtils.drawRect(xx2, sy - 250 + 30 + 4, sx, xx, 霥瀳놣㠠釒(new Color(244, 244, 244).getRGB(), addAlpha2));
+            RenderUtils.drawRect(xx2, sy - 250 + 30 + 4, sx, xx, applyAlpha(new Color(244, 244, 244).getRGB(), addAlpha2));
 
             StencilUtil.initStencilToWrite();
             RenderUtils.drawRect(xx2, sy - 250 + 30 + 4, sx, xx, -1);
@@ -165,7 +165,7 @@ public class ConfigManagerGUI {
             if (blank != null) {
                 blank.myRender(x, y,new Color(59, 153, 253) , addAlpha2);
             }
-            JelloFontUtil.jelloFont14.drawNoBSCenteredString("No Default Profiles Availble", xx2 + (sx - xx2) / 2f, sy - 250 + 30 + 4 + 50, 霥瀳놣㠠釒(new Color(50, 50, 50).getRGB(), 0.5f * addAlpha2));
+            JelloFontUtil.jelloFont14.drawNoBSCenteredString("No Default Profiles Availble", xx2 + (sx - xx2) / 2f, sy - 250 + 30 + 4 + 50, applyAlpha(new Color(50, 50, 50).getRGB(), 0.5f * addAlpha2));
             StencilUtil.uninitStencilBuffer();
 //            if (offsetY != 0) {
             RenderUtils.drawCustomShader2(xx2, xx, xx2 + 125, 0, addAlpha * 0.3f, 15);

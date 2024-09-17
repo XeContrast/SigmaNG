@@ -165,18 +165,18 @@ public class JelloMusic {
 //        핇댠䂷呓贞.揩ꁈ杭ใ蛊.哺卫콗鱀ಽ
         RenderUtils.drawRect(index * n2, sr.getScaledHeight() - n4, index * n2 + n2, sr.getScaledHeight(), applyColor(c.getRGB(), 0.7f));
       }
-//      䢶웎쥦걾醧딨();
+//      startStencil();
 //      for (int index2 = 0; index2 < n; ++index2) {
 //        final float n5 = ((float)(Math.sqrt(this.spectrum.get(index2)) / 12.0) - 5.0f) * (sr.getScaledHeight() / 1080.0f);
 //        RenderUtils.drawRect(index2 * n2, sr.getScaledHeight() - n5, n2, n5, 핇댠䂷呓贞.white.哺卫콗鱀ಽ);
 //      }
-//      ᙽ붛셴쥦㠠醧(BoxOutlineESP.StencilOperation.drawRectangle);
+//      applyStencilOperation(BoxOutlineESP.StencilOperation.drawRectangle);
 //      if (this.W蒕꿩待쇽 != null) {
 //        if (this.붃渺Ꮀ䖼綋 != null) {
 //          㹔펊콵湗贞聛(0.0f, 0.0f, (float)sr.getWidth(), (float)sr.getHeight(), this.붃渺Ꮀ䖼綋, 0.4f);
 //        }
 //      }
-//      츚堧堧䬾ศ㢸();
+//      endStencil();
     }
   }
   public void drawTexture(){
@@ -204,21 +204,21 @@ public class JelloMusic {
               10.0f / 2f, (float)(sr.getScaledHeight() - 110 / 2f),
               50,50,50 * 1.5f, 50 * 1.33f, (50 * 1.5f - 50) / 2f ,(50 * 1.33f - 50) / 2f);
     }
-    RenderUtils.sigma_drawShadow(10.0f / 2f, (float)(sr.getScaledHeight() - 110 / 2f), 100.0f / 2f, 100.0f / 2f, 14.0f / 2f, 0.3f);
+    RenderUtils.drawShadowWithAlpha(10.0f / 2f, (float)(sr.getScaledHeight() - 110 / 2f), 100.0f / 2f, 100.0f / 2f, 14.0f / 2f, 0.3f);
     GL11.glPopMatrix();
 //      final String[] split = this.늦鱀햠㔢埙.split(ࡅ牰Ꮤ䆧卫.哝弻觯뎫霥[5]);
 //      if (split.length <= 1) {
-//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, 霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
-//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, 霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
+//      drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
+//      drawString(JelloFontUtil.jelloFontBold18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
 
     drawString(JelloFontUtil.jelloFontBold20, 130.0f / 2f, (float)(sr.getScaledHeight() - 81 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.name, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
     drawString(JelloFontUtil.jelloFont18, 130.0f / 2f, (float)(sr.getScaledHeight() - 56 / 2f), ClickGUI.clickGui.musicPlayer.currentFile.aliasName, applyColor(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
 //      }
 //      else {
-//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
-//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
-//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
-//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
+//        drawString(蕃眓붛陬室.浦걾䎰ꁈ啖, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.4f));
+//        drawString(蕃眓붛陬室.嶗롤랾蒕딨, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.black.哺卫콗鱀ಽ, 0.5f));
+//        drawString(蕃眓붛陬室.㮃㻣퉧蓳髾, 130.0f, (float)(sr.getHeight() - 56), split[1], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.7f));
+//        drawString(蕃眓붛陬室.핇鱀䄟鄡W, 130.0f, (float)(sr.getHeight() - 81), split[0], 堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, 0.6f));
 //      }
   }
   /**

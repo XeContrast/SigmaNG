@@ -6,7 +6,7 @@ import static info.sigmaclient.sigma.sigma5.utils.BoxOutlineESP.resetFramebuffer
 
 public class Stencil {
 
-    public static void 䢶웎쥦걾醧딨() {
+    public static void startStencil() {
         GL11.glPushMatrix();
         resetFramebufferDepth();
         GL11.glEnable(2960);
@@ -19,14 +19,14 @@ public class Stencil {
 //        㕠鄡呓ᢻ낛.鶲Ꮺ掬ಽ璧 = true;
     }
 
-    public static void ᙽ붛셴쥦㠠醧(final BoxOutlineESP.StencilOperation StencilOperation) {
+    public static void applyStencilOperation(final BoxOutlineESP.StencilOperation StencilOperation) {
         GL11.glColorMask(true, true, true, true);
         GL11.glDepthMask(true);
         GL11.glStencilMask(0);
         GL11.glStencilFunc((StencilOperation != StencilOperation.REPLACE) ? 517 : 514, 1, 1);
     }
 
-    public static void 츚堧堧䬾ศ㢸() {
+    public static void endStencil() {
         GL11.glStencilMask(-1);
         GL11.glDisable(2960);
         GL11.glPopMatrix();

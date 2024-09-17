@@ -207,21 +207,21 @@ public class RenderUtils {
     public static void drawRoundedRectRect(double paramXStart, double paramYStart, double width, double height, float radius, int color) {
         drawRoundedRect(paramXStart, paramYStart, paramXStart + width, paramYStart + height, radius, color, true);
     }
-    public static int 霥瀳놣㠠釒(final int n, final float n2) {
+    public static int applyAlpha(final int n, final float n2) {
         return (int)(n2 * 255.0f) << 24 | (n & 0xFFFFFF);
     }
-    public static void sigma_drawShadow(float n, float n2, float n3, float n4, float n5, float n6) {
+    public static void drawShadowWithAlpha(float n, float n2, float n3, float n4, float n5, float n6) {
 //        GL11.glAlphaFunc(519, 0.0f);
-        Color 霥瀳놣㠠釒 = ColorUtils.reAlpha(new Color(-65794), n6);
-        drawTextureLocation(n - n5, n2 - n5, n5, n5, "shadow/shadow_corner", 霥瀳놣㠠釒);
-        drawTextureLocation(n + n3, n2 - n5, n5, n5, "shadow/shadow_corner_2", 霥瀳놣㠠釒);
-        drawTextureLocation(n - n5, n2 + n4, n5, n5, "shadow/shadow_corner_3", 霥瀳놣㠠釒);
-        drawTextureLocation(n + n3, n2 + n4, n5, n5, "shadow/shadow_corner_4", 霥瀳놣㠠釒);
-        霥瀳놣㠠釒 = ColorUtils.reAlpha(new Color(-65794), n6 * 0.5f);
-        drawTextureLocation(n - n5, n2, n5, n4, "shadow/shadow_left", 霥瀳놣㠠釒);
-        drawTextureLocation(n + n3, n2, n5, n4, "shadow/shadow_right", 霥瀳놣㠠釒);
-        drawTextureLocation(n, n2 - n5, n3, n5, "shadow/shadow_top", 霥瀳놣㠠釒);
-        drawTextureLocation(n, n2 + n4, n3, n5, "shadow/shadow_bottom", 霥瀳놣㠠釒);
+        Color applyAlpha = ColorUtils.reAlpha(new Color(-65794), n6);
+        drawTextureLocation(n - n5, n2 - n5, n5, n5, "shadow/shadow_corner", applyAlpha);
+        drawTextureLocation(n + n3, n2 - n5, n5, n5, "shadow/shadow_corner_2", applyAlpha);
+        drawTextureLocation(n - n5, n2 + n4, n5, n5, "shadow/shadow_corner_3", applyAlpha);
+        drawTextureLocation(n + n3, n2 + n4, n5, n5, "shadow/shadow_corner_4", applyAlpha);
+        applyAlpha = ColorUtils.reAlpha(new Color(-65794), n6 * 0.5f);
+        drawTextureLocation(n - n5, n2, n5, n4, "shadow/shadow_left", applyAlpha);
+        drawTextureLocation(n + n3, n2, n5, n4, "shadow/shadow_right", applyAlpha);
+        drawTextureLocation(n, n2 - n5, n3, n5, "shadow/shadow_top", applyAlpha);
+        drawTextureLocation(n, n2 + n4, n3, n5, "shadow/shadow_bottom", applyAlpha);
     }
     public static void drawOutinShadow(final double x, final double y, double x2, double y2, float alpha) {
         RenderUtils.drawCustomShader(x, y, x2, 2, alpha * 0.4f);

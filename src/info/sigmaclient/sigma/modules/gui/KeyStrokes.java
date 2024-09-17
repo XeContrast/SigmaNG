@@ -248,7 +248,7 @@ public class KeyStrokes extends Module {
             multi = 0.5f;
         }
         RenderUtils.drawRect(x, y, x2, y2, ColorUtils.reAlpha(-16711423, 0.5f * multi).getRGB());
-        RenderUtils.sigma_drawShadow(x, y, x2 - x, y2 - y, 5.0f, multi);
+        RenderUtils.drawShadowWithAlpha(x, y, x2 - x, y2 - y, 5.0f, multi);
 //        RenderUtils.drawOutinShadow(x, y, x2, y2, 0.75f * (s ? 0.5f : 1f));
 
         StencilUtil.initStencilToWrite();

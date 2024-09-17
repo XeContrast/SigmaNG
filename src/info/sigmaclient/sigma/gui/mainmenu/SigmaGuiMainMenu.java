@@ -190,7 +190,7 @@ public class SigmaGuiMainMenu extends Screen {
 //                (float)䈔褕Ꮤ䎰ᔎ㢸,
 //                (float)괠꿩罡㢸쥅聛,
 //                뚔弻缰硙柿.竬픓贞곻핇,
-//                堧鏟ᔎ㕠釒.霥瀳놣㠠釒(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n)
+//                堧鏟ᔎ㕠釒.applyAlpha(핇댠䂷呓贞.white.哺卫콗鱀ಽ, n)
 //        );
 
         if(renderAlpha != 0) {
