@@ -130,10 +130,10 @@ public class NCPRotation {
         );
     }
     public static Rotation calculateRotation(final Vector3d 䈔㕠㥇ใၝ핇) {
-        final float[] 葫㔢渺埙䣓 = 葫㔢渺埙䣓(mc.player.getPositionVec().add(0.0, mc.player.getEyeHeight(), 0.0), 䈔㕠㥇ใၝ핇);
-        return new Rotation(葫㔢渺埙䣓[0], 葫㔢渺埙䣓[1]);
+        final float[] calculateRotationAngles = calculateRotationAngles(mc.player.getPositionVec().add(0.0, mc.player.getEyeHeight(), 0.0), 䈔㕠㥇ใၝ핇);
+        return new Rotation(calculateRotationAngles[0], calculateRotationAngles[1]);
     }
-    public static float[] 葫㔢渺埙䣓(final Vector3d 䈔㕠㥇ใၝ핇, final Vector3d 䈔㕠㥇ใၝ핇2) {
+    public static float[] calculateRotationAngles(final Vector3d 䈔㕠㥇ใၝ핇, final Vector3d 䈔㕠㥇ใၝ핇2) {
         final double x = 䈔㕠㥇ใၝ핇2.x - 䈔㕠㥇ใၝ핇.x;
         final double y = 䈔㕠㥇ใၝ핇2.z - 䈔㕠㥇ใၝ핇.z;
         return new float[] { 渺뗴䢶좯鶲(0.0f, (float)(Math.atan2(y, x) * 180.0 / 3.141592653589793) - 90.0f, 360.0f), 渺뗴䢶좯鶲(mc.player.rotationPitch, (float)(-(Math.atan2(䈔㕠㥇ใၝ핇2.y - 䈔㕠㥇ใၝ핇.y, 鶲佉侃陂늦酋(x * x + y * y)) * 180.0 / 3.141592653589793)), 360.0f) };
