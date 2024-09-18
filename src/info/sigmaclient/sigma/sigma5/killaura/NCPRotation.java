@@ -2,13 +2,11 @@ package info.sigmaclient.sigma.sigma5.killaura;
 
 import info.sigmaclient.sigma.utils.player.Rotation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 import static info.sigmaclient.sigma.minimap.XaeroMinimap.mc;
-import top.fl0wowp4rty.phantomshield.annotations.Native;
 
 
 public class NCPRotation {
@@ -131,7 +129,7 @@ public class NCPRotation {
                 Math.max(centerZ - depth / 2.0, Math.min(centerZ + depth / 2.0, mc.player.getPosZ()))
         );
     }
-    public static Rotation 퉧묙鷏待鞞(final Vector3d 䈔㕠㥇ใၝ핇) {
+    public static Rotation calculateRotation(final Vector3d 䈔㕠㥇ใၝ핇) {
         final float[] 葫㔢渺埙䣓 = 葫㔢渺埙䣓(mc.player.getPositionVec().add(0.0, mc.player.getEyeHeight(), 0.0), 䈔㕠㥇ใၝ핇);
         return new Rotation(葫㔢渺埙䣓[0], 葫㔢渺埙䣓[1]);
     }
@@ -166,16 +164,16 @@ public class NCPRotation {
     }
     public static Rotation NCPRotation(final Entity Entity) {
         final Vector3d 浣罡낛姮姮 = calculatePosition(Entity);
-        return 퉧묙鷏待鞞(浣罡낛姮姮);
+        return calculateRotation(浣罡낛姮姮);
     }
 
     public static Rotation NCPRotation(final Entity Entity, final double top) {
         final Vector3d 浣罡낛姮姮 = calculatePosition(Entity,top);
-        return 퉧묙鷏待鞞(浣罡낛姮姮);
+        return calculateRotation(浣罡낛姮姮);
     }
 
     public static Rotation NCPRotation(final AxisAlignedBB Entity) {
         final Vector3d 浣罡낛姮姮 = calculatePosition(Entity);
-        return 퉧묙鷏待鞞(浣罡낛姮姮);
+        return calculateRotation(浣罡낛姮姮);
     }
 }
