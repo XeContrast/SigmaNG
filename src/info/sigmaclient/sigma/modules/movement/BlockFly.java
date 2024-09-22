@@ -82,7 +82,13 @@ public class BlockFly extends Module {
     public ModeValue placeTime = new ModeValue("PlaceMode", "Normal", new String[]{"Normal", "Telly"}){@Override public boolean isHidden() {return false;}};
     public BooleanValue keepY = new BooleanValue("KeepY", false);
     public BooleanValue jump = new BooleanValue("AutoJump", false){@Override public boolean isHidden() {return !keepY.isEnable();}};
-    public BooleanValue sprint = new BooleanValue("NoSprint", false);
+    public ModeValue sprint = new ModeValue("Sprint", "Vanilla", new String[]{"Disabled", "Vanilla", "Hypixel"});
+    public NumberValue slowDown = new NumberValue("SlowDown", 0.6, 0.5, 0.8, NumberValue.NUMBER_TYPE.FLOAT) {
+        @Override
+        public boolean isHidden() {
+            return sprint.is("Hypixel");
+        }
+    };
     public BooleanValue sneakWhenRotating = new BooleanValue("Sneak When Rotating", false);
     public BooleanValue spam = new BooleanValue("SpamClick", false){
         @Override
@@ -313,6 +319,11 @@ public class BlockFly extends Module {
             mc.player.inventory.currentItem = lastSlot;
         }
         mc.sendClickBlockToController(false);
+
+        if (sprint.is("Hypixel")) {
+            Vector3d motion = mc.player.getMotion();
+            mc.player.setMotion(motion.x * (double) slowDown.getValue(), motion.y, motion.z * (double) slowDown.getValue());
+        }
     }
 
     @Override
@@ -403,11 +414,19 @@ public class BlockFly extends Module {
     }
     boolean placed = false;
     boolean rotated = false;
+    
+    private boolean sprint() {
+        return switch (sprint.getValue()) {
+            default -> false;
+            case "Vanilla", "Hypixel" -> true;
+        };
+    }
+    
    @EventTarget
     public void onMoveEvent(MoveEvent event) {
         if(type.is("Hypixel")) {
 
-            if (blockPos != null && !sprint.isEnable()) {
+            if (blockPos != null && !sprint()) {
                 mc.gameSettings.keyBindSprint.pressed = false;
                 mc.player.setSprinting(false);
                 if (!placeTime.is("Telly") && (mc.player.moveForward != 0 || mc.player.moveStrafing != 0)) {
@@ -435,7 +454,7 @@ public class BlockFly extends Module {
 //        if(event.isPost()) {
             delay ++;
             if(!placeTime.is("Telly")) {
-                if (sprint.isEnable()) {
+                if (sprint()) {
                     mc.gameSettings.keyBindSprint.pressed = false;
                 }else{
                     if(type.is("Hypixel")){
@@ -447,9 +466,9 @@ public class BlockFly extends Module {
             }else{
 
                 boolean sp = (mc.player.rotationYaw == mc.player.lastReportedYaw) && (airTicks < 3);
-                mc.gameSettings.keyBindSprint.pressed = (MovementUtils.isMoving() && !sprint.isEnable() && sp);
+                mc.gameSettings.keyBindSprint.pressed = (MovementUtils.isMoving() && !sprint() && sp);
 //                if(isTellying() || mc.player.lastReportedYaw != mc.player.rotationYaw){
-                mc.player.setSprinting(MovementUtils.isMoving() && !sprint.isEnable() && sp);//
+                mc.player.setSprinting(MovementUtils.isMoving() && !sprint() && sp);//
 //                }
             }
 //            if(place.is("Post")) {
@@ -505,7 +524,7 @@ public class BlockFly extends Module {
         //
 
         y = mc.player.onGround ? mc.player.getPosY() : (towering ? mc.player.getPosY() : y);
-        if(mc.player.getMotion().y == 0.0030162615090425808 && keepY.isEnable() && !sprint.isEnable()){
+        if(mc.player.getMotion().y == 0.0030162615090425808 && keepY.isEnable() && !sprint()){
             y += 0.5;
         }
 
@@ -573,7 +592,7 @@ public class BlockFly extends Module {
         if(keepY.isEnable())
             downPos = new BlockPos(downPos.getX(), y - 0.5, downPos.getZ());
 
-        if(mc.player.getMotion().y == 0.0030162615090425808 && keepY.isEnable() && !sprint.isEnable()){
+        if(mc.player.getMotion().y == 0.0030162615090425808 && keepY.isEnable() && !sprint()){
             y -= 0.5;
         }
         blockPos = ScaffoldUtils.getBlockCache(downPos, search.getValue().intValue(), false, false);
