@@ -86,7 +86,7 @@ public class BlockFly extends Module {
     public NumberValue slowDown = new NumberValue("SlowDown", 0.6, 0.5, 0.8, NumberValue.NUMBER_TYPE.FLOAT) {
         @Override
         public boolean isHidden() {
-            return sprint.is("Hypixel");
+            return !sprint.is("Hypixel");
         }
     };
     public BooleanValue sneakWhenRotating = new BooleanValue("Sneak When Rotating", false);
@@ -190,6 +190,8 @@ public class BlockFly extends Module {
     boolean doneRotating = false;
     PartialTicksAnim blockCounterAnim = new PartialTicksAnim(0);
     int sneaktick = 0;
+    boolean keepY$hasPlaced = false;
+
     public static boolean isBlockValid(final Block block) {
         return block != Blocks.GLASS &&
                 block != Blocks.SAND &&
@@ -297,6 +299,7 @@ public class BlockFly extends Module {
                     r ? ray : VecUtils.blockPosRedirection(ex ? new BlockPos(mc.player.getPositionVec()) : blockPos.getPosition(), facing.getFacing()),
                     Hand.MAIN_HAND) == ActionResultType.SUCCESS) {
                 placed = false;
+                keepY$hasPlaced = true;
             }
             if (noSwing.isEnable()) {
                 mc.getConnection().sendPacket(new CAnimateHandPacket(Hand.MAIN_HAND));
@@ -346,6 +349,7 @@ public class BlockFly extends Module {
         rotated = false;
         blockPos = null;
         blockCounterAnim.setValue(0);
+        keepY$hasPlaced = false;
         super.onEnable();
     }
     float progress = 0;
@@ -414,11 +418,13 @@ public class BlockFly extends Module {
     }
     boolean placed = false;
     boolean rotated = false;
-    
+
     private boolean sprint() {
-        return switch (sprint.getValue()) {
-            default -> false;
+        // todo about the reserve: IDK why! but it works!
+        return !switch (sprint.getValue()) {
+            case "Disabled" -> false;
             case "Vanilla", "Hypixel" -> true;
+            default -> throw new IllegalStateException("Unexpected value: " + sprint.getValue());
         };
     }
     
@@ -986,6 +992,15 @@ public class BlockFly extends Module {
 //            click();
 //        }
         // do movement fix
+
+        if (keepY.isEnable()) {
+            if (mc.player.onGround && !towering && MovementUtils.isMoving() && keepY$hasPlaced) {
+                RotationManager.setRotYaw(mc.player.rotationYaw);
+                RotationManager.setRotPitch((float) (0 + (Math.random() * 180 - 90) / 100.0));
+                return;
+            }
+        }
+
         RotationManager.setRotYaw(rots[0]);
         RotationManager.setRotPitch(rots[1]);
         StrafeFixManager.StrafeFix = movementFix.isEnable() && !(type.is("Hypixel") || type.is("NCP"));

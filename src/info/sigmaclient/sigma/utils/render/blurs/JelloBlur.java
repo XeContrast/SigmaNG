@@ -63,7 +63,10 @@ public class JelloBlur {
 
 //        GlStateManager.disableBlend();
 
-        renderFBO(framebufferList.get(1), mc.getFramebuffer().framebufferTexture, kawaseDown, offset);
+        try {
+            renderFBO(framebufferList.get(1), mc.getFramebuffer().framebufferTexture, kawaseDown, offset);
+        } catch (IndexOutOfBoundsException ignored) {
+        }
 
 //        //Downsample
 //        for (int i = 1; i < iterations; i++) {
