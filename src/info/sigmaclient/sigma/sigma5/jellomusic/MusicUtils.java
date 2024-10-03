@@ -36,12 +36,12 @@ public class MusicUtils {
 //                    return;
 //                }
 //            }
-//            䕦쥅蛊쿨쥅蚳.䬹핇䄟㢸㥇欫(堧鶊ศ콗綋붛.Ꮤ侃쬫亟值浦().挐唟浣䄟䈔阢(), 佉浦䖼䡸䕦嘖);
-//            佉浦䖼䡸䕦嘖.곻洝韤䴂湗堍();
+//            䕦쥅蛊쿨쥅蚳.䬹핇䄟㢸㥇欫(堧鶊ศ콗綋붛.Ꮤ侃쬫亟值浦().挐唟浣䄟䈔阢(), AudioDataProcessor);
+//            AudioDataProcessor.getAudioBytes();
 //            final byte[] array3;
 //            this.sourceDataLine.write(array3, 0, array3.length);;
 //            final float[] array4;
-//            new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
+//            new AudioProcessor(array4.length).processAudioData(array4);
 //            final float[][] array5;
 //            this.drawPoint.add(calculatePoints(array5[0], array5[1]));
 //            if (this.drawPoint.size() > 18) {

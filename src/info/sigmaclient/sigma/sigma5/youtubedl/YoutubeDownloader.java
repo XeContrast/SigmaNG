@@ -15,9 +15,11 @@ import java.util.Objects;
 public class YoutubeDownloader {
     boolean downloading = false;
     String lastDownload = "";
-    public void setUPProxy(){
+
+    public void setUPProxy() {
         SigmaNG.initProxy();
     }
+
     public String downLoadToFile(String s, String name) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(s).openConnection();
         connection.setDoInput(true);
@@ -49,15 +51,15 @@ public class YoutubeDownloader {
         }
 
         // 创建文件
-        File file = new File(ConfigManager.musicDir,name);
+        File file = new File(ConfigManager.musicDir, name);
 
         // 创建输出流
         FileOutputStream outputStream = new FileOutputStream(file);
         InputStream inputStream = connection.getInputStream();
         byte[] buffer = new byte[1024];
         int len;
-        while ((len=inputStream.read(buffer))!=-1){
-            outputStream.write(buffer,0,len);//写出这个数据
+        while ((len = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);//写出这个数据
         }
         inputStream.close();
         connection.disconnect();//断开连接
@@ -65,19 +67,21 @@ public class YoutubeDownloader {
 
         return file.toURI().toString();
     }
+
     public interface CallBack {
         void run(String downloadPath);
     }
+
     Process process;
+
     public void download(String id, CallBack callBack) {
         if (downloading) return;
         setUPProxy();
-        // C:\Users\IamFrozenMilk\Desktop\sigmaNG1.19.4\run\.\sigma5ng\musics
         String ytURL = "https://www.youtube.com/watch?v=" + id;
-        String Path = "--paths " + ConfigManager.musicDir.getAbsolutePath();
-        String exeFile = "youtube-dl.exe";
+        String path = "--paths " + ConfigManager.musicDir.getAbsolutePath();
+        String exeFile = "yt-dlp.exe";
         File file = new File(ConfigManager.musicDir, exeFile);
-        String downloadURL = "https://github.com/yt-dlp/yt-dlp/releases/download/2023.10.13/yt-dlp.exe";
+        String downloadURL = "https://github.com/yt-dlp/yt-dlp/releases/download/2024.09.27/yt-dlp.exe";
         if (!file.exists()) {
             downloading = true;
             System.out.println("Downloading File " + downloadURL);
@@ -89,7 +93,6 @@ public class YoutubeDownloader {
             downloading = false;
         }
 
-//        visitSite(downloadURL);
         String downloadDoneFile = "";
         boolean hasFile = false;
         for (File f : Objects.requireNonNull(ConfigManager.musicDir.listFiles())) {
@@ -101,13 +104,12 @@ public class YoutubeDownloader {
         if (!hasFile) {
             try {
                 downloading = true;
-                process = Runtime.getRuntime().exec(file.getAbsolutePath() + " " + ytURL + " " + Path);
+                process = Runtime.getRuntime().exec(file.getAbsolutePath() + " " + ytURL + " " + path);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
-                // [download] Destination: C:\Users\1\Desktop\IiI\.minecraft\sigma5\music\downloading.mp4\JELLO RELEASE - Introducing Jello for Sigma 5.0 - Minecraft 1.8 to 1.16.4 Hacked Client [dwTlcgW6dDA].mp4
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
-                    if(Minecraft.getInstance().player != null){
+                    if (Minecraft.getInstance().player != null) {
                         ChatUtils.sendMessageWithPrefix(line);
                     }
                 }
@@ -120,7 +122,6 @@ public class YoutubeDownloader {
                     }
                 }
             } catch (IOException | InterruptedException e) {
-//            file.delete();
                 throw new RuntimeException(e);
             }
         }

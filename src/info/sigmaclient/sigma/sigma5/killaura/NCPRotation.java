@@ -129,19 +129,19 @@ public class NCPRotation {
                 Math.max(centerZ - depth / 2.0, Math.min(centerZ + depth / 2.0, mc.player.getPosZ()))
         );
     }
-    public static Rotation calculateRotation(final Vector3d 䈔㕠㥇ใၝ핇) {
-        final float[] calculateRotationAngles = calculateRotationAngles(mc.player.getPositionVec().add(0.0, mc.player.getEyeHeight(), 0.0), 䈔㕠㥇ใၝ핇);
+    public static Rotation calculateRotation(final Vector3d targetPosition) {
+        final float[] calculateRotationAngles = calculateRotationAngles(mc.player.getPositionVec().add(0.0, mc.player.getEyeHeight(), 0.0), targetPosition);
         return new Rotation(calculateRotationAngles[0], calculateRotationAngles[1]);
     }
-    public static float[] calculateRotationAngles(final Vector3d 䈔㕠㥇ใၝ핇, final Vector3d 䈔㕠㥇ใၝ핇2) {
-        final double x = 䈔㕠㥇ใၝ핇2.x - 䈔㕠㥇ใၝ핇.x;
-        final double y = 䈔㕠㥇ใၝ핇2.z - 䈔㕠㥇ใၝ핇.z;
-        return new float[] { 渺뗴䢶좯鶲(0.0f, (float)(Math.atan2(y, x) * 180.0 / 3.141592653589793) - 90.0f, 360.0f), 渺뗴䢶좯鶲(mc.player.rotationPitch, (float)(-(Math.atan2(䈔㕠㥇ใၝ핇2.y - 䈔㕠㥇ใၝ핇.y, 鶲佉侃陂늦酋(x * x + y * y)) * 180.0 / 3.141592653589793)), 360.0f) };
+    public static float[] calculateRotationAngles(final Vector3d from, final Vector3d to) {
+        final double x = to.x - from.x;
+        final double y = to.z - from.z;
+        return new float[] { clampAngle(0.0f, (float)(Math.atan2(y, x) * 180.0 / 3.141592653589793) - 90.0f, 360.0f), clampAngle(mc.player.rotationPitch, (float)(-(Math.atan2(to.y - from.y, calculateDistance(x * x + y * y)) * 180.0 / 3.141592653589793)), 360.0f) };
     }
-    public static float 鶲佉侃陂늦酋(final double a) {
+    public static float calculateDistance(final double a) {
         return (float)Math.sqrt(a);
     }
-    public static float 哝㻣낛䴂㕠㢸(final float n) {
+    public static float normalizeAngle(final float n) {
         float n2 = n % 360.0f;
         if (n2 >= 180.0f) {
             n2 -= 360.0f;
@@ -152,28 +152,28 @@ public class NCPRotation {
         return n2;
     }
 
-    public static float 渺뗴䢶좯鶲(final float n, final float n2, final float n3) {
-        float 哝㻣낛䴂㕠㢸 = 哝㻣낛䴂㕠㢸(n2 - n);
-        if (哝㻣낛䴂㕠㢸 > n3) {
-            哝㻣낛䴂㕠㢸 = n3;
+    public static float clampAngle(final float n, final float n2, final float maxChange) {
+        float delta = normalizeAngle(n2 - n);
+        if (delta > maxChange) {
+            delta = maxChange;
         }
-        if (哝㻣낛䴂㕠㢸 < -n3) {
-            哝㻣낛䴂㕠㢸 = -n3;
+        if (delta < -maxChange) {
+            delta = -maxChange;
         }
-        return n + 哝㻣낛䴂㕠㢸;
+        return n + delta;
     }
     public static Rotation NCPRotation(final Entity Entity) {
-        final Vector3d 浣罡낛姮姮 = calculatePosition(Entity);
-        return calculateRotation(浣罡낛姮姮);
+        final Vector3d position = calculatePosition(Entity);
+        return calculateRotation(position);
     }
 
     public static Rotation NCPRotation(final Entity Entity, final double top) {
-        final Vector3d 浣罡낛姮姮 = calculatePosition(Entity,top);
-        return calculateRotation(浣罡낛姮姮);
+        final Vector3d position = calculatePosition(Entity,top);
+        return calculateRotation(position);
     }
 
     public static Rotation NCPRotation(final AxisAlignedBB Entity) {
-        final Vector3d 浣罡낛姮姮 = calculatePosition(Entity);
-        return calculateRotation(浣罡낛姮姮);
+        final Vector3d position = calculatePosition(Entity);
+        return calculateRotation(position);
     }
 }

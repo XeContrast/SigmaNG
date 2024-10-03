@@ -1,70 +1,70 @@
 package info.sigmaclient.sigma.sigma5.jellomusic;
 
 
-public class AudioProcessor implements 掬좯鼒蓳酭 {
-    private static String[] 杭쥡璧ꦱಽ;
-    private static final int 㠠樽螜唟㐈 = 16;
-    private static final int[][] 汌웎ใ㱙䡸;
-    private final int 쇼펊ኞ㨳㐖;
-    private final int[] 鶊웎掬쟗钘;
-    private float[] 湗웨敤韤햖;
+public class AudioProcessor implements AudioProcessorInterface {
+    private static String[] errorMessages;
+    private static final int MAX_SIZE = 16;
+    private static final int[][] bitReversalTable;
+    private final int sampleSize;
+    private final int[] bitReversedIndices;
+    private float[] windowFunction;
 
-    public AudioProcessor(int 쇼펊ኞ㨳㐖) {
-        if (!揩䖼瀧䆧鄡(쇼펊ኞ㨳㐖)) {
-            throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[0]);
+    public AudioProcessor(int sampleSize) {
+        if (!isPowerOfTwo(sampleSize)) {
+            throw new IllegalArgumentException(AudioProcessor.errorMessages[0]);
         }
-        if (쇼펊ኞ㨳㐖 > 0) {
-            this.쇼펊ኞ㨳㐖 = 쇼펊ኞ㨳㐖;
-            final int 甐곻钘ᜄ婯 = 甐곻钘ᜄ婯(쇼펊ኞ㨳㐖);
-            this.鶊웎掬쟗钘 = new int[쇼펊ኞ㨳㐖];
-            for (int i = 0; i < 쇼펊ኞ㨳㐖; ++i) {
-                this.鶊웎掬쟗钘[i] = 츚㝛眓㐖웨(i, 甐곻钘ᜄ婯);
+        if (sampleSize > 0) {
+            this.sampleSize = sampleSize;
+            final int calculateLog2 = calculateLog2(sampleSize);
+            this.bitReversedIndices = new int[sampleSize];
+            for (int i = 0; i < sampleSize; ++i) {
+                this.bitReversedIndices[i] = getBitReversedIndex(i, calculateLog2);
             }
-            this.湗웨敤韤햖 = new float[쇼펊ኞ㨳㐖];
-            for (int j = 0; j < 쇼펊ኞ㨳㐖; ++j) {
-                if (j > 쇼펊ኞ㨳㐖 / 2) {
-                    this.湗웨敤韤햖[j] = -((쇼펊ኞ㨳㐖 - j) / (float)쇼펊ኞ㨳㐖);
+            this.windowFunction = new float[sampleSize];
+            for (int j = 0; j < sampleSize; ++j) {
+                if (j > sampleSize / 2) {
+                    this.windowFunction[j] = -((sampleSize - j) / (float) sampleSize);
                 }
                 else {
-                    this.湗웨敤韤햖[j] = (float)(j / 쇼펊ኞ㨳㐖);
+                    this.windowFunction[j] = (float)(j / sampleSize);
                 }
             }
             return;
         }
-        throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[1]);
+        throw new IllegalArgumentException(AudioProcessor.errorMessages[1]);
     }
 
     @Override
-    public float[][] 刃塱蒕躚ၝ(final float[] array, final float[] array2) throws UnsupportedOperationException {
+    public float[][] processStereoData(final float[] array, final float[] array2) throws UnsupportedOperationException {
         final float[][] array3 = new float[2][array.length];
-        this.錌浣䢶ᜄ㔢(true, array, array2, array3[0], array3[1]);
+        this.processAudioData(true, array, array2, array3[0], array3[1]);
         return array3;
     }
 
     @Override
-    public float[][] 錌浣䢶ᜄ㔢(final float[] array) throws UnsupportedOperationException {
+    public float[][] processAudioData(final float[] array) throws UnsupportedOperationException {
         final float[][] array2 = new float[3][array.length];
-        this.錌浣䢶ᜄ㔢(false, array, null, array2[0], array2[1]);
-        array2[2] = this.湗웨敤韤햖.clone();
+        this.processAudioData(false, array, null, array2[0], array2[1]);
+        array2[2] = this.windowFunction.clone();
         return array2;
     }
 
     @Override
-    public float[][] 錌浣䢶ᜄ㔢(final float[] array, final float[] array2) throws UnsupportedOperationException {
+    public float[][] processAudioData(final float[] array, final float[] array2) throws UnsupportedOperationException {
         final float[][] array3 = new float[3][array.length];
-        this.錌浣䢶ᜄ㔢(false, array, array2, array3[0], array3[1]);
-        array3[2] = this.湗웨敤韤햖.clone();
+        this.processAudioData(false, array, array2, array3[0], array3[1]);
+        array3[2] = this.windowFunction.clone();
         return array3;
     }
 
-    public void 錌浣䢶ᜄ㔢(final boolean b, final float[] array, final float[] array2, final float[] array3, final float[] array4) {
-        if (array.length == this.쇼펊ኞ㨳㐖) {
-            for (int i = 0; i < this.쇼펊ኞ㨳㐖; ++i) {
-                array3[this.鶊웎掬쟗钘[i]] = array[i];
+    public void processAudioData(final boolean b, final float[] array, final float[] array2, final float[] array3, final float[] array4) {
+        if (array.length == this.sampleSize) {
+            for (int i = 0; i < this.sampleSize; ++i) {
+                array3[this.bitReversedIndices[i]] = array[i];
             }
             if (array2 != null) {
-                for (int j = 0; j < this.쇼펊ኞ㨳㐖; ++j) {
-                    array4[this.鶊웎掬쟗钘[j]] = array2[j];
+                for (int j = 0; j < this.sampleSize; ++j) {
+                    array4[this.bitReversedIndices[j]] = array2[j];
                 }
             }
             int n = 1;
@@ -74,14 +74,14 @@ public class AudioProcessor implements 掬좯鼒蓳酭 {
             } else {
                 n2 = -6.283185307179586;
             }
-            for (int k = 2; k <= this.쇼펊ኞ㨳㐖; k <<= 1) {
+            for (int k = 2; k <= this.sampleSize; k <<= 1) {
                 final double n3 = n2 / (float) k;
                 final double n4 = -Math.sin(-2.0 * n3);
                 final double n5 = -Math.sin(-n3);
                 final double cos = Math.cos(-2.0 * n3);
                 final double cos2 = Math.cos(-n3);
                 final double n6 = 2.0 * cos2;
-                for (int l = 0; l < this.쇼펊ኞ㨳㐖; l += k) {
+                for (int l = 0; l < this.sampleSize; l += k) {
                     double n7 = cos;
                     double n8 = cos2;
                     double n9 = n4;
@@ -109,20 +109,20 @@ public class AudioProcessor implements 掬좯鼒蓳酭 {
                 n = k;
             }
             if (b) {
-                for (int n20 = 0; n20 < this.쇼펊ኞ㨳㐖; ++n20) {
+                for (int n20 = 0; n20 < this.sampleSize; ++n20) {
                     final int n21 = n20;
-                    array3[n21] /= this.쇼펊ኞ㨳㐖;
+                    array3[n21] /= this.sampleSize;
                     final int n22 = n20;
-                    array4[n22] /= this.쇼펊ኞ㨳㐖;
+                    array4[n22] /= this.sampleSize;
                 }
             }
             return;
         }
-        throw new IllegalArgumentException(AudioProcessor.杭쥡璧ꦱಽ[2] + this.쇼펊ኞ㨳㐖 + AudioProcessor.杭쥡璧ꦱಽ[3]);
+        throw new IllegalArgumentException(AudioProcessor.errorMessages[2] + this.sampleSize + AudioProcessor.errorMessages[3]);
     }
 
 
-    private static int 甐곻钘ᜄ婯(int n) {
+    private static int calculateLog2(int n) {
         int n3 = 0;
         while ((n & 1 << n3) == 0) {
             ++n3;
@@ -130,7 +130,7 @@ public class AudioProcessor implements 掬좯鼒蓳酭 {
         return n3;
     }
 
-    private static int 콗䂷鏟Ꮺ㥇(int n, int n2) {
+    private static int reverseBits(int n, int n2) {
         int n3 = n;
         int n4 = 0;
         int n5 = 0;
@@ -142,14 +142,14 @@ public class AudioProcessor implements 掬좯鼒蓳酭 {
         return n4;
     }
 
-    private static int 츚㝛眓㐖웨(int n, int n2) {
+    private static int getBitReversedIndex(int n, int n2) {
         if (true) {
-            return AudioProcessor.콗䂷鏟Ꮺ㥇(n, n2);
+            return AudioProcessor.reverseBits(n, n2);
         }
-        return 汌웎ใ㱙䡸[n2 - 1][n];
+        return bitReversalTable[n2 - 1][n];
     }
 
-    private static boolean 揩䖼瀧䆧鄡(int n) {
+    private static boolean isPowerOfTwo(int n) {
         return (n & n - 1) == 0;
     }
 
@@ -164,29 +164,29 @@ public class AudioProcessor implements 掬좯鼒蓳酭 {
             return false;
         }
         AudioProcessor AudioProcessor2 = (AudioProcessor)object;
-        return this.쇼펊ኞ㨳㐖 == AudioProcessor2.쇼펊ኞ㨳㐖;
+        return this.sampleSize == AudioProcessor2.sampleSize;
     }
 
     public int hashCode() {
-        return this.쇼펊ኞ㨳㐖;
+        return this.sampleSize;
     }
 
     public String toString() {
-        return 杭쥡璧ꦱಽ[4] + this.쇼펊ኞ㨳㐖 + '}';
+        return errorMessages[4] + this.sampleSize + '}';
     }
 
-    public static int 卒쇽待曞啖(AudioProcessor AudioProcessor2) {
-        return AudioProcessor2.쇼펊ኞ㨳㐖;
+    public static int RenderUtils(AudioProcessor AudioProcessor2) {
+        return AudioProcessor2.sampleSize;
     }
     static {
-        AudioProcessor.杭쥡璧ꦱಽ = new String[]{"N is not a power of 2", "N must be greater than 0", "Number of samples must be ", " for this instance of JavaFFT", "JavaFFT{N="};
-        汌웎ใ㱙䡸 = new int[16][];
+        AudioProcessor.errorMessages = new String[]{"N is not a power of 2", "N must be greater than 0", "Number of samples must be ", " for this instance of JavaFFT", "JavaFFT{N="};
+        bitReversalTable = new int[16][];
         final int n = 2;
         for (int i = 1; i <= 16; ++i) {
-            AudioProcessor.汌웎ใ㱙䡸[i - 1] = new int[n];
+            AudioProcessor.bitReversalTable[i - 1] = new int[n];
             int n2 = 0;
             while (n2 < n) {
-                AudioProcessor.汌웎ใ㱙䡸[i - 1][n2] = 콗䂷鏟Ꮺ㥇(n2, i);
+                AudioProcessor.bitReversalTable[i - 1][n2] = reverseBits(n2, i);
                 ++n2;
             }
         }

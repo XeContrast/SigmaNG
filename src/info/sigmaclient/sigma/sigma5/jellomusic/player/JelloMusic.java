@@ -345,7 +345,7 @@ public class JelloMusic {
 //              for(float fa : array4) {
 //                System.out.println(array4.length);
 //              }
-              final float[][] array5 = new AudioProcessor(array4.length).錌浣䢶ᜄ㔢(array4);
+              final float[][] array5 = new AudioProcessor(array4.length).processAudioData(array4);
               spectrumData.add(musicUtils.calculatePoints(array5[0], array5[1]));
               if (spectrumData.size() > 18) {
                 spectrumData.remove(0);

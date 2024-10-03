@@ -1,5 +1,6 @@
 package info.sigmaclient.sigma.music.youtubedl;
 
+import java.util.logging.Logger;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -22,13 +23,13 @@ import java.util.*;
 
 
 public class YoutubeVideoHelper {
-    static String apikey = "AIzaSyDRdF7fEq0COKFwetb4PXn3oGT6m65MWnM";
+    static String apikey = "AIzaSyCGP7w_jD6Xh1B1BHp21bNpRsICsYYcRok";
     static HttpTransport httpTransport = new NetHttpTransport();
     static JsonFactory jsonFactory = new JacksonFactory();
     static YouTube youtube = new YouTube.Builder(httpTransport, jsonFactory, request -> {}).setApplicationName("youtube").build();
 
     public static String agent1 = "User-Agent";
-    public static String agent2 = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36";
+    public static String agent2 = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0";
 
     public static String visitSite2(String urly) throws IOException {
         String url = urly;
@@ -44,7 +45,7 @@ public class YoutubeVideoHelper {
         map.put("Connection", "keep-alive");
         map.put("Content-Type", "application/x-www-form-urlencoded");
         map.put("Cookie", "appver=2.7.1.198277; os=pc; " + "");
-        map.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36");
+        map.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
         map.forEach(connection::setRequestProperty);
         // 检查响应状态
         // 设置不跟随重定向
@@ -129,7 +130,7 @@ public class YoutubeVideoHelper {
         map.put("Referer", "mdelta.123tokyo.xyz");
         map.put("Host", "mdelta.123tokyo.xyz");
         map.put("Cookie", "appver=2.7.1.198277; os=pc; " + "");
-        map.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36");
+        map.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
         map.forEach(connection::setRequestProperty);
         // 检查响应状态
         // 设置不跟随重定向
@@ -255,7 +256,7 @@ public class YoutubeVideoHelper {
     }
     static public List<SearchResult> get(String channelId) throws IOException {
         YouTube.Search.List search = youtube.search().list("id,snippet");
-        search.setKey("AIzaSyDRdF7fEq0COKFwetb4PXn3oGT6m65MWnM");
+        search.setKey("AIzaSyCGP7w_jD6Xh1B1BHp21bNpRsICsYYcRok");
         search.setType("video");
         search.setFields("items(id/videoId,snippet/title,snippet/channelTitle,snippet/thumbnails/default/url),pageInfo");
         search.setMaxResults(20L);

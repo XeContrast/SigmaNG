@@ -19,7 +19,7 @@ import info.sigmaclient.sigma.utils.render.rendermanagers.ScaledResolution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import java.awt.*;
 import java.io.IOException;
@@ -232,27 +232,27 @@ public class JelloMusicPlayer {
         }
 
     public void drawRepeat(final double x, final double y, final float opacity) {
-            GL11.glPushMatrix();
-            final boolean enableBlend = GL11.glIsEnabled(3042);
-            final boolean disableAlpha = !GL11.glIsEnabled(3008);
+            GL14.glPushMatrix();
+            final boolean enableBlend = GL14.glIsEnabled(3042);
+            final boolean disableAlpha = !GL14.glIsEnabled(3008);
             if (!enableBlend) {
-                GL11.glEnable(3042);
+                GL14.glEnable(3042);
             }
         if (!disableAlpha) {
-            GL11.glDisable(3008);
+            GL14.glDisable(3008);
         }
         Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(this.repeat ? "sigma/musicplayer/repeat.png" : "sigma/musicplayer/repeatdis.png"));
         GlStateManager.color(1.0f, 1.0f, 1.0f, opacity);
-        GL11.glTexParameteri(3553, 10241, 9729);
-        GL11.glTexParameteri(3553, 10240, 9729);
+        GL14.glTexParameteri(3553, 10241, 9729);
+        GL14.glTexParameteri(3553, 10240, 9729);
         AbstractGui.drawModalRectWithCustomSizedTexture((int)(x - 16.0 + 20.0 + 140.0) - 21, (int)(y - 16.0 + 280.5), 0.0, 0.0, 15.199999809265137, 12.0, 15.199999809265137, 12.0);
         if (!enableBlend) {
-            GL11.glDisable(3042);
+            GL14.glDisable(3042);
         }
         if (!disableAlpha) {
-            GL11.glEnable(3008);
+            GL14.glEnable(3008);
         }
-        GL11.glPopMatrix();
+        GL14.glPopMatrix();
         }
 
     public void releasePanel(final int mouseX, final int mouseY) {
@@ -426,7 +426,7 @@ public class JelloMusicPlayer {
             JelloFontUtil.jelloFont13.drawCenteredString(c, this.x - 4.75f + 0.5f + 62.5f - 0.5f, this.y - 3.5f + 46.5f + 0.5f + 20 * channelCount, ColorUtils.reAlpha(Color.white, opacity * 0.8f).getRGB());
             ++channelCount;
         }
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, opacity);
+        GL14.glColor4f(1.0f, 1.0f, 1.0f, opacity);
         String time = "0:00";
         String maxTime = "0:00";
         if (JelloMusicPlayer.currentSongLength != 0 && this.currentFile != null && Player.player != null) {
@@ -462,7 +462,7 @@ public class JelloMusicPlayer {
                 final String format = "0:%02d";
                 time = String.format(format, TimeUnit.MILLISECONDS.toSeconds(this.currentPosition) % TimeUnit.MINUTES.toSeconds(1L));
             }
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, opacity);
+            GL14.glColor4f(1.0f, 1.0f, 1.0f, opacity);
             RenderUtils.drawRect((float)(this.x + 110), sidewarsY - 4.5, this.x + 110 + (this.x + 423.0f - 16.0f - 10.0f - (this.x + 110)) * (this.currentPosition / (float)JelloMusicPlayer.currentSongLength), sidewarsY - 1.5, new Color(255, 255, 255, (int)(100.0f * opacity)).getRGB());
             GlStateManager.resetColor();
             JelloFontUtil.jelloFont14.drawCenteredString(this.currentFile.name, (float)(this.x + 10 + 100 - 85 + 30 + 7), (float)(this.y + 323 - 10 - 16 - 16 - 5 - 8 - 8 + 15 + 10 - 10 + 3 - 6), new Color(255, 255, 255, (int)(255.0f * opacity)).getRGB());
