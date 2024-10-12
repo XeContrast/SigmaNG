@@ -217,7 +217,7 @@ public class ModuleManager {
         registerModule(new ServerCrasher());
         registerModule(new MurderFucker());
         registerModule(new GameIdler());
-//        registerModule(new TestCape());
+        registerModule(new TestCape());
         registerModule(new Jargon());
         registerModule(new AntiLevitation());
         registerModule(new AutoClicker());
@@ -225,7 +225,7 @@ public class ModuleManager {
 //        if(SigmaNG.gameMode == SigmaNG.GAME_MODE.dest) {
 //            registerModule(new KeepRange());
 //            registerModule(new HUD());
-//            registerModule(new Notifications());
+            registerModule(new Notifications());
 //        }
         SigmaNG.SigmaNG.scriptModuleManager.loadAllScript();
 

@@ -34,36 +34,30 @@ public class YoutubeDownloader {
         map.put("Cookie", "appver=2.7.1.198277; os=pc; " + "");
         map.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36");
         map.forEach(connection::setRequestProperty);
-        // 检查响应状态
-        // 设置不跟随重定向
         connection.setInstanceFollowRedirects(true);
 
-        // 获取响应状态码
         int statusCode = connection.getResponseCode();
-
-        // 检查响应状态码是否为 3XX
         if (statusCode >= 300 && statusCode < 400) {
-            // 响应为重定向
             System.out.println("Redirected to: " + connection.getURL());
         } else {
-            // 响应不是重定向
             System.out.println("Not redirected");
         }
 
-        // 创建文件
         File file = new File(ConfigManager.musicDir, name);
-
-        // 创建输出流
-        FileOutputStream outputStream = new FileOutputStream(file);
-        InputStream inputStream = connection.getInputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, len);//写出这个数据
+        try (FileOutputStream outputStream = new FileOutputStream(file);
+             InputStream inputStream = connection.getInputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            System.out.println("Error downloading file: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        } finally {
+            connection.disconnect();
         }
-        inputStream.close();
-        connection.disconnect();//断开连接
-        outputStream.close();
 
         return file.toURI().toString();
     }
@@ -77,18 +71,21 @@ public class YoutubeDownloader {
     public void download(String id, CallBack callBack) {
         if (downloading) return;
         setUPProxy();
-        String ytURL = "https://www.youtube.com/watch?v=" + id;
+        String ytURL = new StringBuilder().append("https://www.youtube.com/watch?v=").append(id).toString();
         String path = "--paths " + ConfigManager.musicDir.getAbsolutePath();
         String exeFile = "yt-dlp.exe";
         File file = new File(ConfigManager.musicDir, exeFile);
-        String downloadURL = "https://github.com/yt-dlp/yt-dlp/releases/download/2024.09.27/yt-dlp.exe";
+        String downloadURL = "https://github.com/yt-dlp/yt-dlp/releases/download/2024.10.07/yt-dlp.exe";
         if (!file.exists()) {
             downloading = true;
             System.out.println("Downloading File " + downloadURL);
             try {
                 downLoadToFile(downloadURL, exeFile);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Failed to download yt-dlp: " + e.getMessage());
+                e.printStackTrace();
+                downloading = false;
+                return;
             }
             downloading = false;
         }
@@ -105,12 +102,13 @@ public class YoutubeDownloader {
             try {
                 downloading = true;
                 process = Runtime.getRuntime().exec(file.getAbsolutePath() + " " + ytURL + " " + path);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                    if (Minecraft.getInstance().player != null) {
-                        ChatUtils.sendMessageWithPrefix(line);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                        if (Minecraft.getInstance().player != null) {
+                            ChatUtils.sendMessageWithPrefix(line);
+                        }
                     }
                 }
                 process.waitFor();
@@ -122,7 +120,10 @@ public class YoutubeDownloader {
                     }
                 }
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error during download process: " + e.getMessage());
+                e.printStackTrace();
+                downloading = false;
+                return;
             }
         }
         if (!downloadDoneFile.equals("")) {

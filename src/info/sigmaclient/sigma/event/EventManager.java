@@ -24,6 +24,7 @@ import info.sigmaclient.sigma.utils.render.rendermanagers.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CHeldItemChangePacket;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -174,7 +175,7 @@ public class EventManager {
         }
         if(event instanceof RenderShaderEvent){
             MusicWaveRender.SELF.drawWave();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL14.glEnable(GL14.GL_TEXTURE_2D);
         }
         if(event instanceof Render3DEvent){
             //if(!shaders)

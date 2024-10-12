@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static info.sigmaclient.sigma.minimap.minimap.Minimap.mc;
-import static info.sigmaclient.sigma.music.youtubedl.YoutubeVideoHelper.visitSite2;
+import static info.sigmaclient.sigma.music.youtubedl.YoutubeVideoHelper.fetchContentWithRedirect;
 
 public class HCMLJsonParser {
     public static String sendGetRequest(String url, String userAgent) throws IOException {
@@ -46,7 +46,7 @@ public class HCMLJsonParser {
                     try {
                         String l = sendGetRequest(copy.replace("https://pan.nyaproxy.xyz/", "https://pan.nyaproxy.xyz/get/"), "Sigma NextGen");
                         String n = copy.split("/")[copy.split("/").length - 1].replace(".txt", "");
-                        String uuid = visitSite2("https://playerdb.co/api/player/minecraft/" + n);
+                        String uuid = fetchContentWithRedirect("https://playerdb.co/api/player/minecraft/" + n);
                         System.out.println(uuid);
                         JSONObject jsonUUID = JSONObject.parseObject(uuid);
                         uuid = jsonUUID.getJSONObject("data").getJSONObject("player").getString("raw_id");

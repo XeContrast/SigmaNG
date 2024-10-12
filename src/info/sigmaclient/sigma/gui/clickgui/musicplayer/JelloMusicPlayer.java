@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-
+//follow clickgui
 public class JelloMusicPlayer {
         public TimerUtil antiRepeat;
         public JelloTextField searchBar;
@@ -112,6 +112,7 @@ public class JelloMusicPlayer {
             if (this.searchThread != null && this.searchThread.isAlive()) {
                 this.searchThread.stop();
             }
+            //搜索音乐
         (this.searchThread = new Thread(() -> {
             if (!this.currentChannel.isEmpty()) {
                 try {
@@ -310,9 +311,9 @@ public class JelloMusicPlayer {
                             count = 0;
                         }
                     }
-                    else {
+                    else { //播放音乐
                         if (ClickUtils.isClickable((float)(this.x + 40 + xOffset), (float)(this.y + calcY), this.x + 40 + xOffset + 77.0f, this.y + calcY + 77.0f, mouseX, mouseY)) {
-                            YoutubeVideoHelper.playMusicLink(this.currentFile = file);
+                            YoutubeVideoHelper.playMusicFromLink(this.currentFile = file);
                             return true;
                         }
                         if (count < 2) {
