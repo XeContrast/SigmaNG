@@ -81,7 +81,7 @@ public enum SingleKeyStroke {
             this.y = y;
         }
 
-        public float 䢶㥇酭놣䈔() {
+        public float getXPosition() {
             return this.x;
         }
     }
