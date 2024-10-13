@@ -143,12 +143,12 @@ public class JelloClickGui extends Screen {
         if (joinAnim.isAnim != Sigma5AnimationUtil.AnimState.SLEEPING) {
             return (float)(Math.pow(2.0, -10.0f * f) * Math.sin((double)(f - f2 / 4.0f) * (Math.PI * 2) / (double)f2) + 1.0);
         }
-        return 牰䩜躚㢸錌ꈍ(f, 0.0f, 1.0f, 1.0f);
+        return calculateReverseAnimationProgress(f, 0.0f, 1.0f, 1.0f);
     }
-    public static float 牰䩜躚㢸錌ꈍ(float n, final float n2, final float n3, final float n4) {
+    public static float calculateReverseAnimationProgress(float n, final float n2, final float n3, final float n4) {
         return -n3 * (n /= n4) * (n - 2.0f) + n2;
     }
-    public static float 䩉罡쟗붃괠㨳(float n, final float n2, final float n3, final float n4) {
+    public static float calculateAnimationProgress(float n, final float n2, final float n3, final float n4) {
         final float n5 = 1.70158f;
         return n3 * ((n = n / n4 - 1.0f) * n * ((n5 + 1.0f) * n + n5) + 1.0f) + n2;
     }
@@ -170,7 +170,7 @@ public class JelloClickGui extends Screen {
         else
             Shader.clickGUIIter = 20;
 //        stopShader();
-//        float f6 = 䩉罡쟗붃괠㨳(joinAnim.getAnim(), 0.0f, 1.0f, 1.0f);
+//        float f6 = calculateAnimationProgress(joinAnim.getAnim(), 0.0f, 1.0f, 1.0f);
 //        if (this.ኞ훔竁㐖杭.핇樽랾쇼뗴.홵玑ࡅ뎫ಽ嶗() == 蛊퉧쬷湗좯.眓頉뼢牰玑) {
 //            f6 = 훔웎䢿刃쇼.陂瀳瀳疂쿨뵯(this.ኞ훔竁㐖杭.핇樽랾쇼뗴.杭眓鱀陂ၝ㠠(), 0.0f, 1.0f, 1.0f);
 //        }
@@ -230,7 +230,7 @@ public class JelloClickGui extends Screen {
         if(moduleSelectAnim2.getAnim() == 0 && currentModule != null && currentModule.close)
             currentModule = null;
         float f5 = 1.0f;
-        float f7 = 䩉罡쟗붃괠㨳(moduleSelectAnim.getAnim(), 0.0f, 1.0f, 1.0f);
+        float f7 = calculateAnimationProgress(moduleSelectAnim.getAnim(), 0.0f, 1.0f, 1.0f);
         if (this.moduleSelectAnim.isAnim == Sigma5AnimationUtil.AnimState.SLEEPING) {
             f7 = 陂瀳瀳疂쿨뵯(moduleSelectAnim.getAnim(), 0.0f, 1.0f, 1.0f);
         }
@@ -286,9 +286,9 @@ public class JelloClickGui extends Screen {
         // 选择
         if(currentModule != null) {
             float 杭眓鱀陂ၝ㠠 = moduleSelectAnim2.getAnim();
-            float n = 䩉罡쟗붃괠㨳(杭眓鱀陂ၝ㠠, 0.0f, 1.0f, 1.0f);
+            float n = calculateAnimationProgress(杭眓鱀陂ၝ㠠, 0.0f, 1.0f, 1.0f);
             if (currentModule.close) {
-                n = 牰䩜躚㢸錌ꈍ(杭眓鱀陂ၝ㠠, 0.0f, 1.0f, 1.0f);
+                n = calculateReverseAnimationProgress(杭眓鱀陂ၝ㠠, 0.0f, 1.0f, 1.0f);
             }
             // 完成
 //            if (!currentModule.anim.isEnd()) {

@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static info.sigmaclient.sigma.gui.clickgui.JelloClickGui.牰䩜躚㢸錌ꈍ;
+import static info.sigmaclient.sigma.gui.clickgui.JelloClickGui.calculateReverseAnimationProgress;
 import static info.sigmaclient.sigma.modules.Module.mc;
 import static net.minecraft.client.gui.AbstractGui.drawModalRectWithCustomSizedTexture;
 import static net.minecraft.util.math.MathHelper.clamp;
@@ -58,7 +58,7 @@ public class NotificationManager {
 	public float Ꮤ殢㹔콵㨳(final Notification renderMode) {
 		final float n = (float)Math.min(renderMode.notiTimer.getElapsedTime(), renderMode.getTime());
 		if (n < this.塱揩㢸樽竁 * 1.4f) {
-			return 牰䩜躚㢸錌ꈍ(n / (this.塱揩㢸樽竁 * 1.4f), 0.0f, 1.0f, 1.0f);
+			return calculateReverseAnimationProgress(n / (this.塱揩㢸樽竁 * 1.4f), 0.0f, 1.0f, 1.0f);
 		}
 		if (n <= renderMode.getTime() - (float)this.塱揩㢸樽竁) {
 			return 1.0f;
