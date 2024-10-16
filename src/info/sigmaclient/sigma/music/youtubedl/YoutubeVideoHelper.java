@@ -24,7 +24,8 @@ public class YoutubeVideoHelper {
     static String apiKey = "AIzaSyCGP7w_jD6Xh1B1BHp21bNpRsICsYYcRok";
     static HttpTransport httpTransport = new NetHttpTransport();
     static JsonFactory jsonFactory = new JacksonFactory();
-    static YouTube youtube = new YouTube.Builder(httpTransport, jsonFactory, request -> {}).setApplicationName("youtube").build();
+    static YouTube youtube = new YouTube.Builder(httpTransport, jsonFactory, request -> {
+    }).setApplicationName("youtube").build();
 
     public static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0";
 
@@ -96,6 +97,7 @@ public class YoutubeVideoHelper {
         connection.disconnect();
         return file.toURI().toString();
     }
+
     static Thread thread = null;
 
     public static void playMusicFromLink(Music music) {

@@ -1,7 +1,6 @@
 package info.sigmaclient.sigma.event;
 
 
-
 import info.sigmaclient.sigma.SigmaNG;
 import info.sigmaclient.sigma.commands.impl.GPSCommand;
 import info.sigmaclient.sigma.event.annotations.EventPriority;
@@ -36,9 +35,11 @@ import static info.sigmaclient.sigma.modules.Module.mc;
 
 public class EventManager {
     private boolean init = false;
-    public void init(){
+
+    public void init() {
         init = true;
     }
+
     private final Map<Method, Class<?>> registeredMethodMap;
     private final Map<Method, Object> methodObjectMap;
     private final Map<Class<? extends Event>, List<Method>> priorityMethodMap;
@@ -55,7 +56,7 @@ public class EventManager {
      * @param obj One or more objects to register.
      */
     public void register(Object... obj) {
-        for(Object object : obj){
+        for (Object object : obj) {
             register(object);
         }
     }
@@ -68,7 +69,7 @@ public class EventManager {
     public void register(Object obj) {
         Class<?> clazz = obj.getClass();
         Method[] methods = clazz.getDeclaredMethods();
-        if(methodObjectMap.containsValue(obj))return;
+        if (methodObjectMap.containsValue(obj)) return;
         for (Method method : methods) {
             Annotation[] annotations = method.getDeclaredAnnotations();
 
@@ -112,7 +113,7 @@ public class EventManager {
      * @return The modified or processed event after calling the methods.
      */
     public Event call(Event event) {
-        if(!init || SelfDestructManager.destruct) return event;
+        if (!init || SelfDestructManager.destruct) return event;
 //        if(event instanceof WindowUpdateEvent){
 //            SigmaNG.SigmaNG.antiAgent.doOneCheck();
 //            if(!SigmaNG.SigmaNG.verify.verify){
@@ -121,20 +122,20 @@ public class EventManager {
 //                }
 //            }
 //        }
-        if(Minecraft.getInstance().player == null || Minecraft.getInstance().world == null) return event;
+        if (Minecraft.getInstance().player == null || Minecraft.getInstance().world == null) return event;
 
-        if(event instanceof MotionEvent){
-            if(((MotionEvent) event).isPre()){
-                if(RotationUtils.NEXT_SLOT != -1){
+        if (event instanceof MotionEvent) {
+            if (((MotionEvent) event).isPre()) {
+                if (RotationUtils.NEXT_SLOT != -1) {
                     Minecraft.getInstance().getConnection().sendPacketNOEvent(new CHeldItemChangePacket(RotationUtils.NEXT_SLOT));
                     RotationUtils.NEXT_SLOT = -1;
                 }
             }
         }
 
-        if(event instanceof KeyEvent){
+        if (event instanceof KeyEvent) {
             for (Module module : SigmaNG.getSigmaNG().moduleManager.modules) {
-                if(module.key != -1 && ((KeyEvent) event).key == module.key)
+                if (module.key != -1 && ((KeyEvent) event).key == module.key)
                     module.toggle();
             }
         }
@@ -157,44 +158,46 @@ public class EventManager {
                 }
             }
         }
-        if(event instanceof RenderEvent){
+        if (event instanceof RenderEvent) {
             GPSCommand.render();
-            ((BlockFly)SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).renderBlockCounter();
-            if(SigmaNG.gameMode == SigmaNG.GAME_MODE.JELLO) {
+            ((BlockFly) SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).renderBlockCounter();
+            if (SigmaNG.gameMode == SigmaNG.GAME_MODE.JELLO) {
                 SigmaNG.getSigmaNG().notificationManager.onRender();
             }
+            MusicWaveRender.SELF.drawWave();
+            GL14.glEnable(GL14.GL_TEXTURE_2D);
             MusicWaveRender.SELF.drawTexture();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            if(!(mc.currentScreen instanceof JelloClickGui) && mc.player != null && mc.world != null){
-                if(JelloClickGui.leave.getValue() < 1.68 && ClickGUI.isEnableFirst){
+            if (!(mc.currentScreen instanceof JelloClickGui) && mc.player != null && mc.world != null) {
+                if (JelloClickGui.leave.getValue() < 1.68 && ClickGUI.isEnableFirst) {
                     GL11.glPushMatrix();
-                    ClickGUI.clickGui.drawScreen(0,0, mc.timer.renderPartialTicks);
+                    ClickGUI.clickGui.drawScreen(0, 0, mc.timer.renderPartialTicks);
                     GL11.glPopMatrix();
                 }
             }
         }
-        if(event instanceof RenderShaderEvent){
-            MusicWaveRender.SELF.drawWave();
-            GL14.glEnable(GL14.GL_TEXTURE_2D);
+        if (event instanceof RenderShaderEvent) {
+//            MusicWaveRender.SELF.drawWave();
+//            GL14.glEnable(GL14.GL_TEXTURE_2D);
         }
-        if(event instanceof Render3DEvent){
+        if (event instanceof Render3DEvent) {
             //if(!shaders)
             //shadowESP.renderEvent2();
             GlStateManager.disableLighting();
             GlStateManager.enableTexture2D();
         }
-        if(event instanceof WindowUpdateEvent){
+        if (event instanceof WindowUpdateEvent) {
             MusicWaveRender.SELF.onTick();
-            if(!(mc.currentScreen instanceof JelloClickGui) && mc.player != null && mc.world != null) {
+            if (!(mc.currentScreen instanceof JelloClickGui) && mc.player != null && mc.world != null) {
                 JelloClickGui.leave.interpolate(1.7f, 3);
             }
         }
-        if(event instanceof MotionEvent){
-            if(((MotionEvent) event).isPre()) {
-                ((BlockFly)SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).tickForAnim();
+        if (event instanceof MotionEvent) {
+            if (((MotionEvent) event).isPre()) {
+                ((BlockFly) SigmaNG.SigmaNG.moduleManager.getModule(BlockFly.class)).tickForAnim();
                 SigmaNG.getSigmaNG().notificationManager.onTick();
-            }else{
-                if(!((MotionEvent) event).send){
+            } else {
+                if (!((MotionEvent) event).send) {
                     Timer.violation -= 1;
 //                    ChatUtils.sendMessageWithPrefix("1 " + violation);
                     Timer.violation = Math.max(Timer.violation, 0);
@@ -202,11 +205,10 @@ public class EventManager {
                 }
             }
         }
-        if(event instanceof MoveEvent){
+        if (event instanceof MoveEvent) {
             MovementUtils.clacMotion((MoveEvent) event);
             TargetStrafe.onMove((MoveEvent) event);
         }
-
 
 
         return event;
