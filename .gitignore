@@ -1,10 +1,33 @@
-### Example user template template
-### Example user template
+# eclipse
+eclipse/
+bin/
+*.launch
+.settings/
+.metadata/
+.classpath/
+.project/
 
-# IntelliJ project files
-.idea
+# idea
+out/
+gen/
+classes/
+*.ipr
+*.iws
 *.iml
-*.xml
-out
-gen
-runs
+.idea/
+
+# gradle
+build/
+.gradle/
+.kotlin/
+
+# netbeans
+.nb-gradle/
+.nb-gradle-properties/
+
+# other
+run/
+runs/
+.DS_Store
+Thumbs.db
+.vscode/
