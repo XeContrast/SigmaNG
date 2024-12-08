@@ -111,7 +111,8 @@ public class JelloMusicPlayer {
         TextureManager.cache.clear();
         JelloMusicPlayer.musics.clear();
         if (this.searchThread != null && this.searchThread.isAlive()) {
-            this.searchThread.stop();
+            // this.searchThread.stop();
+            this.searchThread.interrupt();
         }
         //搜索音乐
         (this.searchThread = new Thread(() -> {
