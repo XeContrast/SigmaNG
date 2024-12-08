@@ -2,6 +2,7 @@ package info.sigmaclient.sigma.modules.combat;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import info.sigmaclient.sigma.modules.movement.NoSlow;
+import info.sigmaclient.sigma.modules.player.MoveFix;
 import info.sigmaclient.sigma.process.impl.packet.BadPacketsProcess;
 import info.sigmaclient.sigma.event.annotations.EventPriority;
 import info.sigmaclient.sigma.event.annotations.EventTarget;
@@ -148,14 +149,6 @@ public class Killaura extends Module {
             return !mode.is("Single");
         }
     };
-
-    public ModeValue movementFix = new ModeValue("Move Correction", "None", new String[]{
-            "None",
-            "Silent",
-            "Matrix",
-            "Strict",
-            "Vanilla"
-    });
     public static BooleanValue raytrace = new BooleanValue("Raytrace", false);
     public ModeValue TraceMode = new ModeValue("Trace Mode", "Target", new String[]{
             "Target", "All"
@@ -193,6 +186,7 @@ public class Killaura extends Module {
     private boolean back = false;
     private int switchTime = 0;
     private int index = 0;
+    public static float[] rotations = null;
 
     private final ArrayList<LivingEntity> targets = new ArrayList<>();
     public float[] lastRotation = null;
@@ -200,7 +194,6 @@ public class Killaura extends Module {
 
     private int groundTime = 0;
     private static final TimerUtil timer = new TimerUtil();
-
 
     private static double blockTime;
     public static boolean blocking;
@@ -235,7 +228,6 @@ public class Killaura extends Module {
         registerValue(naked);
         registerValue(throughWalls);
         registerValue(limit);
-        registerValue(movementFix);
         registerValue(raytrace);
         registerValue(noswing);
         registerValue(disable_on_death);
@@ -310,11 +302,6 @@ public class Killaura extends Module {
         targets.clear();
         getTargets();
 
-        if(this.movementFix.is("Strict") && (mc.player.fallDistance > 0 || canFallHit) && attackTarget != null){
-            mc.player.setSprinting(false);
-            mc.gameSettings.keyBindSprint.pressed = false;
-        }
-
         if(targets.isEmpty()){
             clickHelper.reset();
             switchTime = 0;
@@ -356,8 +343,6 @@ public class Killaura extends Module {
                 lastRotation = new float[]{calc2[0], calc2[1]};
                 RotationManager.setRotYaw(lastRotation[0]);
                 RotationManager.setRotPitch(lastRotation[1]);
-                StrafeFixManager.StrafeFix = isMoveFix();
-                StrafeFixManager.silent = movementFix.is("Silent");
             }
             return;
         }
@@ -435,35 +420,34 @@ public class Killaura extends Module {
         }
     }
 
-    public void doRotation(float calcSpeed){
+    public void doRotation(float calcSpeed) {
 
-        float[] rotations = null;
         double calcY = attackTarget.getPosY() + attackTarget.getEyeHeight() - 0.019999999552965164 + (predict.isEnable() ? attackTarget.getPosY() - attackTarget.lastTickPosY : 0);
         final double x = attackTarget.getPosX() + (predict.isEnable() ? attackTarget.getPosX() - attackTarget.lastTickPosX : 0);
         final double z = attackTarget.getPosZ() + (predict.isEnable() ? attackTarget.getPosZ() - attackTarget.lastTickPosZ : 0);
         Rotation NCPRot = RotationUtils.toRotation(new Vector3d(x, calcY, z));
         Rotation rots = NCPRotation.NCPRotation(attackTarget);
-        switch (rotation.getValue()){
+        switch (rotation.getValue()) {
             case "None":
                 rotations = new float[]{mc.player.prevRotationYaw, mc.player.prevRotationPitch};
                 break;
             case "Matrix":
                 if (attackTarget.getBoundingBox().contains(mc.player.getEyePosition(1F))) {
-                }else {
+                } else {
                     Rotation matrix = NCPRotation.NCPRotation(attackTarget);
                     rotations = new float[]{matrix.getYaw(), matrix.getPitch()};
 //                        if (mc.player.lastTickPosX != mc.player.getPosX() || mc.player.lastTickPosZ != mc.player.getPosZ() || mc.player.lastTickPosY != mc.player.getPosY()) {
                     rotations[0] += (float) (2f * Math.sqrt(Math.min(Math.abs(mc.player.getPosY() - mc.player.lastTickPosY) * 1.444f, 4)) + Math.random() * 0.66666666666 * 2);
                     rotations[1] += (float) (2f * Math.sqrt(Math.min(Math.abs(mc.player.getPosX() - mc.player.lastTickPosX) * 1.444f + Math.abs(mc.player.getPosZ() - mc.player.lastTickPosZ) * 1.444f, 4)) + Math.random() * 0.66666666666 * 2);
 //                        }
-                    rotations[0] = (rotations[0] + RandomUtil.nextFloat(-1, 2) +( mc.player.ticksExisted % 20) / 20f);
-                    rotations[1] = (rotations[1] + RandomUtil.nextFloat(-1, 2) +( mc.player.ticksExisted % 20) / 20f);
+                    rotations[0] = (rotations[0] + RandomUtil.nextFloat(-1, 2) + (mc.player.ticksExisted % 20) / 20f);
+                    rotations[1] = (rotations[1] + RandomUtil.nextFloat(-1, 2) + (mc.player.ticksExisted % 20) / 20f);
                     float sb = interpolate(Math.abs(RotationUtils.getAngleDifference(mc.player.lastReportedYaw, rotations[0])) / 190f, 0.33, 0.456, 0.14, 0.5665775);
                     float sb2 = interpolate(Math.abs(mc.player.lastReportedYaw - rotations[1]) / 45f, 0.33, 0.456, 0.14, 0.5665775);
                     Rotation limitM = RotationUtils.limitAngleChange(new Rotation(mc.player.lastReportedYaw, mc.player.lastReportedPitch), new Rotation(rotations[0], rotations[1]), sb * 100 + 40, sb2 * 40 + 10);
                     rotations = new float[]{limitM.getYaw(), limitM.getPitch()};
                     rotations = RotationUtils.mouseSens(rotations[0], rotations[1], mc.player.lastReportedYaw, mc.player.lastReportedPitch);
-                    if(Math.abs(RotationUtils.getAngleDifference(rotations[0], mc.player.lastReportedYaw)) <= 1 && Math.abs(RotationUtils.getAngleDifference(rotations[1], mc.player.lastReportedPitch)) <= 1){
+                    if (Math.abs(RotationUtils.getAngleDifference(rotations[0], mc.player.lastReportedYaw)) <= 1 && Math.abs(RotationUtils.getAngleDifference(rotations[1], mc.player.lastReportedPitch)) <= 1) {
                         rotations[0] = mc.player.lastReportedYaw;
                         rotations[1] = mc.player.lastReportedPitch;
                     }
@@ -472,15 +456,15 @@ public class Killaura extends Module {
             case "NCP":
 
                 Rotation NCP = RotationUtils.NCPRotation(attackTarget);
-                Rotation NCP2 = NCPRotation.NCPRotation(attackTarget,RotationUtils.getRotTop(attackTarget));
-                if((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).x,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).y,NCPRotation.calculatePosition(attackTarget,RotationUtils.getRotTop(attackTarget)).z) <= 2.5)){
+                Rotation NCP2 = NCPRotation.NCPRotation(attackTarget, RotationUtils.getRotTop(attackTarget));
+                if ((mc.player.getDistance(NCPRotation.calculatePosition(attackTarget, RotationUtils.getRotTop(attackTarget)).x, NCPRotation.calculatePosition(attackTarget, RotationUtils.getRotTop(attackTarget)).y, NCPRotation.calculatePosition(attackTarget, RotationUtils.getRotTop(attackTarget)).z) <= 2.5)) {
                     rotations = new float[]{NCP2.getYaw(), NCP2.getPitch()};
-                }else{
+                } else {
                     rotations = new float[]{NCP.getYaw(), NCP.getPitch()};
                 }
-                if(mc.player.lastReportedYaw != rotations[0]) {
+                if (mc.player.lastReportedYaw != rotations[0]) {
                     rotations[0] = RotationUtils.rotateToYaw(calcSpeed + RandomUtil.nextFloat(-2, 2), mc.player.lastReportedYaw, rotations[0]);
-                }else {
+                } else {
                     rotations[0] = (rotations[0] + RandomUtil.nextFloat(-1, 2));
                     rotations[1] = (rotations[1] + RandomUtil.nextFloat(-1, 2));
                 }
@@ -488,7 +472,7 @@ public class Killaura extends Module {
                 break;
             case "Custom":
                 Rotation calc = null;
-                switch (customRotationMode.getValue()){
+                switch (customRotationMode.getValue()) {
                     case "Nearest":
                         calc = rots;
                         break;
@@ -500,8 +484,8 @@ public class Killaura extends Module {
                         calc.setPitch(mc.player.rotationPitch);
                         break;
                 }
-                if(calc == null) break;
-                switch (customAddonsMode.getValue()){
+                if (calc == null) break;
+                switch (customAddonsMode.getValue()) {
                     case "None":
                         break;
                     case "Random":
@@ -531,7 +515,7 @@ public class Killaura extends Module {
                         calc.setPitch(calc.getPitch() + RandomUtil.nextFloat(-0.01, 0.02));
                         break;
                 }
-                switch (customExtendsMode.getValue()){
+                switch (customExtendsMode.getValue()) {
                     case "None":
                         break;
                     case "Int":
@@ -539,26 +523,26 @@ public class Killaura extends Module {
                         calc.setPitch((int) calc.getPitch());
                         break;
                     case "DelayInt":
-                        if(mc.player.ticksExisted % 2 == 0){
+                        if (mc.player.ticksExisted % 2 == 0) {
                             calc.setYaw((int) calc.getYaw());
                             calc.setPitch((int) calc.getPitch());
                         }
                         break;
                     case "DelayMove":
-                        if(mc.player.ticksExisted % 2 == 0){
+                        if (mc.player.ticksExisted % 2 == 0) {
                             calc.setYaw(mc.player.lastReportedYaw);
                             calc.setPitch(mc.player.lastReportedPitch);
                         }
                         break;
                     case "Digit":
-                        calc.setYaw((float)(Math.round(calc.getYaw()*10f))/10f);
-                        calc.setPitch((float)(Math.round(calc.getPitch()*10f))/10f);
+                        calc.setYaw((float) (Math.round(calc.getYaw() * 10f)) / 10f);
+                        calc.setPitch((float) (Math.round(calc.getPitch() * 10f)) / 10f);
                         break;
                 }
                 // fixed
                 calc.setYaw(MathHelper.wrapAngleTo180_float(calc.getYaw()));
                 calc.setPitch(Math.max(Math.min(calc.getPitch(), 90), -90));
-                switch (customSmoothMode.getValue()){
+                switch (customSmoothMode.getValue()) {
                     case "Instant":
                         break;
                     case "MouseSens":
@@ -581,16 +565,16 @@ public class Killaura extends Module {
         }
 
         this.lastRotation = rotations;
-        if(rotation.is("NCP")) {
+        if (rotation.is("NCP")) {
             RotationManager.SMOOTH_BACK_TICK = 5;
         }
         //MoveFix
-        if(lastRotation != null) {
+        if (lastRotation != null) {
             RotationManager.setRotYaw(lastRotation[0]);
             RotationManager.setRotPitch(lastRotation[1]);
-            StrafeFixManager.StrafeFix = isMoveFix();
-            StrafeFixManager.silent = movementFix.is("Silent");
         }
+
+        MoveFix.fixedRotations.updateRotations(rotations[0],rotations[1]);
     }
 
     public void doAttack(MotionEvent event){
@@ -699,20 +683,6 @@ public class Killaura extends Module {
         }
     }
 
-    @EventTarget
-    public void onStrafeEvent(StrafeEvent event) {
-        if (movementFix.is("Vanilla") && attackTarget != null) {
-            event.yaw = lastRotation[0];
-        }
-    }
-
-    @EventTarget
-    public void onJumpEvent(JumpEvent event) {
-        if (movementFix.is("Vanilla") && attackTarget != null) {
-            event.yaw = lastRotation[0];
-        }
-    }
-
 
     @Native
     int getAxeSlot() {
@@ -722,16 +692,6 @@ public class Killaura extends Module {
             }
         }
         return -1;
-    }
-
-    @Native
-    public boolean isMoveFix(){
-        return switch (movementFix.getValue()) {
-            case "Strict","Silent" -> true;
-            case "Matrix" ->
-                    groundTime > 1 && Math.abs(RotationUtils.getAngleDifference(mc.player.rotationYaw, mc.player.lastReportedYaw)) <= 60;
-            default -> false;
-        };
     }
 
     HashMap<Entity, ESPTarget> espTargets = new HashMap<>();

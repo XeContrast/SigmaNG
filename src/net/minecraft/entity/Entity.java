@@ -4,14 +4,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import info.sigmaclient.sigma.SigmaNG;
-import info.sigmaclient.sigma.event.EventManager;
 import info.sigmaclient.sigma.event.impl.player.StepEvent;
 import info.sigmaclient.sigma.event.impl.player.StrafeEvent;
-import info.sigmaclient.sigma.modules.movement.BlockFly;
 import info.sigmaclient.sigma.modules.player.AntiPush;
-import info.sigmaclient.sigma.sigma5.SelfDestructManager;
 import info.sigmaclient.sigma.sigma5.killaura.NCPRotation;
-import info.sigmaclient.sigma.utils.player.RotationUtils;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import java.util.Arrays;
@@ -1414,20 +1410,20 @@ public abstract class Entity implements INameable, ICommandSource
         return !this.firstUpdate && this.eyesFluidLevel.getDouble(FluidTags.LAVA) > 0.0D;
     }
 
-    public void moveRelative(float p_213309_1_, Vector3d relative)
+    public void moveRelative(float friction, Vector3d relative)
     {
         float yaw = this.rotationYaw;
         if(this instanceof ClientPlayerEntity){
 
-            StrafeEvent event = new StrafeEvent(relative.x,relative.z,p_213309_1_,yaw);
+            StrafeEvent event = new StrafeEvent(relative.x,relative.z,friction,yaw);
             SigmaNG.getSigmaNG().eventManager.call(event);
             yaw = event.yaw;
             relative.x = event.strafe;
-            relative.z = event.forword;
-            p_213309_1_ = (float) event.friction;
+            relative.z = event.forward;
+            friction = (float) event.friction;
 
         }
-        Vector3d vector3d = getAbsoluteMotion(relative, p_213309_1_, yaw);
+        Vector3d vector3d = getAbsoluteMotion(relative, friction, yaw);
         this.setMotion(this.getMotion().add(vector3d));
     }
 

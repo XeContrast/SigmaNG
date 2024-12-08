@@ -148,6 +148,7 @@ public class ModuleManager {
         registerModule(new Derp());
         registerModule(new FakePlayer());
         registerModule(new Blink());
+        registerModule(new MoveFix());
 
         // gui
 //        registerModule(new Shader());
