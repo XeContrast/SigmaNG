@@ -2,7 +2,7 @@
 
 # SigmaNG
 
-#请遵守MIT协议
+# 请遵守MIT协议
 
 </div>
 
