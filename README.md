@@ -1,4 +1,10 @@
+<div align="center">
+
 # SigmaNG
+
+#请遵守MIT协议
+
+</div>
 
 ## Introduction
 欢迎使用SigmaNG，这是一个专为提升游戏体验和个性化定制而设计的Minecraft 1.16.5黑客客户端。
